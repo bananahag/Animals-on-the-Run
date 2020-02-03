@@ -4,13 +4,25 @@ using UnityEngine;
 
 public class Monkey : MonoBehaviour
 {
-    Rigidbody2D rb2d;
+    public Transform groundCheckLeft = null, groundCheckRight = null;
 
     public float walkingSpeed = 5.0f;
     public float jumpForce = 500.0f;
+    public float jumpBufferTime = 0.25f;
+
+    Rigidbody2D rb2d;
 
     Vector2 movement;
+    bool jumping;
+    bool jumpBuffer;
+    bool grounded;
     float x;
+
+    void OnValidate()
+    {
+        if (groundCheckLeft == null || groundCheckRight == null)
+            Debug.LogWarning("At least one player ground check is not assigned!");
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -21,9 +33,15 @@ public class Monkey : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && grounded || jumpBuffer && grounded)
         {
             Jump();
+            jumpBuffer = false;
+        }
+
+        if (Input.GetButtonDown("Jump") && !grounded)
+        {
+            StartCoroutine(JumpBufferTimer());
         }
     }
 
@@ -33,20 +51,42 @@ public class Monkey : MonoBehaviour
 
         movement = new Vector2(x * walkingSpeed, rb2d.velocity.y);
         rb2d.velocity = movement;
+
+
+        if (Physics2D.Linecast(transform.position, groundCheckLeft.position, 1 << LayerMask.NameToLayer("Ground"))
+            || Physics2D.Linecast(transform.position, groundCheckRight.position, 1 << LayerMask.NameToLayer("Ground")))
+        {
+            grounded = true;
+        }
+        else
+            grounded = false;
+
+        if (jumping)
+        {
+            if (rb2d.velocity.y >= 0.0f)
+            {
+                if (!Input.GetButton("Jump"))
+                {
+                    rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y / 2);
+                    jumping = false;
+                }
+            }
+            else
+                jumping = false;
+        }
     }
 
     void Jump()
     {
         rb2d.velocity = new Vector2(rb2d.velocity.x, 0.0f);
         rb2d.AddForce(new Vector2(0.0f, jumpForce));
-        while (rb2d.velocity.y > 0)
-        {
-            print("AAAAAAAAAAAAAAAAAAAAAAAH");
-            if (!Input.GetButton("Jump"))
-            {
-                rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y / 2);
-                break;
-            }
-        }
+        jumping = true;
+    }
+
+    IEnumerator JumpBufferTimer()
+    {
+        jumpBuffer = true;
+        yield return new WaitForSecondsRealtime(jumpBufferTime);
+        jumpBuffer = false;
     }
 }
