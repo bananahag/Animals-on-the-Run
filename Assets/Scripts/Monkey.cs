@@ -16,7 +16,9 @@ public class Monkey : MonoBehaviour
     bool jumping;
     bool jumpBuffer;
     bool grounded;
-    float x;
+
+    bool canClimb;
+    float x, y;
 
     void OnValidate()
     {
@@ -49,6 +51,7 @@ public class Monkey : MonoBehaviour
     void FixedUpdate()
     {
         x = Input.GetAxisRaw("Horizontal");
+        y = Input.GetAxisRaw("Vertical");
 
         movement = new Vector2(x * walkingSpeed, rb2d.velocity.y);
         rb2d.velocity = movement;
@@ -64,12 +67,16 @@ public class Monkey : MonoBehaviour
 
         if (jumping)
         {
-            if (!Input.GetButton("Jump"))
+            if (!Input.GetButton("Jump") && rb2d.velocity.y >= 0)
             {
                 rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y / 2);
                 jumping = false;
             }
+            else
+                jumping = false;
         }
+
+        print(canClimb);
 
     }
 
@@ -84,5 +91,17 @@ public class Monkey : MonoBehaviour
         jumpBuffer = true;
         yield return new WaitForSecondsRealtime(jumpBufferTime);
         jumpBuffer = false;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Ladder")
+            canClimb = true;
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Ladder")
+            canClimb = false;
     }
 }
