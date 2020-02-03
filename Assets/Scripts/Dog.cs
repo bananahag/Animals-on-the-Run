@@ -10,6 +10,9 @@ public class Dog : MonoBehaviour
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
 
+    public bool charmingHuman = false;
+    private GameObject human;
+
     Rigidbody2D rb2d;
 
     Vector2 movement;
@@ -43,6 +46,14 @@ public class Dog : MonoBehaviour
         {
             StartCoroutine(JumpBufferTimer());
         }
+
+        if(charmingHuman && Input.GetKey(KeyCode.E))
+        {
+            charmingHuman = false;
+            human.GetComponent<Human>().charmed = false;
+            
+        }
+
     }
 
     void FixedUpdate()
@@ -52,7 +63,7 @@ public class Dog : MonoBehaviour
         movement = new Vector2(x * walkingSpeed, rb2d.velocity.y);
         rb2d.velocity = movement;
         CheckIfGrounded();
-        CheckIfJumping();
+        CheckJumpForce();
     }
 
     void Jump()
@@ -79,7 +90,7 @@ public class Dog : MonoBehaviour
             grounded = false;
     }
 
-    void CheckIfJumping()
+    void CheckJumpForce()
     {
         if (jumping)
         {
@@ -88,6 +99,16 @@ public class Dog : MonoBehaviour
                 rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y / 2);
                 jumping = false;
             }
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Human") && Input.GetKey(KeyCode.E)) // Ingen input direkt i triggern!
+        {
+            charmingHuman = true;
+            human = other.gameObject;
+            human.GetComponent<Human>().charmed = true;
         }
     }
 }
