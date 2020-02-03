@@ -7,7 +7,7 @@ public class Monkey : MonoBehaviour
     public Transform groundCheckLeft = null, groundCheckRight = null;
 
     public float walkingSpeed = 5.0f;
-    public float jumpForce = 500.0f;
+    public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
 
     Rigidbody2D rb2d;
@@ -28,6 +28,7 @@ public class Monkey : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        rb2d.freezeRotation = true;
     }
 
     // Update is called once per frame
@@ -63,23 +64,18 @@ public class Monkey : MonoBehaviour
 
         if (jumping)
         {
-            if (rb2d.velocity.y >= 0.0f)
+            if (!Input.GetButton("Jump"))
             {
-                if (!Input.GetButton("Jump"))
-                {
-                    rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y / 2);
-                    jumping = false;
-                }
-            }
-            else
+                rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y / 2);
                 jumping = false;
+            }
         }
+
     }
 
     void Jump()
     {
-        rb2d.velocity = new Vector2(rb2d.velocity.x, 0.0f);
-        rb2d.AddForce(new Vector2(0.0f, jumpForce));
+        rb2d.velocity = new Vector2(rb2d.velocity.x, jumpVelocity);
         jumping = true;
     }
 
