@@ -8,6 +8,7 @@ public class Monkey : MonoBehaviour
     public AudioClip jumpSFX;//+ more sound effects
 
     public float walkingSpeed = 5.0f;
+    public float walkingSpeedWhenCarryingBucket = 3.5f;
     public float timeBetweenStepSounds = 0.5f;
 
     public float climbingHorizontallySpeed = 2.5f, climbingVerticallySpeed = 4.0f;
@@ -113,6 +114,8 @@ public class Monkey : MonoBehaviour
 
         if (climbing && !cannotMove)
             movement = new Vector2(x * climbingHorizontallySpeed, y * climbingVerticallySpeed);
+        else if (!cannotMove && carrying)
+            movement = new Vector2(x * walkingSpeedWhenCarryingBucket, rb2d.velocity.y);
         else if (!cannotMove)
             movement = new Vector2(x * walkingSpeed, rb2d.velocity.y);
         else
