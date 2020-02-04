@@ -41,7 +41,7 @@ public class SwapCharacter : MonoBehaviour
         if (SelectedChar == (int)activeCharacter.Dog)
         {
             characters[0].GetComponent<Rigidbody2D>().velocity = new Vector3(0, characters[0].GetComponent<Rigidbody2D>().velocity.y, 0);
-            mMonkey.cannotMove = true;
+            mMonkey.notActive = true;
             mDog.lockMovement = false;
             
             cam.transform.position = new Vector3(characters[1].transform.position.x, characters[1].transform.position.y, -10);
@@ -52,7 +52,7 @@ public class SwapCharacter : MonoBehaviour
         {
             characters[1].GetComponent<Rigidbody2D>().velocity = new Vector3(0, characters[1].GetComponent<Rigidbody2D>().velocity.y, 0);
             mDog.lockMovement = true;
-            mMonkey.cannotMove = false;
+            mMonkey.notActive = false;
             cam.transform.position = new Vector3(characters[0].transform.position.x, characters[0].transform.position.y, -10);
         }
     }
