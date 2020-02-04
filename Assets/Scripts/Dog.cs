@@ -30,6 +30,9 @@ public class Dog : MonoBehaviour
     bool jumping;
     bool jumpBuffer;
     bool grounded;
+    bool notActive = false;
+    public bool swimming = false;
+
     float x;
 
     void OnValidate()
@@ -54,19 +57,19 @@ public class Dog : MonoBehaviour
 
         if (!lockMovement)
         {
-            if (Input.GetButtonDown("Jump") && grounded || jumpBuffer && grounded)
+            if (Input.GetButtonDown("Jump") && grounded || jumpBuffer && grounded && !notActive)
             {
                 Jump();
                 jumpBuffer = false;
             }
 
-            if (Input.GetButtonDown("Jump") && !grounded)
+            if (Input.GetButtonDown("Jump") && !grounded && !notActive)
             {
                 StartCoroutine(JumpBufferTimer());
             }
         }
 
-        if (closeToHuman && Input.GetButtonDown("Interact") && grounded)
+        if (closeToHuman && Input.GetButtonDown("Interact") && grounded && !notActive)
         {
             if (human != null)
             {
@@ -89,7 +92,7 @@ public class Dog : MonoBehaviour
     void FixedUpdate()
     {
         x = Input.GetAxisRaw("Horizontal");
-        if (!lockMovement)
+        if (!lockMovement && !notActive)
         {
             movement = new Vector2(x * walkingSpeed, rb2d.velocity.y);
             rb2d.velocity = movement;
@@ -162,11 +165,20 @@ public class Dog : MonoBehaviour
         if(other.gameObject.layer == LayerMask.NameToLayer("Water"))
         {
             StartCoroutine(WetFurTimer());
+            swimming = true;
         }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        closeToHuman = false;
+        if(other.gameObject.layer == LayerMask.NameToLayer("Human"))
+        {
+            closeToHuman = false;
+        }
+
+        if(other.gameObject.layer == LayerMask.NameToLayer("Water"))
+        {
+            swimming = false;
+        }
     }
 }
