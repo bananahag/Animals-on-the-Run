@@ -287,9 +287,14 @@ public class Monkey : MonoBehaviour
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Human") || other.gameObject.layer == LayerMask.NameToLayer("AboveWater"))
         {
-            scaryObject = other.gameObject;
-            audioSource.PlayOneShot(scaredSFX);
-            StartCoroutine(WalkAway());
+            if (other.gameObject.layer == LayerMask.NameToLayer("Human") && other.gameObject.GetComponent<Human>().charmed) { }
+            else
+            {
+                scaryObject = other.gameObject;
+                audioSource.PlayOneShot(scaredSFX);
+                StartCoroutine(WalkAway());
+            }
+            
         }
 
         if (other.gameObject.tag == "Cage")
