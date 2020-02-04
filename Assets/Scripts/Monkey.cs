@@ -23,6 +23,8 @@ public class Monkey : MonoBehaviour
 
     [HideInInspector]
     public bool cannotMove;
+    [HideInInspector]
+    public bool notActive;
 
     AudioSource audioSource;
     Animator animator;
@@ -46,6 +48,7 @@ public class Monkey : MonoBehaviour
     bool climbing;
     bool canPlayClimbingSoundAgain;
 
+    bool canOpenCage;
     bool canPullLever, canPushButton;
     GameObject lever, button;
     GameObject scaryObject; //water or a human
@@ -75,18 +78,18 @@ public class Monkey : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump") && grounded && !carrying && !cannotMove || jumpBuffer && grounded && !carrying && !cannotMove)
+        if (Input.GetButtonDown("Jump") && grounded && !carrying && !cannotMove && !notActive || jumpBuffer && grounded && !carrying && !cannotMove && !notActive)
         {
             Jump();
             jumpBuffer = false;
         }
 
-        if (Input.GetButtonDown("Jump") && !grounded && !cannotMove)
+        if (Input.GetButtonDown("Jump") && !grounded && !cannotMove && !notActive)
         {
             StartCoroutine(JumpBufferTimer());
         }
 
-        if (Input.GetButtonDown("Interact") && !cannotMove && grounded)
+        if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
         {
             if (!carrying && canPickUpEel)
             {
@@ -116,7 +119,7 @@ public class Monkey : MonoBehaviour
         x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
 
-        if (!cannotMove)
+        if (!cannotMove && !notActive)
         {
             if (x > 0)
                 facingRight = true;
@@ -124,11 +127,11 @@ public class Monkey : MonoBehaviour
                 facingRight = false;
         }
 
-        if (climbing && !cannotMove)
+        if (climbing && !cannotMove && !notActive)
             movement = new Vector2(x * climbingHorizontallySpeed, y * climbingVerticallySpeed);
-        else if (!cannotMove && carrying)
+        else if (!cannotMove && !notActive && carrying)
             movement = new Vector2(x * walkingSpeedWhenCarryingBucket, rb2d.velocity.y);
-        else if (!cannotMove)
+        else if (!cannotMove && !notActive)
             movement = new Vector2(x * walkingSpeed, rb2d.velocity.y);
         else
             movement = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
@@ -156,7 +159,7 @@ public class Monkey : MonoBehaviour
         if (grounded)
             GroundedAnimations();
 
-        if (canClimb && !carrying && !cannotMove)
+        if (canClimb && !carrying && !cannotMove && !notActive)
             Climbing();
         else
         {
@@ -230,7 +233,7 @@ public class Monkey : MonoBehaviour
     {
         if (canPullLever)
         {
-            if (Input.GetButtonDown("Interact") && !cannotMove && grounded)
+            if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
             {
                 //animator.Play(LEVER);
                 //audioSource.PlayOneShot(LEVER SFX);
@@ -241,7 +244,7 @@ public class Monkey : MonoBehaviour
         }
         else //if you're close to both a lever and a button at the same time you'll always just pull the lever.
         {
-            if (Input.GetButtonDown("Interact") && !cannotMove && grounded)
+            if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
             {
                 //animator.Play(BUTTON);
                 //audioSource.PlayOneShot(BUTTON SFX);
@@ -288,6 +291,12 @@ public class Monkey : MonoBehaviour
             audioSource.PlayOneShot(scaredSFX);
             StartCoroutine(WalkAway());
         }
+
+        if (other.gameObject.tag == "Cage")
+        {
+            canOpenCage = false;
+
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -302,6 +311,9 @@ public class Monkey : MonoBehaviour
             canPullLever = false;
         if (other.gameObject.tag == "Button")
             canPushButton = false;
+
+        if (other.gameObject.tag == "Cage")
+            canOpenCage = false;
     }
 
     IEnumerator JumpBufferTimer()
