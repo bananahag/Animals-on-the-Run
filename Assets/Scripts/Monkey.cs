@@ -15,7 +15,7 @@ public class Monkey : MonoBehaviour
 
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
-
+    public bool CurrentChar;
 
     AudioSource audioSource;
     Animator animator;
@@ -63,37 +63,41 @@ public class Monkey : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump") && grounded && !carrying || jumpBuffer && grounded && !carrying)
+        if (CurrentChar)
         {
-            Jump();
-            jumpBuffer = false;
-        }
 
-        if (Input.GetButtonDown("Jump") && !grounded)
-        {
-            StartCoroutine(JumpBufferTimer());
-        }
 
-        if (Input.GetButtonDown("Interact"))
-        {
-            if (!carrying && canPickUpEel)
+            if (Input.GetButtonDown("Jump") && grounded && !carrying || jumpBuffer && grounded && !carrying)
             {
-                //animator.Play(PICK UP EEL);
-                //audioSource.PlayOneShot(EEL PICKUP SFX);
-                spriteRenderer.color = Color.cyan;
-                carrying = true;
+                Jump();
+                jumpBuffer = false;
             }
-            else if (carrying)
+
+            if (Input.GetButtonDown("Jump") && !grounded)
             {
-                //animator.Play(DROP EEL);
-                //audioSource.PlayOneShot(EEL DROP SFX);
-                //Spawn Eel
-                spriteRenderer.color = Color.white;
-                carrying = false;
+                StartCoroutine(JumpBufferTimer());
+            }
+
+            if (Input.GetButtonDown("Interact"))
+            {
+                if (!carrying && canPickUpEel)
+                {
+                    //animator.Play(PICK UP EEL);
+                    //audioSource.PlayOneShot(EEL PICKUP SFX);
+                    spriteRenderer.color = Color.cyan;
+                    carrying = true;
+                }
+                else if (carrying)
+                {
+                    //animator.Play(DROP EEL);
+                    //audioSource.PlayOneShot(EEL DROP SFX);
+                    //Spawn Eel
+                    spriteRenderer.color = Color.white;
+                    carrying = false;
+                }
             }
         }
     }
-
     void FixedUpdate()
     {
         x = Input.GetAxisRaw("Horizontal");
@@ -252,4 +256,6 @@ public class Monkey : MonoBehaviour
         if (other.gameObject.tag == "Eel")
             canPickUpEel = false;
     }
+
+    
 }
