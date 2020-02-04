@@ -17,6 +17,7 @@ public class Monkey : MonoBehaviour
 
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
+    public bool CurrentChar;
 
     public float timeStoppedWhenPickingUpEel = 1.0f;
     public float timeStoppedWhenActivating = 1.0f;
@@ -113,7 +114,6 @@ public class Monkey : MonoBehaviour
         if (canPullLever && !carrying || canPushButton && !carrying)
             PushingAndPulling();
     }
-
     void FixedUpdate()
     {
         x = Input.GetAxisRaw("Horizontal");
@@ -287,9 +287,13 @@ public class Monkey : MonoBehaviour
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Human") || other.gameObject.layer == LayerMask.NameToLayer("AboveWater"))
         {
-            scaryObject = other.gameObject;
-            audioSource.PlayOneShot(scaredSFX);
-            StartCoroutine(WalkAway());
+            if (other.gameObject.layer == LayerMask.NameToLayer("Human") && other.gameObject.GetComponent<Human>().charmed) { }
+            else
+            {
+                scaryObject = other.gameObject;
+                audioSource.PlayOneShot(scaredSFX);
+                StartCoroutine(WalkAway());
+            }
         }
 
         if (other.gameObject.tag == "Cage")
