@@ -10,13 +10,20 @@ public class ButtonOrLever : MonoBehaviour
     [HideInInspector]
     public bool activated;
 
+    AudioSource audioSource;
     Animator animator;
+
+    //DELETE THIS WHEN WE HAVE ANIMATIONS
+    Color startColor;
 
     // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();
-        animator.Play(incactiveAnimationName);
+        audioSource = GetComponent<AudioSource>();
+        //animator = GetComponent<Animator>();
+        //animator.Play(incactiveAnimationName);
+
+        startColor = GetComponent<SpriteRenderer>().color;
     }
 
     // Update is called once per frame
@@ -25,16 +32,25 @@ public class ButtonOrLever : MonoBehaviour
         
     }
 
-    public void Activate(bool turnOn)
+    public void Activate()
     {
         if (cannotBeTurnedOffAgain && activated) { }
         else
-            activated = turnOn;
+        {
+            if (activated)
+            {
+                activated = false;
+                GetComponent<SpriteRenderer>().color = startColor;//animator.Play(incactiveAnimationName);
+                //Play sound
 
-        if (turnOn)
-            print(this + " Has been activated");//animator.Play(activeAnimationName);
-        else if (!cannotBeTurnedOffAgain)
-            print(this + " Has been deactivated");//animator.Play(incactiveAnimationName);
+            }
+            else
+            {
+                activated = true;
+                GetComponent<SpriteRenderer>().color = Color.yellow;//animator.Play(activeAnimationName);
+                //Play sound
+            }
+        }
 
     }
 }
