@@ -31,6 +31,7 @@ public class Monkey : MonoBehaviour
     bool grounded;
     bool canPlayStepSoundsAgain;
 
+    bool canPickUpEel;
     bool carrying;
 
     bool canClimb;
@@ -73,17 +74,22 @@ public class Monkey : MonoBehaviour
             StartCoroutine(JumpBufferTimer());
         }
 
-        if (Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown("Interact"))
         {
-            if (carrying)
+            if (!carrying && canPickUpEel)
             {
-                spriteRenderer.color = Color.white;
-                carrying = false;
-            }
-            else
-            {
+                //animator.Play(PICK UP EEL);
+                //audioSource.PlayOneShot(EEL PICKUP SFX);
                 spriteRenderer.color = Color.cyan;
                 carrying = true;
+            }
+            else if (carrying)
+            {
+                //animator.Play(DROP EEL);
+                //audioSource.PlayOneShot(EEL DROP SFX);
+                //Spawn Eel
+                spriteRenderer.color = Color.white;
+                carrying = false;
             }
         }
     }
@@ -94,9 +100,7 @@ public class Monkey : MonoBehaviour
         y = Input.GetAxisRaw("Vertical");
 
         if (climbing)
-        {
             movement = new Vector2(x * climbingHorizontallySpeed, y * climbingVerticallySpeed);
-        }
         else
             movement = new Vector2(x * walkingSpeed, rb2d.velocity.y);
 
@@ -121,71 +125,76 @@ public class Monkey : MonoBehaviour
         }
 
         if (grounded)
-        {
-            if (x != 0)
-            {
-                if (carrying)
-                {
-                    //animator.Play(WALKING WITH BUCKET);
-                }
-                else
-                {
-                    //animator.Play(WALKING);
-                }
-
-                if (canPlayStepSoundsAgain)
-                {
-                    StartCoroutine(StepSoundsLoop());
-                    canPlayStepSoundsAgain = false;
-                }
-            }
-            else
-            {
-                if (carrying)
-                {
-                    //animator.Play(IDLE WITH BUCKET);
-                }
-                else
-                {
-                    //animator.Play(IDLE);
-                }
-            }
-        }
+            GroundedAnimations();
 
         if (canClimb && !carrying)
-        {
-            if (y != 0.0f)
-            {
-                if (!grounded || grounded && y > 0.0f)
-                {
-                    rb2d.velocity = new Vector2(0.0f, rb2d.velocity.y);
-                    if (!climbing)
-                    {
-                        rb2d.gravityScale = 0.0f;
-                        rb2d.velocity = new Vector2(0.0f, 0.0f);
-                        transform.position = new Vector3(ladderXPosition, transform.position.y, transform.position.z);
-                        climbing = true;
-                    }
-                }
-                else
-                {
-                    rb2d.gravityScale = startGravityScale;
-                    climbing = false;
-                }
-            }
-
-            if (x != 0.0f && canPlayClimbingSoundAgain || y != 0.0f && canPlayClimbingSoundAgain)
-            {
-                StartCoroutine(ClimbingSoundsLoop());
-                canPlayClimbingSoundAgain = false;
-            }
-        }
+            Climbing();
         else
         {
             rb2d.gravityScale = startGravityScale;
             climbing = false;
         }
+    }
 
+    void GroundedAnimations()
+    {
+        if (x != 0)
+        {
+            if (carrying)
+            {
+                //animator.Play(WALKING WITH BUCKET);
+            }
+            else
+            {
+                //animator.Play(WALKING);
+            }
+
+            if (canPlayStepSoundsAgain)
+            {
+                StartCoroutine(StepSoundsLoop());
+                canPlayStepSoundsAgain = false;
+            }
+        }
+        else
+        {
+            if (carrying)
+            {
+                //animator.Play(IDLE WITH BUCKET);
+            }
+            else
+            {
+                //animator.Play(IDLE);
+            }
+        }
+    }
+
+    void Climbing()
+    {
+        if (y != 0.0f)
+        {
+            if (!grounded || grounded && y > 0.0f)
+            {
+                rb2d.velocity = new Vector2(0.0f, rb2d.velocity.y);
+                if (!climbing)
+                {
+                    rb2d.gravityScale = 0.0f;
+                    rb2d.velocity = new Vector2(0.0f, 0.0f);
+                    transform.position = new Vector3(ladderXPosition, transform.position.y, transform.position.z);
+                    climbing = true;
+                }
+            }
+            else
+            {
+                rb2d.gravityScale = startGravityScale;
+                climbing = false;
+            }
+        }
+
+        if (x != 0.0f && canPlayClimbingSoundAgain || y != 0.0f && canPlayClimbingSoundAgain)
+        {
+            StartCoroutine(ClimbingSoundsLoop());
+            canPlayClimbingSoundAgain = false;
+        }
     }
 
     void Jump()
@@ -205,7 +214,7 @@ public class Monkey : MonoBehaviour
 
     IEnumerator ClimbingSoundsLoop()
     {
-        //audioSource.PlayOneShot CLIMBING SOUND
+        //audioSource.PlayOneShot(CLIMBING SOUND);
         yield return new WaitForSecondsRealtime(timeBetweenClimbingSounds);
         if (climbing && y != 0.0f || climbing && x != 0.0f)
             StartCoroutine(ClimbingSoundsLoop());
@@ -215,7 +224,7 @@ public class Monkey : MonoBehaviour
 
     IEnumerator StepSoundsLoop()
     {
-        //audioSource.PlayOneShot STEP SOUND
+        //audioSource.PlayOneShot(STEP SOUND);
         yield return new WaitForSecondsRealtime(timeBetweenStepSounds);
         if (grounded && x != 0)
             StartCoroutine(ClimbingSoundsLoop());
@@ -230,11 +239,17 @@ public class Monkey : MonoBehaviour
             ladderXPosition = other.gameObject.transform.position.x;
             canClimb = true;
         }
+
+        if (other.gameObject.tag == "Eel")
+            canPickUpEel = true;
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag == "Ladder")
             canClimb = false;
+
+        if (other.gameObject.tag == "Eel")
+            canPickUpEel = false;
     }
 }
