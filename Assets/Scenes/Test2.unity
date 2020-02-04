@@ -474,6 +474,9 @@ MonoBehaviour:
   walkingSpeed: 5
   jumpVelocity: 10
   jumpBufferTime: 0.25
+  closeToHuman: 0
+  charmingHuman: 0
+  charmCooldown: 1
 --- !u!50 &1903381961
 Rigidbody2D:
   serializedVersion: 4
@@ -719,7 +722,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6, y: 1}
+  m_Size: {x: 8, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &2057113938
 MonoBehaviour:
@@ -736,7 +739,6 @@ MonoBehaviour:
   speed: 1
   moving: 1
   charmed: 0
-  charmDuration: 2.4
 --- !u!50 &2057113939
 Rigidbody2D:
   serializedVersion: 4

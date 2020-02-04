@@ -10,6 +10,7 @@ public class Dog : MonoBehaviour
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
 
+    public bool closeToHuman = false;
     public bool charmingHuman = false;
     private GameObject human;
 
@@ -47,13 +48,23 @@ public class Dog : MonoBehaviour
             StartCoroutine(JumpBufferTimer());
         }
 
-        if(charmingHuman && Input.GetKey(KeyCode.E))
+        if(closeToHuman && Input.GetKeyDown(KeyCode.E))
         {
-            charmingHuman = false;
-            human.GetComponent<Human>().charmed = false;
-            
-        }
 
+            if (human != null)
+            {
+                if (!charmingHuman)
+                {
+                    charmingHuman = true;
+                    human.GetComponent<Human>().charmed = true;
+
+                } else if (charmingHuman)
+                {
+                    charmingHuman = false;
+                    human.GetComponent<Human>().charmed = false;
+                }
+            }
+        }
     }
 
     void FixedUpdate()
@@ -104,11 +115,15 @@ public class Dog : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Human") && Input.GetKey(KeyCode.E)) // Ingen input direkt i triggern!
+        if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
         {
-            charmingHuman = true;
             human = other.gameObject;
-            human.GetComponent<Human>().charmed = true;
+            closeToHuman = true;
         }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        closeToHuman = false;
     }
 }
