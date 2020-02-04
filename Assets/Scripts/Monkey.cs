@@ -24,7 +24,6 @@ public class Monkey : MonoBehaviour
     [HideInInspector]
     public bool cannotMove;
 
-
     AudioSource audioSource;
     Animator animator;
     SpriteRenderer spriteRenderer;
@@ -157,7 +156,7 @@ public class Monkey : MonoBehaviour
         if (grounded)
             GroundedAnimations();
 
-        if (canClimb && !carrying)
+        if (canClimb && !carrying && !cannotMove)
             Climbing();
         else
         {
