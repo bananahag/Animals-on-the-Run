@@ -294,7 +294,6 @@ public class Monkey : MonoBehaviour
                 audioSource.PlayOneShot(scaredSFX);
                 StartCoroutine(WalkAway());
             }
-            
         }
 
         if (other.gameObject.tag == "Cage")
