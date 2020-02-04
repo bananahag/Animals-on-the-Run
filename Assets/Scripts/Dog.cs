@@ -15,7 +15,7 @@ public class Dog : MonoBehaviour
 
     private bool closeToHuman = false;
     private bool charmingHuman = false;
-    private bool lockMovement = false;
+    [HideInInspector] public bool lockMovement = false;
     private GameObject human;
 
     AudioSource audioSource;
@@ -70,7 +70,7 @@ public class Dog : MonoBehaviour
         {
             if (human != null)
             {
-                if (!charmingHuman)
+                if (!charmingHuman && !wet)
                 {
                     charmingHuman = true;
                     human.GetComponent<Human>().charmed = true;
