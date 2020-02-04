@@ -295,6 +295,7 @@ MonoBehaviour:
   groundCheckRight: {fileID: 23232708}
   jumpSFX: {fileID: 8300000, guid: a3619e473dee5f74797d888e8dd30d9c, type: 3}
   walkingSpeed: 5
+  walkingSpeedWhenCarryingBucket: 3.5
   timeBetweenStepSounds: 0.5
   climbingHorizontallySpeed: 2.5
   climbingVerticallySpeed: 4
@@ -302,7 +303,7 @@ MonoBehaviour:
   jumpVelocity: 10
   jumpBufferTime: 0.25
   timeStoppedWhenPickingUpEel: 1
-  timeStoppedWhenActivating: 1
+  timeStoppedWhenActivating: 0.5
 --- !u!50 &360880925
 Rigidbody2D:
   serializedVersion: 4

@@ -5,10 +5,12 @@ using UnityEngine;
 public class Monkey : MonoBehaviour
 {
     public Transform groundCheckLeft = null, groundCheckRight = null;
-    public AudioClip jumpSFX;//+ more sound effects
+    public AudioClip jumpSFX, scaredSFX;//+ more sound effects
 
     public float walkingSpeed = 5.0f;
+    public float walkingSpeedWhenCarryingBucket = 3.5f;
     public float timeBetweenStepSounds = 0.5f;
+    public float walkAwayScaredTime = 0.5f;
 
     public float climbingHorizontallySpeed = 2.5f, climbingVerticallySpeed = 4.0f;
     public float timeBetweenClimbingSounds = 0.5f;
@@ -20,6 +22,9 @@ public class Monkey : MonoBehaviour
     public float timeStoppedWhenPickingUpEel = 1.0f;
     public float timeStoppedWhenActivating = 1.0f;
 
+    [HideInInspector]
+    public bool cannotMove;
+
 
     AudioSource audioSource;
     Animator animator;
@@ -28,8 +33,8 @@ public class Monkey : MonoBehaviour
 
     Vector2 movement;
     float x, y;
-    bool cannotMove;
-
+    bool facingRight;
+    
     bool jumping;
     bool jumpBuffer;
 
@@ -45,6 +50,7 @@ public class Monkey : MonoBehaviour
 
     bool canPullLever, canPushButton;
     GameObject lever, button;
+    GameObject scaryObject; //water or a human
 
     float ladderXPosition;
     float startGravityScale;
@@ -111,12 +117,22 @@ public class Monkey : MonoBehaviour
         x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
 
+        if (!cannotMove)
+        {
+            if (x > 0)
+                facingRight = true;
+            else if (x < 0)
+                facingRight = false;
+        }
+
         if (climbing && !cannotMove)
             movement = new Vector2(x * climbingHorizontallySpeed, y * climbingVerticallySpeed);
+        else if (!cannotMove && carrying)
+            movement = new Vector2(x * walkingSpeedWhenCarryingBucket, rb2d.velocity.y);
         else if (!cannotMove)
             movement = new Vector2(x * walkingSpeed, rb2d.velocity.y);
         else
-            movement = new Vector2(0.0f, rb2d.velocity.y);
+            movement = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
 
         rb2d.velocity = movement;
 
@@ -266,6 +282,13 @@ public class Monkey : MonoBehaviour
             canPushButton = true;
             button = other.gameObject;
         }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Human") || other.gameObject.layer == LayerMask.NameToLayer("AboveWater"))
+        {
+            scaryObject = other.gameObject;
+            audioSource.PlayOneShot(scaredSFX);
+            StartCoroutine(WalkAway());
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -312,6 +335,7 @@ public class Monkey : MonoBehaviour
     IEnumerator StopToPullOrPush()
     {
         cannotMove = true;
+        rb2d.velocity = new Vector2(0.0f, 0.0f);
         yield return new WaitForSeconds(timeStoppedWhenActivating);
         cannotMove = false;
     }
@@ -319,9 +343,29 @@ public class Monkey : MonoBehaviour
     IEnumerator StopToPickUpEel()
     {
         cannotMove = true;
+        rb2d.velocity = new Vector2(0.0f, 0.0f);
         yield return new WaitForSeconds(timeStoppedWhenPickingUpEel);
         cannotMove = false;
     }
 
-    
+    IEnumerator WalkAway()
+    {
+        cannotMove = true;
+        if (scaryObject.transform.position.x >= transform.position.x)
+        {
+            if (carrying)
+                rb2d.velocity = new Vector2(-1 * walkingSpeedWhenCarryingBucket, rb2d.velocity.y);
+            else
+                rb2d.velocity = new Vector2(-1 * walkingSpeed, rb2d.velocity.y);
+        }
+        else
+        {
+            if (carrying)
+                rb2d.velocity = new Vector2(1 * walkingSpeedWhenCarryingBucket, rb2d.velocity.y);
+            else
+                rb2d.velocity = new Vector2(1 * walkingSpeed, rb2d.velocity.y);
+        }
+        yield return new WaitForSeconds(walkAwayScaredTime);
+        cannotMove = false;
+    }
 }
