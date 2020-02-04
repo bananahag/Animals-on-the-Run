@@ -17,6 +17,7 @@ public class Monkey : MonoBehaviour
 
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
+    public bool CurrentChar;
 
     public float timeStoppedWhenPickingUpEel = 1.0f;
     public float timeStoppedWhenActivating = 1.0f;
@@ -113,7 +114,6 @@ public class Monkey : MonoBehaviour
         if (canPullLever && !carrying || canPushButton && !carrying)
             PushingAndPulling();
     }
-
     void FixedUpdate()
     {
         x = Input.GetAxisRaw("Horizontal");
