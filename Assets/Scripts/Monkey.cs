@@ -14,6 +14,7 @@ public class Monkey : MonoBehaviour
 
     public float climbingHorizontallySpeed = 2.5f, climbingVerticallySpeed = 4.0f;
     public float timeBetweenClimbingSounds = 0.5f;
+    public float climbingOffsetFromCenterDistance = 0.25f;
 
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
@@ -51,7 +52,10 @@ public class Monkey : MonoBehaviour
 
     bool canOpenCage;
     bool canPullLever, canPushButton;
+    [HideInInspector]
+    public bool monkeyLevelComplete = false;
     GameObject lever, button;
+    GameObject cage;
     GameObject scaryObject; //water or a human
 
     float ladderXPosition;
@@ -111,7 +115,7 @@ public class Monkey : MonoBehaviour
             }
         }
 
-        if (canPullLever && !carrying || canPushButton && !carrying)
+        if (canOpenCage && !carrying && !notActive || canPullLever && !carrying && !notActive || canPushButton && !carrying && !notActive)
             PushingAndPulling();
     }
     void FixedUpdate()
@@ -121,14 +125,18 @@ public class Monkey : MonoBehaviour
 
         if (!cannotMove && !notActive)
         {
-            if (x > 0)
+            if (x > 0 && !climbing)
                 facingRight = true;
-            else if (x < 0)
+            else if (x < 0 && !climbing)
                 facingRight = false;
+            else if (x > 0)
+                facingRight = false;
+            else if (x < 0)
+                facingRight = true;
         }
 
         if (climbing && !cannotMove && !notActive)
-            movement = new Vector2(x * climbingHorizontallySpeed, y * climbingVerticallySpeed);
+            movement = new Vector2(x * climbingHorizontallySpeed * 0.0f, y * climbingVerticallySpeed);
         else if (!cannotMove && !notActive && carrying)
             movement = new Vector2(x * walkingSpeedWhenCarryingBucket, rb2d.velocity.y);
         else if (!cannotMove && !notActive)
@@ -202,6 +210,13 @@ public class Monkey : MonoBehaviour
 
     void Climbing()
     {
+        if (climbing && x != 0.0f)
+        {
+            if (facingRight)
+                transform.position = new Vector3(ladderXPosition - climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
+            else
+                transform.position = new Vector3(ladderXPosition + climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
+        }
         if (y != 0.0f)
         {
             if (!grounded || grounded && y > 0.0f)
@@ -211,7 +226,10 @@ public class Monkey : MonoBehaviour
                 {
                     rb2d.gravityScale = 0.0f;
                     rb2d.velocity = new Vector2(0.0f, 0.0f);
-                    transform.position = new Vector3(ladderXPosition, transform.position.y, transform.position.z);
+                    if (facingRight)
+                        transform.position = new Vector3(ladderXPosition - climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
+                    else
+                        transform.position = new Vector3(ladderXPosition + climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
                     climbing = true;
                 }
             }
@@ -231,7 +249,18 @@ public class Monkey : MonoBehaviour
 
     void PushingAndPulling()
     {
-        if (canPullLever)
+        if (canOpenCage)
+        {
+            if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
+            {
+                //animator.Play(CAGE);
+                //audioSource.PlayOneShot(CAGE SFX);
+                //transform.position = new Vector3(lever.gameObject.transform.position.x, transform.position.y, transform.position.z);
+                cage.GetComponent<Cage>().Open();
+                StartCoroutine(StopToPullOrPush());
+            }
+        }
+        else if (canPullLever)
         {
             if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
             {
@@ -290,6 +319,7 @@ public class Monkey : MonoBehaviour
             if (other.gameObject.layer == LayerMask.NameToLayer("Human") && other.gameObject.GetComponent<Human>().charmed) { }
             else
             {
+                Debug.Log("am here " + other.gameObject.name);
                 scaryObject = other.gameObject;
                 audioSource.PlayOneShot(scaredSFX);
                 StartCoroutine(WalkAway());
@@ -298,8 +328,14 @@ public class Monkey : MonoBehaviour
 
         if (other.gameObject.tag == "Cage")
         {
-            canOpenCage = false;
+            canOpenCage = true;
+            cage = other.gameObject;
+        }
 
+        if (other.gameObject.tag == "Finish")
+        {
+            monkeyLevelComplete = true;
+           
         }
     }
 
@@ -318,6 +354,12 @@ public class Monkey : MonoBehaviour
 
         if (other.gameObject.tag == "Cage")
             canOpenCage = false;
+
+        if (other.gameObject.tag == "Finish")
+        {
+            monkeyLevelComplete = false;
+            
+        }
     }
 
     IEnumerator JumpBufferTimer()
@@ -380,7 +422,9 @@ public class Monkey : MonoBehaviour
             else
                 rb2d.velocity = new Vector2(1 * walkingSpeed, rb2d.velocity.y);
         }
+        Debug.Log("am here " + rb2d.velocity);
         yield return new WaitForSeconds(walkAwayScaredTime);
         cannotMove = false;
+        rb2d.velocity = new Vector2(0.0f, rb2d.velocity.y);
     }
 }
