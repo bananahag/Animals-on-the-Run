@@ -52,6 +52,7 @@ public class Monkey : MonoBehaviour
     bool canOpenCage;
     bool canPullLever, canPushButton;
     GameObject lever, button;
+    GameObject cage;
     GameObject scaryObject; //water or a human
 
     float ladderXPosition;
@@ -111,7 +112,7 @@ public class Monkey : MonoBehaviour
             }
         }
 
-        if (canPullLever && !carrying || canPushButton && !carrying)
+        if (canOpenCage && !carrying && !notActive || canPullLever && !carrying && !notActive || canPushButton && !carrying && !notActive)
             PushingAndPulling();
     }
     void FixedUpdate()
@@ -231,7 +232,18 @@ public class Monkey : MonoBehaviour
 
     void PushingAndPulling()
     {
-        if (canPullLever)
+        if (canOpenCage)
+        {
+            if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
+            {
+                //animator.Play(CAGE);
+                //audioSource.PlayOneShot(CAGE SFX);
+                //transform.position = new Vector3(lever.gameObject.transform.position.x, transform.position.y, transform.position.z);
+                cage.GetComponent<Cage>().Open();
+                StartCoroutine(StopToPullOrPush());
+            }
+        }
+        else if (canPullLever)
         {
             if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
             {
@@ -298,8 +310,8 @@ public class Monkey : MonoBehaviour
 
         if (other.gameObject.tag == "Cage")
         {
-            canOpenCage = false;
-
+            canOpenCage = true;
+            cage = other.gameObject;
         }
     }
 
