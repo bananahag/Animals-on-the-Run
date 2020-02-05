@@ -302,6 +302,7 @@ public class Monkey : MonoBehaviour
             if (other.gameObject.layer == LayerMask.NameToLayer("Human") && other.gameObject.GetComponent<Human>().charmed) { }
             else
             {
+                Debug.Log("am here " + other.gameObject.name);
                 scaryObject = other.gameObject;
                 audioSource.PlayOneShot(scaredSFX);
                 StartCoroutine(WalkAway());
@@ -392,6 +393,7 @@ public class Monkey : MonoBehaviour
             else
                 rb2d.velocity = new Vector2(1 * walkingSpeed, rb2d.velocity.y);
         }
+        Debug.Log("am here " + rb2d.velocity);
         yield return new WaitForSeconds(walkAwayScaredTime);
         cannotMove = false;
     }
