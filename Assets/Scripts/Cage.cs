@@ -6,11 +6,13 @@ public class Cage : MonoBehaviour
 {
     AudioSource audioSource;
 
+    public GameObject animal;
     public AudioClip openSFX;
     public float shakeSpeed = 50.0f;
     public float shakeDuration = 0.5f;
 
     bool shaking;
+    public bool opened;
 
     // Start is called before the first frame update
     void Start()
@@ -31,8 +33,13 @@ public class Cage : MonoBehaviour
 
     public void Open()
     {
-        //audioSource.PlayOneShot(openSFX);
-        StartCoroutine(Shake());
+        if (!opened)
+        {
+            //audioSource.PlayOneShot(openSFX);
+            Instantiate(animal, transform.position, transform.rotation);
+            StartCoroutine(Shake());
+            opened = true;
+        }
     }
 
     IEnumerator Shake()
