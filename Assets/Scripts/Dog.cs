@@ -169,7 +169,7 @@ public class Dog : MonoBehaviour
         }
         if (other.gameObject.tag == "Finish")
         {
-            Debug.Log("dog done");
+            
             dogLevelComplete = true;
         }
     }
@@ -187,7 +187,7 @@ public class Dog : MonoBehaviour
         }
         if (other.gameObject.tag == "Finish")
         {
-            Debug.Log("dog not done");
+            
             dogLevelComplete = false;
         }
     }
