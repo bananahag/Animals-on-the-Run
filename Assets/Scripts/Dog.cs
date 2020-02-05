@@ -12,7 +12,7 @@ public class Dog : MonoBehaviour
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
     public float wetDuration = 10;
-
+    [HideInInspector] public bool dogLevelComplete = false;
     private bool closeToHuman = false;
     private bool charmingHuman = false;
     [HideInInspector] public bool lockMovement = false;
@@ -167,6 +167,11 @@ public class Dog : MonoBehaviour
             StartCoroutine(WetFurTimer());
             swimming = true;
         }
+        if (other.gameObject.tag == "Finish")
+        {
+            Debug.Log("dog done");
+            dogLevelComplete = true;
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -179,6 +184,11 @@ public class Dog : MonoBehaviour
         if(other.gameObject.layer == LayerMask.NameToLayer("Water"))
         {
             swimming = false;
+        }
+        if (other.gameObject.tag == "Finish")
+        {
+            Debug.Log("dog not done");
+            dogLevelComplete = false;
         }
     }
 }

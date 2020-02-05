@@ -9,6 +9,7 @@ public class SwapCharacter : MonoBehaviour
     private Dog mDog;
     public int SelectedChar;
     private Camera cam;
+    bool levelcompleted = false;
     public enum activeCharacter
     {
         Monkey,
@@ -54,6 +55,10 @@ public class SwapCharacter : MonoBehaviour
             mDog.lockMovement = true;
             mMonkey.notActive = false;
             cam.transform.position = new Vector3(characters[0].transform.position.x, characters[0].transform.position.y, -10);
+        }
+        if (true)
+        {
+            levelcompleted = true;
         }
     }
 }
