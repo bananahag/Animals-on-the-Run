@@ -24,9 +24,6 @@ public class Dog : MonoBehaviour
 
     Vector2 movement;
 
-    [HideInInspector] public bool lockMovement = false;
-    bool closeToHuman = false;
-    bool charmingHuman = false;
     bool wet = false;
     bool swimming = false;
     bool jumping;
