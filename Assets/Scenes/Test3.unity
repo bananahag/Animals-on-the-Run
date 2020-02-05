@@ -147,6 +147,7 @@ MonoBehaviour:
   wetDuration: 10
   lockMovement: 0
   wet: 0
+  swimming: 0
 --- !u!61 &58875005
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -399,6 +400,7 @@ MonoBehaviour:
   timeStoppedWhenPickingUpEel: 1
   timeStoppedWhenActivating: 1
   cannotMove: 0
+  notActive: 0
 --- !u!4 &777412732 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 229551265348122322, guid: 94360c66d9bcff04ca078183b9b6a8cd,
@@ -829,7 +831,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1280833850
 BoxCollider2D:
   m_ObjectHideFlags: 0
