@@ -15,15 +15,15 @@ public class Dog : MonoBehaviour
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
     public float wetDuration = 10;
-    [HideInInspector] public bool dogLevelComplete = false;
-    private bool closeToHuman = false;
-    private bool charmingHuman = false;
-    [HideInInspector] public bool lockMovement = false;
     private GameObject human;
     private GameObject affectedObject;
 
     Vector2 movement;
 
+    [HideInInspector] public bool dogLevelComplete = false;
+    [HideInInspector] public bool lockMovement = false;
+    private bool closeToHuman = false;
+    private bool charmingHuman = false;
     bool wet = false;
     bool swimming = false;
     bool jumping;
@@ -57,6 +57,10 @@ public class Dog : MonoBehaviour
         HandleCharming();
         HandleJumping();
 
+        if (lockMovement)
+        {
+            rb2d.velocity = new Vector2(0, 0);
+        }
 
     }
 
