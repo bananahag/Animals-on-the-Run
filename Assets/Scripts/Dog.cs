@@ -54,39 +54,10 @@ public class Dog : MonoBehaviour
     void Update()
     {
         HandleMovableObjects();
+        HandleCharming();
+        HandleJumping();
 
-        if (!lockMovement)
-        {
-            if (Input.GetButtonDown("Jump") && grounded || jumpBuffer && grounded && !notActive)
-            {
-                Jump();
-                jumpBuffer = false;
-            }
 
-            if (Input.GetButtonDown("Jump") && !grounded && !notActive)
-            {
-                StartCoroutine(JumpBufferTimer());
-            }
-        }
-
-        if (closeToHuman && Input.GetButtonDown("Interact") && grounded && !notActive)
-        {
-            if (human != null)
-            {
-                if (!charmingHuman && !wet)
-                {
-                    charmingHuman = true;
-                    human.GetComponent<Human>().charmed = true;
-                    lockMovement = true;
-
-                } else if (charmingHuman)
-                {
-                    charmingHuman = false;
-                    human.GetComponent<Human>().charmed = false;
-                    lockMovement = false;
-                }
-            }
-        }
     }
 
     void FixedUpdate()
@@ -142,6 +113,23 @@ public class Dog : MonoBehaviour
             grounded = false;
     }
 
+    void HandleJumping()
+    {
+        if (!lockMovement)
+        {
+            if (Input.GetButtonDown("Jump") && grounded || jumpBuffer && grounded && !notActive)
+            {
+                Jump();
+                jumpBuffer = false;
+            }
+
+            if (Input.GetButtonDown("Jump") && !grounded && !notActive)
+            {
+                StartCoroutine(JumpBufferTimer());
+            }
+        }
+    }
+
     void CheckJumpForce()
     {
         if (jumping)
@@ -154,7 +142,7 @@ public class Dog : MonoBehaviour
         }
     }
 
-    //Hunden ska även ha objektet bakom sig då den drar och framför sig då den knuffar.
+    //Hunden ska även ha objektet bakom sig då den drar och framför sig då den knuffar. Eller bara dra som genom att backa?
     void HandleMovableObjects()
     {
         if (affectedObject != null)
@@ -170,6 +158,29 @@ public class Dog : MonoBehaviour
             else if(!Input.GetButton("Interact") && movingObject)
             {
                     affectedObject.transform.parent = null;
+            }
+        }
+    }
+
+    void HandleCharming()
+    {
+        if (closeToHuman && Input.GetButtonDown("Interact") && grounded && !notActive)
+        {
+            if (human != null)
+            {
+                if (!charmingHuman && !wet)
+                {
+                    charmingHuman = true;
+                    human.GetComponent<Human>().charmed = true;
+                    lockMovement = true;
+
+                }
+                else if (charmingHuman)
+                {
+                    charmingHuman = false;
+                    human.GetComponent<Human>().charmed = false;
+                    lockMovement = false;
+                }
             }
         }
     }
@@ -224,7 +235,6 @@ public class Dog : MonoBehaviour
         }
         if (other.gameObject.tag == "Finish")
         {
-            
             dogLevelComplete = false;
         }
     }
