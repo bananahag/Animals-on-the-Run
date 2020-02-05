@@ -52,6 +52,8 @@ public class Monkey : MonoBehaviour
 
     bool canOpenCage;
     bool canPullLever, canPushButton;
+    [HideInInspector]
+    public bool monkeyLevelComplete = false;
     GameObject lever, button;
     GameObject cage;
     GameObject scaryObject; //water or a human
@@ -329,6 +331,12 @@ public class Monkey : MonoBehaviour
             canOpenCage = true;
             cage = other.gameObject;
         }
+
+        if (other.gameObject.tag == "Finish")
+        {
+            monkeyLevelComplete = true;
+           
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -346,6 +354,12 @@ public class Monkey : MonoBehaviour
 
         if (other.gameObject.tag == "Cage")
             canOpenCage = false;
+
+        if (other.gameObject.tag == "Finish")
+        {
+            monkeyLevelComplete = false;
+            
+        }
     }
 
     IEnumerator JumpBufferTimer()
