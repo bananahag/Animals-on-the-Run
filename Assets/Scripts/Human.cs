@@ -10,15 +10,15 @@ public class Human : MonoBehaviour
     private Rigidbody2D rb;
     public BoxCollider2D box;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        
+        box = GameObject.Find("HumanCollider").GetComponent<BoxCollider2D>();
         charmed = false;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if (charmed)
