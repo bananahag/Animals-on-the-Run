@@ -307,6 +307,7 @@ public class Monkey : MonoBehaviour
                 //transform.position = new Vector3(lever.gameObject.transform.position.x, transform.position.y, transform.position.z);
                 cage.GetComponent<Cage>().Open();
                 StartCoroutine(StopToPullOrPush());
+                canOpenCage = false;
             }
         }
         else if (canPullLever)
@@ -388,7 +389,7 @@ public class Monkey : MonoBehaviour
             }
         }
 
-        if (other.gameObject.tag == "Cage")
+        if (other.gameObject.tag == "Cage" && !other.gameObject.GetComponent<Cage>().opened)
         {
             canOpenCage = true;
             cage = other.gameObject;
