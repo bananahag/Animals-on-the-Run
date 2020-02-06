@@ -9,7 +9,7 @@ public class SwapCharacter : MonoBehaviour
     private Dog mDog;
     public int SelectedChar;
     private Camera cam;
-    bool levelcompleted = false;
+    [HideInInspector]public bool levelcompleted = false;
     public enum activeCharacter
     {
         Monkey,
@@ -38,6 +38,7 @@ public class SwapCharacter : MonoBehaviour
             {
                 SelectedChar = 0;
             }
+
             if (SelectedChar == (int)activeCharacter.Dog)
             {
             characters[0].GetComponent<Rigidbody2D>().velocity = new Vector3(0, characters[0].GetComponent<Rigidbody2D>().velocity.y, 0);
@@ -47,15 +48,15 @@ public class SwapCharacter : MonoBehaviour
                 characters[1].GetComponent<Rigidbody2D>().velocity = new Vector3(0, characters[1].GetComponent<Rigidbody2D>().velocity.y, 0);
             }
         }
+
         if (SelectedChar == (int)activeCharacter.Dog)
         {
            
             mMonkey.notActive = true;
             mDog.lockMovement = false;
             cam.transform.position = new Vector3(characters[1].transform.position.x, characters[1].transform.position.y, -10);
-
-
         }
+
         else if (SelectedChar == (int)activeCharacter.Monkey)
         {
             
@@ -63,9 +64,11 @@ public class SwapCharacter : MonoBehaviour
             mMonkey.notActive = false;
             cam.transform.position = new Vector3(characters[0].transform.position.x, characters[0].transform.position.y, -10);
         }
-        if (true)
+
+        if (mMonkey.monkeyLevelComplete && mDog.dogLevelComplete)
         {
             levelcompleted = true;
         }
+        
     }
 }

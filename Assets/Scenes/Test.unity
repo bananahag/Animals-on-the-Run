@@ -822,9 +822,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd0c03eaae652243bcef6504977e983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animal: {fileID: 3980038072491159994, guid: a8b57490d463e61448d924de05eaa1ea, type: 3}
   openSFX: {fileID: 0}
   shakeSpeed: 50
-  shakeDuration: 0.5
+  shakeDuration: 0.25
+  opened: 0
 --- !u!212 &1663464242
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1060,6 +1062,32 @@ PrefabInstance:
     - target: {fileID: 4231574268277906913, guid: 3b81a100d0a4ec44e9414006e8e503ed,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231574268277906912, guid: 3b81a100d0a4ec44e9414006e8e503ed,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.6933962
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231574268277906912, guid: 3b81a100d0a4ec44e9414006e8e503ed,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231574268277906912, guid: 3b81a100d0a4ec44e9414006e8e503ed,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.71094954
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231574268277906912, guid: 3b81a100d0a4ec44e9414006e8e503ed,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 480c63f7ccd2f9b4da9ea7db1756459a,
+        type: 3}
+    - target: {fileID: 4231574268277906911, guid: 3b81a100d0a4ec44e9414006e8e503ed,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
