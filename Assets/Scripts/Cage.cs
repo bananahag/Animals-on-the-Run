@@ -9,7 +9,7 @@ public class Cage : MonoBehaviour
     public GameObject animal;
     public AudioClip openSFX;
     public float shakeSpeed = 50.0f;
-    public float shakeDuration = 0.5f;
+    public float shakeDuration = 0.25f;
 
     bool shaking;
     public bool opened;
