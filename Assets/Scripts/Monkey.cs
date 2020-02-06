@@ -12,7 +12,7 @@ public class Monkey : MonoBehaviour
     public float timeBetweenStepSounds = 0.5f;
     public float walkAwayScaredTime = 0.5f;
 
-    public float climbingHorizontallySpeed = 2.5f, climbingVerticallySpeed = 4.0f;
+    public float climbingSpeed = 4.0f;
     public float timeBetweenClimbingSounds = 0.5f;
     public float climbingOffsetFromCenterDistance = 0.25f;
     public float stopClimbingTime = 0.5f;
@@ -38,7 +38,7 @@ public class Monkey : MonoBehaviour
     Vector2 movement;
     float x, y;
     bool facingRight;
-    
+
     bool jumping;
     bool jumpBuffer;
 
@@ -48,9 +48,9 @@ public class Monkey : MonoBehaviour
     bool canPickUpEel;
     bool carrying;
 
-    bool canClimb;
+    bool canClimb, canClimbAfterJumping;
     bool climbing;
-    bool canPlayClimbingSoundAgain;
+    bool canPlayClimbingSoundAgain, canChangeClimbingDirection;
 
     bool canOpenCage;
     bool canPullLever, canPushButton;
@@ -90,7 +90,7 @@ public class Monkey : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Jump") && grounded && !carrying && !cannotMove && !notActive || jumpBuffer && grounded && !carrying && !cannotMove && !notActive)
+        if (Input.GetButtonDown("Jump") && grounded && !carrying && !cannotMove && !notActive || jumpBuffer && grounded && !carrying && !cannotMove && !notActive
             || Input.GetButtonDown("Jump") && climbing && !carrying && !cannotMove && !notActive)
         {
             Jump();
@@ -118,7 +118,7 @@ public class Monkey : MonoBehaviour
                 //audioSource.PlayOneShot(EEL DROP SFX);
                 //Spawn Eel
                 StartCoroutine(StopToPickUpEel());
-                spriteRenderer.color = Color.white;
+                spriteRenderer.color = startingColor;
                 carrying = false;
             }
         }
@@ -133,14 +133,10 @@ public class Monkey : MonoBehaviour
 
         if (!cannotMove && !notActive)
         {
-            if (x > 0 && !climbing)
+            if (x > 0)
                 facingRight = true;
-            else if (x < 0 && !climbing)
-                facingRight = false;
-            else if (x > 0)
-                facingRight = false;
             else if (x < 0)
-                facingRight = true;
+                facingRight = false;
         }
 
         if (facingRight && !climbing)
@@ -149,7 +145,7 @@ public class Monkey : MonoBehaviour
             spriteRenderer.flipX = true;
 
         if (climbing && !cannotMove && !notActive)
-            movement = new Vector2(x * climbingHorizontallySpeed * 0.0f, y * climbingVerticallySpeed);
+            movement = new Vector2(0.0f, y * climbingSpeed);
         else if (!cannotMove && !notActive && carrying)
             movement = new Vector2(x * walkingSpeedWhenCarryingBucket, rb2d.velocity.y);
         else if (!cannotMove && !notActive)
@@ -180,7 +176,7 @@ public class Monkey : MonoBehaviour
         if (grounded)
             GroundedAnimations();
 
-        if (canClimb && !carrying && !cannotMove && !notActive)
+        if (canClimb && canClimbAfterJumping && !carrying && !cannotMove && !notActive)
             Climbing();
         else
         {
@@ -224,16 +220,15 @@ public class Monkey : MonoBehaviour
 
     void Climbing()
     {
-        if (climbing && x != 0.0f)
+        if (climbing)
         {
             if (x != 0.0f && canChangeClimbingDirection)
             {
-            if (facingRight)
-                transform.position = new Vector3(ladderXPosition - climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
-            else
-                transform.position = new Vector3(ladderXPosition + climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
+                if (facingRight)
+                {
+                    transform.position = new Vector3(ladderXPosition + climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
                     spriteRenderer.flipX = true;
-        }
+                }
                 else
                 {
                     transform.position = new Vector3(ladderXPosition - climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
@@ -243,7 +238,7 @@ public class Monkey : MonoBehaviour
                 if (y == 0)
                 {
 
-                StartCoroutine(StopClimbing());
+                    StartCoroutine(StopClimbing());
                 }
             }
             if (x == 0.0f)
@@ -258,7 +253,7 @@ public class Monkey : MonoBehaviour
                 {
                     rb2d.gravityScale = 0.0f;
                     rb2d.velocity = new Vector2(0.0f, 0.0f);
-                    if (facingRight)
+                    if (transform.position.x <= ladderXPosition)
                     {
                         transform.position = new Vector3(ladderXPosition - climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
                         facingRight = true;
@@ -381,7 +376,7 @@ public class Monkey : MonoBehaviour
         if (other.gameObject.tag == "Finish")
         {
             monkeyLevelComplete = true;
-           
+
         }
     }
 
@@ -404,7 +399,7 @@ public class Monkey : MonoBehaviour
         if (other.gameObject.tag == "Finish")
         {
             monkeyLevelComplete = false;
-            
+
         }
     }
 
@@ -500,3 +495,4 @@ public class Monkey : MonoBehaviour
         rb2d.velocity = new Vector2(0.0f, rb2d.velocity.y);
     }
 }
+
