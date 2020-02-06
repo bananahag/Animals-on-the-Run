@@ -11,8 +11,10 @@ public class Cage : MonoBehaviour
     public float shakeSpeed = 50.0f;
     public float shakeDuration = 0.25f;
 
-    bool shaking;
+    [HideInInspector]
     public bool opened;
+
+    bool shaking;
 
     // Start is called before the first frame update
     void Start()
