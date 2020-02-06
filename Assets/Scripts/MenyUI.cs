@@ -8,6 +8,7 @@ public class MenyUI : MonoBehaviour
     SwapCharacter player;
     public static int scene;
     bool paused = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +17,9 @@ public class MenyUI : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<SwapCharacter>();
 
         }
+        Scene current = SceneManager.GetActiveScene();
+        //SceneManager.GetActiveScene
+        
     }
 
     // Update is called once per frame
@@ -24,6 +28,7 @@ public class MenyUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             paused = !paused;
+           
         }
         if (paused)
         {
@@ -38,14 +43,21 @@ public class MenyUI : MonoBehaviour
 
         if (scene != 0)
         {
+            Debug.Log(scene + "inside call");
             if (player.levelcompleted)
             {
+                Debug.Log(scene + "inside call2");
                 paused = true;
                 NextLevel();
             }
         }
+        
     }
-
+    public void Resume()
+    {
+        paused = !paused;
+        Time.timeScale = 1;
+    }
     public void NextLevel()
     {
         if (scene == 3)
@@ -61,6 +73,6 @@ public class MenyUI : MonoBehaviour
 
     public void QuitGame()
     {
-        Application.Quit(1);
+        Application.Quit();
     }
 }

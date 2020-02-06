@@ -53,14 +53,14 @@ public class SwapCharacter : MonoBehaviour
         {
            
             mMonkey.notActive = true;
-            mDog.lockMovement = false;
+            mDog.notActive = false;
             cam.transform.position = new Vector3(characters[1].transform.position.x, characters[1].transform.position.y, -10);
         }
 
         else if (SelectedChar == (int)activeCharacter.Monkey)
         {
             
-            mDog.lockMovement = true;
+            mDog.notActive = true;
             mMonkey.notActive = false;
             cam.transform.position = new Vector3(characters[0].transform.position.x, characters[0].transform.position.y, -10);
         }
