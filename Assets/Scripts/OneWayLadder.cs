@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class OneWayLadder : MonoBehaviour
 {
+    public bool ladderIsFacingRight;
+
     // Start is called before the first frame update
     void Start()
     {

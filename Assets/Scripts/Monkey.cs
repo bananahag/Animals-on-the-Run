@@ -17,6 +17,7 @@ public class Monkey : MonoBehaviour
     public float climbingOffsetFromCenterDistance = 0.25f;
     public float stopClimbingTime = 0.5f;
     public float canClimbAgainAfterJumpingTime = 0.25f;
+    public float canChangeClimbingDirectionTime = 0.5f;
 
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
@@ -49,6 +50,7 @@ public class Monkey : MonoBehaviour
     bool carrying;
 
     bool canClimb, canClimbAfterJumping;
+    int oneWayLadder; //0 = no one way ladder, 1 = one way ladder facing right, 2 = one way ladder facing left
     bool climbing;
     bool canPlayClimbingSoundAgain, canChangeClimbingDirection;
 
@@ -131,7 +133,7 @@ public class Monkey : MonoBehaviour
         x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
 
-        if (!cannotMove && !notActive)
+        if (!cannotMove && !notActive && !climbing)
         {
             if (x > 0)
                 facingRight = true;
@@ -139,9 +141,9 @@ public class Monkey : MonoBehaviour
                 facingRight = false;
         }
 
-        if (facingRight && !climbing)
+        if (facingRight)
             spriteRenderer.flipX = false;
-        else if (!climbing)
+        else
             spriteRenderer.flipX = true;
 
         if (climbing && !cannotMove && !notActive)
@@ -222,16 +224,18 @@ public class Monkey : MonoBehaviour
     {
         if (climbing)
         {
-            if (x != 0.0f && canChangeClimbingDirection)
+            if (x != 0.0f && canChangeClimbingDirection && oneWayLadder == 0)
             {
-                if (facingRight)
+                if (x > 0.0f)
                 {
                     transform.position = new Vector3(ladderXPosition + climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
+                    facingRight = false;
                     spriteRenderer.flipX = true;
                 }
-                else
+                else if (x < 0.0f)
                 {
                     transform.position = new Vector3(ladderXPosition - climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
+                    facingRight = true;
                     spriteRenderer.flipX = false;
                 }
 
@@ -240,6 +244,14 @@ public class Monkey : MonoBehaviour
 
                     StartCoroutine(StopClimbing());
                 }
+            }
+
+            if (oneWayLadder != 0 && y == 0)
+            {
+                if (oneWayLadder == 1 && x > 0.0f)
+                    StartCoroutine(StopClimbing());
+                else if (oneWayLadder == 2 && x < 0.0f)
+                    StartCoroutine(StopClimbing());
             }
             if (x == 0.0f)
                 canChangeClimbingDirection = true;
@@ -253,18 +265,16 @@ public class Monkey : MonoBehaviour
                 {
                     rb2d.gravityScale = 0.0f;
                     rb2d.velocity = new Vector2(0.0f, 0.0f);
-                    if (transform.position.x <= ladderXPosition)
+                    if (transform.position.x <= ladderXPosition && oneWayLadder == 0 || oneWayLadder == 2)
                     {
                         transform.position = new Vector3(ladderXPosition - climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
                         facingRight = true;
-                        spriteRenderer.flipX = false;
 
                     }
                     else
                     {
                         transform.position = new Vector3(ladderXPosition + climbingOffsetFromCenterDistance, transform.position.y, transform.position.z);
                         facingRight = false;
-                        spriteRenderer.flipX = true;
                     }
                     climbing = true;
                 }
@@ -276,6 +286,8 @@ public class Monkey : MonoBehaviour
                 canChangeClimbingDirection = false;
             }
         }
+        else if (climbing && !canChangeClimbingDirection)
+            StartCoroutine(CanChangeClimingDirectionTimer());
 
         if (x != 0.0f && canPlayClimbingSoundAgain || y != 0.0f && canPlayClimbingSoundAgain)
         {
@@ -295,6 +307,7 @@ public class Monkey : MonoBehaviour
                 //transform.position = new Vector3(lever.gameObject.transform.position.x, transform.position.y, transform.position.z);
                 cage.GetComponent<Cage>().Open();
                 StartCoroutine(StopToPullOrPush());
+                canOpenCage = false;
             }
         }
         else if (canPullLever)
@@ -339,6 +352,15 @@ public class Monkey : MonoBehaviour
         {
             ladderXPosition = other.gameObject.transform.position.x;
             canClimb = true;
+            if (other.gameObject.GetComponent<OneWayLadder>() == null)
+                oneWayLadder = 0;
+            else
+            {
+                if (other.gameObject.GetComponent<OneWayLadder>().ladderIsFacingRight)
+                    oneWayLadder = 1;
+                else
+                    oneWayLadder = 2;
+            }
         }
 
         if (other.gameObject.tag == "Eel")
@@ -367,23 +389,25 @@ public class Monkey : MonoBehaviour
             }
         }
 
-        if (other.gameObject.tag == "Cage")
+        if (other.gameObject.tag == "Cage" && !other.gameObject.GetComponent<Cage>().opened)
         {
             canOpenCage = true;
             cage = other.gameObject;
         }
 
-        if (other.gameObject.tag == "Finish")
-        {
-            monkeyLevelComplete = true;
-
+        if (other.gameObject.tag == "Finish")
+        {
+            monkeyLevelComplete = true;
         }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag == "Ladder")
+        {
             canClimb = false;
+            oneWayLadder = 0;
+        }
 
         if (other.gameObject.tag == "Eel")
             canPickUpEel = false;
@@ -415,6 +439,13 @@ public class Monkey : MonoBehaviour
         canClimbAfterJumping = false;
         yield return new WaitForSeconds(canClimbAgainAfterJumpingTime);
         canClimbAfterJumping = true;
+    }
+
+    IEnumerator CanChangeClimingDirectionTimer()
+    {
+        yield return new WaitForSeconds(canChangeClimbingDirectionTime);
+        if (climbing)
+            canChangeClimbingDirection = true;
     }
 
     IEnumerator StopClimbing()

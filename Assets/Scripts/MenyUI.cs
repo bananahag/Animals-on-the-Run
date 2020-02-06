@@ -1,14 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class MenyUI : MonoBehaviour
 {
     public GameObject pauseMeny;
+    SwapCharacter player;
+    public static int scene;
     bool paused = false;
+
     // Start is called before the first frame update
     void Start()
     {
+        if (scene != 0)
+        {
+        player = GameObject.Find("Player").GetComponent<SwapCharacter>();
+
+        }
+        Scene current = SceneManager.GetActiveScene();
+        //SceneManager.GetActiveScene
         
     }
 
@@ -18,6 +28,7 @@ public class MenyUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             paused = !paused;
+           
         }
         if (paused)
         {
@@ -29,5 +40,39 @@ public class MenyUI : MonoBehaviour
             Time.timeScale = 1;
             pauseMeny.SetActive(false);
         }
+
+        if (scene != 0)
+        {
+            Debug.Log(scene + "inside call");
+            if (player.levelcompleted)
+            {
+                Debug.Log(scene + "inside call2");
+                paused = true;
+                NextLevel();
+            }
+        }
+        
+    }
+    public void Resume()
+    {
+        paused = !paused;
+        Time.timeScale = 1;
+    }
+    public void NextLevel()
+    {
+        if (scene == 3)
+        {
+            scene = 0;
+        }
+        Debug.Log(scene + "int");
+        scene++;
+            SceneManager.LoadScene(scene);
+       
+        
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

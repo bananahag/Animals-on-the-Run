@@ -31,7 +31,7 @@ public class Dog : MonoBehaviour
     bool jumping;
     bool jumpBuffer;
     bool grounded;
-    bool notActive = false;
+   [HideInInspector] public bool notActive = false;
     bool canMoveObject = false;
     bool movingObject = false;
 
@@ -120,7 +120,7 @@ public class Dog : MonoBehaviour
 
     void HandleJumping()
     {
-        if (!lockMovement)
+        if (!lockMovement && !notActive)
         {
             if (Input.GetButtonDown("Jump") && grounded || jumpBuffer && grounded && !notActive)
             {
