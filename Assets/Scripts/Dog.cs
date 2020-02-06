@@ -5,33 +5,33 @@ using UnityEngine;
 public class Dog : MonoBehaviour
 {
     public Transform groundCheckLeft = null, groundCheckRight = null;
-
     public AudioClip jumpSFX;
+    AudioSource audioSource;
+    Animator animator;
+    SpriteRenderer spriteRenderer;
+    Rigidbody2D rb2d;
 
     public float walkingSpeed = 5.0f;
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
     public float wetDuration = 10;
-    [HideInInspector] public bool dogLevelComplete = false;
-    private bool closeToHuman = false;
-    private bool charmingHuman = false;
-    [HideInInspector] public bool lockMovement = false;
     private GameObject human;
-
-    AudioSource audioSource;
-    Animator animator;
-    SpriteRenderer spriteRenderer;
-
-    Rigidbody2D rb2d;
+    private GameObject affectedObject;
 
     Vector2 movement;
 
-    public bool wet = false;
+    [HideInInspector] public bool dogLevelComplete = false;
+    [HideInInspector] public bool lockMovement = false;
+    private bool closeToHuman = false;
+    private bool charmingHuman = false;
+    bool wet = false;
+    bool swimming = false;
     bool jumping;
     bool jumpBuffer;
     bool grounded;
     bool notActive = false;
-    public bool swimming = false;
+    bool canMoveObject = false;
+    bool movingObject = false;
 
     float x;
 
@@ -41,7 +41,6 @@ public class Dog : MonoBehaviour
             Debug.LogWarning("At least one player ground check is not assigned!");
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -54,39 +53,15 @@ public class Dog : MonoBehaviour
 
     void Update()
     {
+        HandleMovableObjects();
+        HandleCharming();
+        HandleJumping();
 
-        if (!lockMovement)
+        if (lockMovement)
         {
-            if (Input.GetButtonDown("Jump") && grounded || jumpBuffer && grounded && !notActive)
-            {
-                Jump();
-                jumpBuffer = false;
-            }
-
-            if (Input.GetButtonDown("Jump") && !grounded && !notActive)
-            {
-                StartCoroutine(JumpBufferTimer());
-            }
+            rb2d.velocity = new Vector2(0, 0);
         }
 
-        if (closeToHuman && Input.GetButtonDown("Interact") && grounded && !notActive)
-        {
-            if (human != null)
-            {
-                if (!charmingHuman && !wet)
-                {
-                    charmingHuman = true;
-                    human.GetComponent<Human>().charmed = true;
-                    lockMovement = true;
-
-                } else if (charmingHuman)
-                {
-                    charmingHuman = false;
-                    human.GetComponent<Human>().charmed = false;
-                    lockMovement = false;
-                }
-            }
-        }
     }
 
     void FixedUpdate()
@@ -142,6 +117,23 @@ public class Dog : MonoBehaviour
             grounded = false;
     }
 
+    void HandleJumping()
+    {
+        if (!lockMovement)
+        {
+            if (Input.GetButtonDown("Jump") && grounded || jumpBuffer && grounded && !notActive)
+            {
+                Jump();
+                jumpBuffer = false;
+            }
+
+            if (Input.GetButtonDown("Jump") && !grounded && !notActive)
+            {
+                StartCoroutine(JumpBufferTimer());
+            }
+        }
+    }
+
     void CheckJumpForce()
     {
         if (jumping)
@@ -150,6 +142,49 @@ public class Dog : MonoBehaviour
             {
                 rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y / 2);
                 jumping = false;
+            }
+        }
+    }
+
+    //Hunden ska även ha objektet bakom sig då den drar och framför sig då den knuffar. Eller bara dra som genom att backa?
+    void HandleMovableObjects()
+    {
+        if (affectedObject != null)
+        {
+            if (Input.GetButton("Interact") && canMoveObject)
+            {
+                if(affectedObject != null)
+                {
+                    affectedObject.transform.parent = gameObject.transform;
+                    movingObject = true;
+                }
+            }
+            else if(!Input.GetButton("Interact") && movingObject)
+            {
+                    affectedObject.transform.parent = null;
+            }
+        }
+    }
+
+    void HandleCharming()
+    {
+        if (closeToHuman && Input.GetButtonDown("Interact") && grounded && !notActive)
+        {
+            if (human != null)
+            {
+                if (!charmingHuman && !wet)
+                {
+                    charmingHuman = true;
+                    human.GetComponent<Human>().charmed = true;
+                    lockMovement = true;
+
+                }
+                else if (charmingHuman)
+                {
+                    charmingHuman = false;
+                    human.GetComponent<Human>().charmed = false;
+                    lockMovement = false;
+                }
             }
         }
     }
@@ -174,6 +209,23 @@ public class Dog : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("MoveableObject"))
+        {
+            canMoveObject = true;
+            affectedObject = other.gameObject;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("MoveableObject"))
+        {
+            canMoveObject = false;
+        }
+    }
+
     void OnTriggerExit2D(Collider2D other)
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Human"))
@@ -187,7 +239,6 @@ public class Dog : MonoBehaviour
         }
         if (other.gameObject.tag == "Finish")
         {
-            
             dogLevelComplete = false;
         }
     }
