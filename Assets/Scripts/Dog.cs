@@ -241,7 +241,6 @@ public class Dog : MonoBehaviour
             affectedObject = other.gameObject;
 
             Vector3 hit = other.contacts[0].normal;
-            Debug.Log(hit);
             float angle = Vector3.Angle(hit, Vector3.up);
 
             if (Mathf.Approximately(angle, 90))
