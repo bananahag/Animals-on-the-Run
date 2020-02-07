@@ -134,6 +134,11 @@ public class Dog : MonoBehaviour
             {
                 StartCoroutine(JumpBufferTimer());
             }
+
+            if (Input.GetButtonDown("Jump") && swimming && !notActive)
+            {
+                Jump();
+            }
         }
     }
 
@@ -144,6 +149,11 @@ public class Dog : MonoBehaviour
             if (!Input.GetButton("Jump"))
             {
                 rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y / 2);
+                jumping = false;
+            }
+            if (swimming)
+            {
+                rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y / 2.2f);
                 jumping = false;
             }
         }
@@ -169,8 +179,6 @@ public class Dog : MonoBehaviour
             else if(!Input.GetButton("Interact") && movingObject)
             {
                 affectedObject.GetComponent<Rigidbody2D>().isKinematic = false;
-                //canMoveObject = false;
-
                 rb2d.GetComponent<Rigidbody2D>().isKinematic = false;
                 affectedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, affectedObject.transform.position.y);
                 lockJump = false;
