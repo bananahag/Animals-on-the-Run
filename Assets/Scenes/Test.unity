@@ -293,14 +293,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundCheckLeft: {fileID: 767078913}
   groundCheckRight: {fileID: 23232708}
-  jumpSFX: {fileID: 8300000, guid: a3619e473dee5f74797d888e8dd30d9c, type: 3}
-  scaredSFX: {fileID: 8300000, guid: a3619e473dee5f74797d888e8dd30d9c, type: 3}
+  jumpSFX: {fileID: 8300000, guid: 23e04effed7baaf43a3d6fd86b4b40f4, type: 3}
+  scaredSFX: {fileID: 8300000, guid: 238e39a07a175934da2be07de36b17c3, type: 3}
+  interactSFX: {fileID: 8300000, guid: 61246074655197b4e9b9fbc7ba6719d6, type: 3}
+  stepSFX: {fileID: 8300000, guid: 3a62e33ab62681640bd2654aec3dd9c7, type: 3}
+  ladderClimbSFX: {fileID: 8300000, guid: c7aa71b861778714cae6692104a60bd4, type: 3}
+  topOfLadderSFX: {fileID: 8300000, guid: 31d267043d81a864eae30a489bdd56f8, type: 3}
+  liftEel: {fileID: 8300000, guid: de497eae1292bee428ef2e506ecffe8b, type: 3}
+  dropEel: {fileID: 8300000, guid: b769c3d58fe643a478ae807aa96df45d, type: 3}
   walkingSpeed: 5
   walkingSpeedWhenCarryingBucket: 3.5
-  timeBetweenStepSounds: 0.5
+  stopWhileScaredTime: 0.5
   walkAwayScaredTime: 0.5
   climbingSpeed: 4
-  timeBetweenClimbingSounds: 0.5
+  timeBetweenClimbingSounds: 0.25
   climbingOffsetFromCenterDistance: 0.25
   stopClimbingTime: 0.5
   canClimbAgainAfterJumpingTime: 0.25

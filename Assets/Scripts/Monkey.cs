@@ -5,21 +5,21 @@ using UnityEngine;
 public class Monkey : MonoBehaviour
 {
     public Transform groundCheckLeft = null, groundCheckRight = null;
-    public AudioClip jumpSFX, scaredSFX;//+ more sound effects
+    public AudioClip jumpSFX, scaredSFX, interactSFX, stepSFX, ladderClimbSFX, topOfLadderSFX, liftEel, dropEel;//+ more sound effects
 
     public float walkingSpeed = 5.0f;
     public float walkingSpeedWhenCarryingBucket = 3.5f;
-    public float timeBetweenStepSounds = 0.5f;
     public float stopWhileScaredTime = 0.5f, walkAwayScaredTime = 0.5f;
 
     public float climbingSpeed = 4.0f;
-    public float timeBetweenClimbingSounds = 0.5f;
+    public float timeBetweenClimbingSounds = 0.25f;
     public float climbingOffsetFromCenterDistance = 0.25f;
     public float stopClimbingTime = 0.5f;
     public float canClimbAgainAfterJumpingTime = 0.25f;
     public float canChangeClimbingDirectionTime = 0.5f;
 
     public float jumpVelocity = 10.0f;
+    public float jumpSquatTime = 0.25f;
     public float jumpBufferTime = 0.25f;
     public bool CurrentChar;
 
@@ -44,7 +44,6 @@ public class Monkey : MonoBehaviour
     bool jumpBuffer;
 
     bool grounded;
-    bool canPlayStepSoundsAgain;
 
     bool canPickUpEel;
     bool carrying;
@@ -92,16 +91,16 @@ public class Monkey : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetButtonDown("Jump") && !grounded && !climbing && !cannotMove && !notActive)
+        {
+            StartCoroutine(JumpBufferTimer());
+        }
+
         if (Input.GetButtonDown("Jump") && grounded && !carrying && !cannotMove && !notActive || jumpBuffer && grounded && !carrying && !cannotMove && !notActive
             || Input.GetButtonDown("Jump") && climbing && !carrying && !cannotMove && !notActive)
         {
-            Jump();
+            Jumpsquat();
             jumpBuffer = false;
-        }
-
-        if (Input.GetButtonDown("Jump") && !grounded && !cannotMove && !notActive)
-        {
-            StartCoroutine(JumpBufferTimer());
         }
 
         if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
@@ -109,7 +108,7 @@ public class Monkey : MonoBehaviour
             if (!carrying && canPickUpEel)
             {
                 animator.Play("Placeholder Monkey Pickup");
-                //audioSource.PlayOneShot(EEL PICKUP SFX);
+                audioSource.PlayOneShot(liftEel);
                 StartCoroutine(StopToPickUpEel());
                 spriteRenderer.color = Color.cyan;
                 carrying = true;
@@ -117,7 +116,7 @@ public class Monkey : MonoBehaviour
             else if (carrying)
             {
                 animator.Play("Placeholder Monkey Pickdown");
-                //audioSource.PlayOneShot(EEL DROP SFX);
+                audioSource.PlayOneShot(dropEel);
                 //Spawn Eel
                 StartCoroutine(StopToPickUpEel());
                 spriteRenderer.color = startingColor;
@@ -173,6 +172,9 @@ public class Monkey : MonoBehaviour
                 rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y / 2);
                 jumping = false;
             }
+
+            if (rb2d.velocity.y < 0.0f)
+                jumping = false;
         }
 
         if (grounded && !cannotMove && rb2d.velocity.y == 0.0f && !jumping && !climbing)
@@ -202,12 +204,6 @@ public class Monkey : MonoBehaviour
             else
             {
                 animator.Play("Placeholder Monkey Walk");
-            }
-
-            if (canPlayStepSoundsAgain)
-            {
-                StartCoroutine(StepSoundsLoop());
-                canPlayStepSoundsAgain = false;
             }
         }
         else
@@ -278,6 +274,12 @@ public class Monkey : MonoBehaviour
             }
             if (x == 0.0f)
                 canChangeClimbingDirection = true;
+
+            if (y != 0.0f && canPlayClimbingSoundAgain)
+            {
+                StartCoroutine(ClimbingSoundsLoop());
+                canPlayClimbingSoundAgain = false;
+            }
         }
         if (y != 0.0f)
         {
@@ -313,12 +315,6 @@ public class Monkey : MonoBehaviour
         }
         else if (climbing && !canChangeClimbingDirection)
             StartCoroutine(CanChangeClimingDirectionTimer());
-
-        if (y != 0.0f && canPlayClimbingSoundAgain)
-        {
-            StartCoroutine(ClimbingSoundsLoop());
-            canPlayClimbingSoundAgain = false;
-        }
     }
 
     void PushingAndPulling()
@@ -328,7 +324,7 @@ public class Monkey : MonoBehaviour
             if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
             {
                 animator.Play("Placeholder Monkey Interact");
-                //audioSource.PlayOneShot(CAGE SFX);
+                audioSource.PlayOneShot(interactSFX);
                 //transform.position = new Vector3(lever.gameObject.transform.position.x, transform.position.y, transform.position.z);
                 cage.GetComponent<Cage>().Open();
                 StartCoroutine(StopToPullOrPush());
@@ -340,7 +336,7 @@ public class Monkey : MonoBehaviour
             if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
             {
                 animator.Play("Placeholder Monkey Interact");
-                //audioSource.PlayOneShot(LEVER SFX);
+                audioSource.PlayOneShot(interactSFX);
                 //transform.position = new Vector3(lever.gameObject.transform.position.x, transform.position.y, transform.position.z);
                 lever.GetComponent<ButtonOrLever>().Activate();
                 StartCoroutine(StopToPullOrPush());
@@ -351,7 +347,7 @@ public class Monkey : MonoBehaviour
             if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
             {
                 animator.Play("Placeholder Monkey Interact");
-                //audioSource.PlayOneShot(BUTTON SFX);
+                audioSource.PlayOneShot(interactSFX);
                 //transform.position = new Vector3(button.gameObject.transform.position.x, transform.position.y, transform.position.z);
                 button.GetComponent<ButtonOrLever>().Activate();
                 StartCoroutine(StopToPullOrPush());
@@ -359,9 +355,15 @@ public class Monkey : MonoBehaviour
         }
     }
 
+    void Jumpsquat()
+    {
+        animator.Play("Placeholder Monkey Jumpsquat");
+        StartCoroutine(JumpsquatTimer());
+    }
+
     void Jump()
     {
-        //audioSource.PlayOneShot(jumpSFX);
+        audioSource.PlayOneShot(jumpSFX);
         animator.Play("Placeholder Monkey Jump");
         rb2d.velocity = new Vector2(rb2d.velocity.x, jumpVelocity);
         jumping = true;
@@ -370,6 +372,11 @@ public class Monkey : MonoBehaviour
         canChangeClimbingDirection = false;
         animator.enabled = true;
         StartCoroutine(CanClimbAfterJumping());
+    }
+
+    public void PlayStepSound()
+    {
+        audioSource.PlayOneShot(stepSFX);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -431,6 +438,10 @@ public class Monkey : MonoBehaviour
     {
         if (other.gameObject.tag == "Ladder")
         {
+            if (y > 0.0f && !carrying && !jumping && rb2d.velocity.y == 4.0f && !Input.GetButtonDown("Jump"))
+            {
+                audioSource.PlayOneShot(topOfLadderSFX);
+            }
             canClimb = false;
             oneWayLadder = 0;
         }
@@ -451,6 +462,15 @@ public class Monkey : MonoBehaviour
             monkeyLevelComplete = false;
 
         }
+    }
+
+    IEnumerator JumpsquatTimer()
+    {
+        cannotMove = true;
+        rb2d.velocity = new Vector2(0.0f, 0.0f);
+        yield return new WaitForSeconds(jumpSquatTime);
+        cannotMove = false;
+        Jump();
     }
 
     IEnumerator JumpBufferTimer()
@@ -496,22 +516,12 @@ public class Monkey : MonoBehaviour
 
     IEnumerator ClimbingSoundsLoop()
     {
-        //audioSource.PlayOneShot(CLIMBING SOUND);
+        audioSource.PlayOneShot(ladderClimbSFX);
         yield return new WaitForSeconds(timeBetweenClimbingSounds);
-        if (climbing && y != 0.0f || climbing && x != 0.0f)
+        if (climbing && y != 0.0f)
             StartCoroutine(ClimbingSoundsLoop());
         else
             canPlayClimbingSoundAgain = true;
-    }
-
-    IEnumerator StepSoundsLoop()
-    {
-        //audioSource.PlayOneShot(STEP SOUND);
-        yield return new WaitForSeconds(timeBetweenStepSounds);
-        if (grounded && x != 0)
-            StartCoroutine(ClimbingSoundsLoop());
-        else
-            canPlayStepSoundsAgain = true;
     }
 
     IEnumerator StopToPullOrPush()
