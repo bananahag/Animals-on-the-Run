@@ -246,19 +246,14 @@ public class Dog : MonoBehaviour
 
             if (Mathf.Approximately(angle, 90))
             {
-                // Sides
                 Vector3 cross = Vector3.Cross(Vector3.forward, hit);
                 if (cross.y > 0)
-                { // left side of the player
-                    Debug.Log("Left");
+                { 
                     canMoveObject = true;
                 }
                 else if (cross.y < 0)
-                { // right side of the player
-                    Debug.Log("Right");
+                {
                     canMoveObject = true;
-                    affectedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(rb2d.velocity.x *-100, affectedObject.transform.position.y);
-
                 }
             }
             else
