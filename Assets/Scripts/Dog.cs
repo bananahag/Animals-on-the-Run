@@ -7,7 +7,7 @@ public class Dog : MonoBehaviour
     public Transform groundCheckLeft = null, groundCheckRight = null;
     public AudioClip jumpSFX;
     AudioSource audioSource;
-    Animator animator;
+    public Animator animator;
     SpriteRenderer spriteRenderer;
     Rigidbody2D rb2d;
 
@@ -17,9 +17,10 @@ public class Dog : MonoBehaviour
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
     public float wetDuration = 10;
+    public float timeBetweenStepSounds = 0.5f;
+
     private GameObject human;
     private GameObject affectedObject;
-    public GameObject objectPlacement;
 
     Vector2 movement;
 
@@ -36,6 +37,9 @@ public class Dog : MonoBehaviour
     bool canMoveObject = false;
     bool movingObject = false;
     bool lockJump = false;
+    bool canPlayStepSoundsAgain;
+    public bool pushing = false;
+    public bool pulling = false;
 
     float x;
 
@@ -60,6 +64,7 @@ public class Dog : MonoBehaviour
         HandleMovableObjects();
         HandleCharming();
         HandleJumping();
+        MovementAnimations();
 
         if (lockMovement)
         {
@@ -81,15 +86,8 @@ public class Dog : MonoBehaviour
 
     void Jump()
     {
-        if (audioSource != null && jumpSFX != null)
-        {
-            audioSource.PlayOneShot(jumpSFX);
-        }
-
-        if(animator != null)
-        {
-            //animator.Play(jumpAnimation); //jumpAnimation finns inte än.
-        }
+        audioSource.PlayOneShot(jumpSFX);
+        animator.Play("Jump");
 
         rb2d.velocity = new Vector2(rb2d.velocity.x, jumpVelocity);
         jumping = true;
@@ -107,6 +105,31 @@ public class Dog : MonoBehaviour
         wet = true;
         yield return new WaitForSecondsRealtime(wetDuration);
         wet = false;
+    }
+
+    IEnumerator StepSoundsLoop()
+    {
+        //audioSource.PlayOneShot(STEP SOUND);
+        yield return new WaitForSeconds(timeBetweenStepSounds);
+        if (grounded && x != 0)
+            canPlayStepSoundsAgain = true;
+    }
+
+    void MovementAnimations()
+    {
+        if(x != 0)
+        {
+            animator.Play("Walking");
+        } else if (x == 0)
+        {
+            animator.Play("Idle");
+        }
+
+        if (canPlayStepSoundsAgain)
+        {
+            StartCoroutine(StepSoundsLoop());
+            canPlayStepSoundsAgain = false;
+        }
     }
 
     void CheckIfGrounded()
@@ -159,7 +182,8 @@ public class Dog : MonoBehaviour
         }
     }
 
-    //Hunden kan inte putta objekt utan bara drar.....
+
+    //Hunden ska kunna putta objekt i när den simmar.
     void HandleMovableObjects()
     {
         if (affectedObject != null)
@@ -249,6 +273,7 @@ public class Dog : MonoBehaviour
                 if (cross.y > 0)
                 { 
                     canMoveObject = true;
+                    
                 }
                 else if (cross.y < 0)
                 {
