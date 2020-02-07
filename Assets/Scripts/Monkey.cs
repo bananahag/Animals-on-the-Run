@@ -10,7 +10,7 @@ public class Monkey : MonoBehaviour
     public float walkingSpeed = 5.0f;
     public float walkingSpeedWhenCarryingBucket = 3.5f;
     public float timeBetweenStepSounds = 0.5f;
-    public float walkAwayScaredTime = 0.5f;
+    public float stopWhileScaredTime = 0.5f, walkAwayScaredTime = 0.5f;
 
     public float climbingSpeed = 4.0f;
     public float timeBetweenClimbingSounds = 0.5f;
@@ -108,7 +108,7 @@ public class Monkey : MonoBehaviour
         {
             if (!carrying && canPickUpEel)
             {
-                //animator.Play(PICK UP EEL);
+                animator.Play("Placeholder Monkey Pickup");
                 //audioSource.PlayOneShot(EEL PICKUP SFX);
                 StartCoroutine(StopToPickUpEel());
                 spriteRenderer.color = Color.cyan;
@@ -116,7 +116,7 @@ public class Monkey : MonoBehaviour
             }
             else if (carrying)
             {
-                //animator.Play(DROP EEL);
+                animator.Play("Placeholder Monkey Pickdown");
                 //audioSource.PlayOneShot(EEL DROP SFX);
                 //Spawn Eel
                 StartCoroutine(StopToPickUpEel());
@@ -175,8 +175,10 @@ public class Monkey : MonoBehaviour
             }
         }
 
-        if (grounded)
+        if (grounded && !cannotMove && rb2d.velocity.y == 0.0f && !jumping && !climbing)
             GroundedAnimations();
+        else if (!grounded && !climbing && !cannotMove)
+            InAirAnimations();
 
         if (canClimb && canClimbAfterJumping && !carrying && !cannotMove && !notActive)
             Climbing();
@@ -185,6 +187,7 @@ public class Monkey : MonoBehaviour
             rb2d.gravityScale = startGravityScale;
             climbing = false;
             canChangeClimbingDirection = false;
+            animator.enabled = true;
         }
     }
 
@@ -194,11 +197,11 @@ public class Monkey : MonoBehaviour
         {
             if (carrying)
             {
-                //animator.Play(WALKING WITH BUCKET);
+                animator.Play("Placeholder Monkey Walk Bucket");
             }
             else
             {
-                //animator.Play(WALKING);
+                animator.Play("Placeholder Monkey Walk");
             }
 
             if (canPlayStepSoundsAgain)
@@ -211,19 +214,39 @@ public class Monkey : MonoBehaviour
         {
             if (carrying)
             {
-                //animator.Play(IDLE WITH BUCKET);
+                animator.Play("Placeholder Monkey Idle Bucket");
             }
             else
             {
-                //animator.Play(IDLE);
+                animator.Play("Placeholder Monkey Idle");
             }
         }
+    }
+
+    void InAirAnimations()
+    {
+        if (carrying)
+        {
+            animator.Play("Placeholder Monkey Fall Bucket");
+        }
+        else
+        {
+            if (rb2d.velocity.y > 0.0f)
+                animator.Play("Placeholder Monkey Jump");
+            else if (rb2d.velocity.y < 0.0f)
+                animator.Play("Placeholder Monkey Fall");
+        }
+
     }
 
     void Climbing()
     {
         if (climbing)
         {
+            if (y != 0)
+                animator.enabled = true;
+            else
+                animator.enabled = false;
             if (x != 0.0f && canChangeClimbingDirection && oneWayLadder == 0)
             {
                 if (x > 0.0f)
@@ -263,6 +286,7 @@ public class Monkey : MonoBehaviour
                 rb2d.velocity = new Vector2(0.0f, rb2d.velocity.y);
                 if (!climbing)
                 {
+                    animator.Play("Placeholder Monkey Climb");
                     rb2d.gravityScale = 0.0f;
                     rb2d.velocity = new Vector2(0.0f, 0.0f);
                     if (transform.position.x <= ladderXPosition && oneWayLadder == 0 || oneWayLadder == 2)
@@ -284,12 +308,13 @@ public class Monkey : MonoBehaviour
                 rb2d.gravityScale = startGravityScale;
                 climbing = false;
                 canChangeClimbingDirection = false;
+                animator.enabled = true;
             }
         }
         else if (climbing && !canChangeClimbingDirection)
             StartCoroutine(CanChangeClimingDirectionTimer());
 
-        if (x != 0.0f && canPlayClimbingSoundAgain || y != 0.0f && canPlayClimbingSoundAgain)
+        if (y != 0.0f && canPlayClimbingSoundAgain)
         {
             StartCoroutine(ClimbingSoundsLoop());
             canPlayClimbingSoundAgain = false;
@@ -302,7 +327,7 @@ public class Monkey : MonoBehaviour
         {
             if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
             {
-                //animator.Play(CAGE);
+                animator.Play("Placeholder Monkey Interact");
                 //audioSource.PlayOneShot(CAGE SFX);
                 //transform.position = new Vector3(lever.gameObject.transform.position.x, transform.position.y, transform.position.z);
                 cage.GetComponent<Cage>().Open();
@@ -314,7 +339,7 @@ public class Monkey : MonoBehaviour
         {
             if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
             {
-                //animator.Play(LEVER);
+                animator.Play("Placeholder Monkey Interact");
                 //audioSource.PlayOneShot(LEVER SFX);
                 //transform.position = new Vector3(lever.gameObject.transform.position.x, transform.position.y, transform.position.z);
                 lever.GetComponent<ButtonOrLever>().Activate();
@@ -325,7 +350,7 @@ public class Monkey : MonoBehaviour
         {
             if (Input.GetButtonDown("Interact") && !cannotMove && !notActive && grounded)
             {
-                //animator.Play(BUTTON);
+                animator.Play("Placeholder Monkey Interact");
                 //audioSource.PlayOneShot(BUTTON SFX);
                 //transform.position = new Vector3(button.gameObject.transform.position.x, transform.position.y, transform.position.z);
                 button.GetComponent<ButtonOrLever>().Activate();
@@ -337,12 +362,13 @@ public class Monkey : MonoBehaviour
     void Jump()
     {
         //audioSource.PlayOneShot(jumpSFX);
-        //animator.Play(JUMP ANIMATION);
+        animator.Play("Placeholder Monkey Jump");
         rb2d.velocity = new Vector2(rb2d.velocity.x, jumpVelocity);
         jumping = true;
         rb2d.gravityScale = startGravityScale;
         climbing = false;
         canChangeClimbingDirection = false;
+        animator.enabled = true;
         StartCoroutine(CanClimbAfterJumping());
     }
 
@@ -465,6 +491,7 @@ public class Monkey : MonoBehaviour
         rb2d.gravityScale = startGravityScale;
         climbing = false;
         canChangeClimbingDirection = false;
+        animator.enabled = true;
     }
 
     IEnumerator ClimbingSoundsLoop()
@@ -506,8 +533,16 @@ public class Monkey : MonoBehaviour
     IEnumerator WalkAway()
     {
         cannotMove = true;
+        Debug.Log("am here " + rb2d.velocity);
+
+        rb2d.velocity = new Vector2(0.0f, rb2d.velocity.y);
+        animator.Play("Placeholder Monkey Scared");
+
+        yield return new WaitForSeconds(stopWhileScaredTime);
+
         if (scaryObject.transform.position.x >= transform.position.x)
         {
+            facingRight = false;
             if (carrying)
                 rb2d.velocity = new Vector2(-1 * walkingSpeedWhenCarryingBucket, rb2d.velocity.y);
             else
@@ -515,12 +550,28 @@ public class Monkey : MonoBehaviour
         }
         else
         {
+            facingRight = true;
             if (carrying)
                 rb2d.velocity = new Vector2(1 * walkingSpeedWhenCarryingBucket, rb2d.velocity.y);
             else
                 rb2d.velocity = new Vector2(1 * walkingSpeed, rb2d.velocity.y);
         }
-        Debug.Log("am here " + rb2d.velocity);
+
+        if (carrying)
+        {
+            if(grounded)
+                animator.Play("Placeholder Monkey Walk Bucket");
+            else
+                animator.Play("Placeholder Monkey Fall Bucket");
+        }
+        else
+        {
+            if (grounded)
+                animator.Play("Placeholder Monkey Walk");
+            else
+                animator.Play("Placeholder Monkey Fall");
+        }
+        
         yield return new WaitForSeconds(walkAwayScaredTime);
         cannotMove = false;
         rb2d.velocity = new Vector2(0.0f, rb2d.velocity.y);
