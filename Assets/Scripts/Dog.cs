@@ -11,6 +11,8 @@ public class Dog : MonoBehaviour
     SpriteRenderer spriteRenderer;
     Rigidbody2D rb2d;
 
+    public Material noFrictionMaterial;
+
     public float walkingSpeed = 5.0f;
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
@@ -29,7 +31,7 @@ public class Dog : MonoBehaviour
     bool jumping;
     bool jumpBuffer;
     bool grounded;
-    bool notActive = false;
+   [HideInInspector] public bool notActive = false;
     bool canMoveObject = false;
     bool movingObject = false;
 
@@ -61,7 +63,6 @@ public class Dog : MonoBehaviour
         {
             rb2d.velocity = new Vector2(0, 0);
         }
-
     }
 
     void FixedUpdate()
@@ -119,7 +120,7 @@ public class Dog : MonoBehaviour
 
     void HandleJumping()
     {
-        if (!lockMovement)
+        if (!lockMovement && !notActive)
         {
             if (Input.GetButtonDown("Jump") && grounded || jumpBuffer && grounded && !notActive)
             {
@@ -146,7 +147,7 @@ public class Dog : MonoBehaviour
         }
     }
 
-    //Hunden ska även ha objektet bakom sig då den drar och framför sig då den knuffar. Eller bara dra som genom att backa?
+    //Hunden kan inte putta objekt utan bara drar.....
     void HandleMovableObjects()
     {
         if (affectedObject != null)
@@ -156,12 +157,14 @@ public class Dog : MonoBehaviour
                 if(affectedObject != null)
                 {
                     affectedObject.transform.parent = gameObject.transform;
+                    affectedObject.GetComponent<Rigidbody2D>().isKinematic = true;
                     movingObject = true;
                 }
             }
             else if(!Input.GetButton("Interact") && movingObject)
             {
-                    affectedObject.transform.parent = null;
+                affectedObject.GetComponent<Rigidbody2D>().isKinematic = false;
+                affectedObject.transform.parent = null;
             }
         }
     }
@@ -189,6 +192,8 @@ public class Dog : MonoBehaviour
         }
     }
 
+
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
@@ -213,8 +218,55 @@ public class Dog : MonoBehaviour
     {
         if (other.gameObject.CompareTag("MoveableObject"))
         {
-            canMoveObject = true;
+            
             affectedObject = other.gameObject;
+
+            Vector3 hit = other.contacts[0].normal;
+            Debug.Log(hit);
+            float angle = Vector3.Angle(hit, Vector3.up);
+            //affectedObject.GetComponent<Rigidbody2D>().sharedMaterial.friction = 0;
+
+            /*
+            if (Mathf.Approximately(angle, 0))
+            {
+                //Down
+                Debug.Log("Down");
+                canMoveObject = false;
+
+            }
+            if (Mathf.Approximately(angle, 180))
+            {
+                //Up
+                Debug.Log("Up");
+                canMoveObject = false;
+            }
+
+            else
+            {
+                canMoveObject = true;
+                affectedObject.GetComponent<Rigidbody2D>().isKinematic = true;
+            }
+            */
+            
+            if (Mathf.Approximately(angle, 90))
+            {
+                // Sides
+                Vector3 cross = Vector3.Cross(Vector3.forward, hit);
+                if (cross.y > 0)
+                { // left side of the player
+                    Debug.Log("Left");
+                    canMoveObject = true;
+                }
+                else if (cross.y < 0)
+                { // right side of the player
+                    Debug.Log("Right");
+                    canMoveObject = true;
+                }
+            }
+            else
+            {
+                canMoveObject = false;
+            }
         }
     }
 
@@ -223,6 +275,12 @@ public class Dog : MonoBehaviour
         if (other.gameObject.CompareTag("MoveableObject"))
         {
             canMoveObject = false;
+
+            if (affectedObject.GetComponent<Rigidbody2D>().isKinematic)
+            {
+                affectedObject.GetComponent<Rigidbody2D>().isKinematic = false;
+                affectedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, affectedObject.transform.position.y);
+            }
         }
     }
 
