@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8262433622465329387
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6761668644836565503}
+  m_Layer: 12
+  m_Name: ObjectPlacement
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6761668644836565503
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8262433622465329387}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1, y: 0.05, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8443743008357493122}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8443743006692847186
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,6 +125,7 @@ Transform:
   m_Children:
   - {fileID: 8443743006692847185}
   - {fileID: 8443743006821892592}
+  - {fileID: 6761668644836565503}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -204,7 +235,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 20
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 2
@@ -228,12 +259,14 @@ MonoBehaviour:
   groundCheckLeft: {fileID: 8443743006692847185}
   groundCheckRight: {fileID: 8443743006821892592}
   jumpSFX: {fileID: 0}
+  noFrictionMaterial: {fileID: 0}
   walkingSpeed: 5
   jumpVelocity: 10
   jumpBufferTime: 0.25
   wetDuration: 10
+  dogLevelComplete: 0
   lockMovement: 0
-  wet: 0
+  notActive: 0
 --- !u!82 &8443743008357493121
 AudioSource:
   m_ObjectHideFlags: 0
