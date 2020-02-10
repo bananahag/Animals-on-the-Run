@@ -312,7 +312,9 @@ MonoBehaviour:
   canClimbAgainAfterJumpingTime: 0.25
   canChangeClimbingDirectionTime: 0.5
   jumpVelocity: 10
+  jumpSquatTime: 0.125
   jumpBufferTime: 0.25
+  landingTime: 0.15
   CurrentChar: 0
   timeStoppedWhenPickingUpEel: 1
   timeStoppedWhenActivating: 0.5
@@ -357,7 +359,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1.7066667, y: 1.7066667}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -423,8 +425,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -3148528160057128830, guid: 20e57e8bd7df64b4481e0697265c45ae,
-    type: 3}
+  m_Sprite: {fileID: 21300000, guid: 93930c590a9734546863b24844efdcda, type: 3}
   m_Color: {r: 0.6933962, g: 1, b: 0.71094954, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1417,7 +1418,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.990566, g: 0.7242346, b: 0.8074008, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
