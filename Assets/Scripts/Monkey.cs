@@ -45,8 +45,11 @@ public class Monkey : MonoBehaviour
     bool jumpBuffer;
 
     bool grounded;
+    bool landing;
     float landingVelocity;
     bool scared;
+
+    bool test;
 
     bool canPickUpEel;
     bool carrying;
@@ -99,12 +102,12 @@ public class Monkey : MonoBehaviour
             StartCoroutine(JumpBufferTimer());
         }
 
-        if (Input.GetButtonDown("Jump") && LandingTimer() != null && !notActive)
+        if (Input.GetButtonDown("Jump") && landing && !notActive)
         {
             jumpBuffer = true;
         }
 
-        if (Input.GetButtonDown("Jump") && grounded && !carrying && !cannotMove && !notActive || jumpBuffer && grounded && !carrying && !cannotMove && !notActive
+        if (Input.GetButtonDown("Jump") && grounded && !carrying && !jumping && !cannotMove && !notActive || jumpBuffer && grounded && !jumping && !carrying && !cannotMove && !notActive
             || Input.GetButtonDown("Jump") && climbing && !carrying && !cannotMove && !notActive)
         {
             if (climbing)
@@ -380,7 +383,9 @@ public class Monkey : MonoBehaviour
     void Jumpsquat()
     {
         animator.Play("Placeholder Monkey Jumpsquat");
-        StartCoroutine(JumpsquatTimer());
+        if (!cannotMove)
+            StartCoroutine(JumpsquatTimer());
+
     }
 
     void Jump()
@@ -502,14 +507,12 @@ public class Monkey : MonoBehaviour
     {
         jumpBuffer = true;
         yield return new WaitForSecondsRealtime(jumpBufferTime);
-        if (LandingTimer() == null)
-        {
-            jumpBuffer = false;
-        }
+        jumpBuffer = false;
     }
 
     IEnumerator LandingTimer()
     {
+        landing = true;
         cannotMove = true;
         rb2d.velocity = new Vector2(0.0f, 0.0f);
         float landingTime = 0.015f * landingVelocity;
@@ -519,6 +522,7 @@ public class Monkey : MonoBehaviour
         yield return new WaitForSeconds(landingTime);
         if (!scared)
             cannotMove = false;
+        landing = false;
     }
 
     IEnumerator CanClimbAfterJumping()
