@@ -21,7 +21,7 @@ public class Monkey : MonoBehaviour
     public float jumpVelocity = 10.0f;
     public float jumpSquatTime = 0.125f;
     public float jumpBufferTime = 0.25f;
-    public float landingTime = 0.25f;
+    public float maxLandingTime = 0.2f;
     public bool CurrentChar;
 
     public float timeStoppedWhenPickingUpEel = 1.0f;
@@ -45,6 +45,7 @@ public class Monkey : MonoBehaviour
     bool jumpBuffer;
 
     bool grounded;
+    float landingVelocity;
     bool scared;
 
     bool canPickUpEel;
@@ -96,6 +97,11 @@ public class Monkey : MonoBehaviour
         if (Input.GetButtonDown("Jump") && !grounded && !climbing && !cannotMove && !notActive)
         {
             StartCoroutine(JumpBufferTimer());
+        }
+
+        if (Input.GetButtonDown("Jump") && LandingTimer() != null && !notActive)
+        {
+            jumpBuffer = true;
         }
 
         if (Input.GetButtonDown("Jump") && grounded && !carrying && !cannotMove && !notActive || jumpBuffer && grounded && !carrying && !cannotMove && !notActive
@@ -159,6 +165,12 @@ public class Monkey : MonoBehaviour
             movement = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
 
         rb2d.velocity = movement;
+
+        if(!grounded)
+        {
+            if (rb2d.velocity.y != 0)
+                landingVelocity = rb2d.velocity.y * -1;
+        }
 
 
         if (Physics2D.Linecast(transform.position, groundCheckLeft.position, 1 << LayerMask.NameToLayer("Ground"))
@@ -490,13 +502,20 @@ public class Monkey : MonoBehaviour
     {
         jumpBuffer = true;
         yield return new WaitForSecondsRealtime(jumpBufferTime);
-        jumpBuffer = false;
+        if (LandingTimer() == null)
+        {
+            jumpBuffer = false;
+        }
     }
 
     IEnumerator LandingTimer()
     {
         cannotMove = true;
         rb2d.velocity = new Vector2(0.0f, 0.0f);
+        float landingTime = 0.015f * landingVelocity;
+        if (landingTime > maxLandingTime)
+            landingTime = maxLandingTime;
+        print(landingTime);
         yield return new WaitForSeconds(landingTime);
         if (!scared)
             cannotMove = false;
@@ -613,6 +632,7 @@ public class Monkey : MonoBehaviour
         }
         cannotMove = false;
         rb2d.velocity = new Vector2(0.0f, rb2d.velocity.y);
+        jumpBuffer = false;
         scared = false;
     }
 }
