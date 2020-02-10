@@ -49,8 +49,6 @@ public class Monkey : MonoBehaviour
     float landingVelocity;
     bool scared;
 
-    bool test;
-
     bool canPickUpEel;
     bool carrying;
 
@@ -507,7 +505,8 @@ public class Monkey : MonoBehaviour
     {
         jumpBuffer = true;
         yield return new WaitForSecondsRealtime(jumpBufferTime);
-        jumpBuffer = false;
+        if (!landing)
+            jumpBuffer = false;
     }
 
     IEnumerator LandingTimer()
