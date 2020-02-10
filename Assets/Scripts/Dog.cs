@@ -7,7 +7,7 @@ public class Dog : MonoBehaviour
     public Transform groundCheckLeft = null, groundCheckRight = null;
     public AudioClip jumpSFX;
     AudioSource audioSource;
-    Animator animator;
+    public Animator animator;
     SpriteRenderer spriteRenderer;
     Rigidbody2D rb2d;
 
@@ -17,6 +17,8 @@ public class Dog : MonoBehaviour
     public float jumpVelocity = 10.0f;
     public float jumpBufferTime = 0.25f;
     public float wetDuration = 10;
+    public float timeBetweenStepSounds = 0.5f;
+
     private GameObject human;
     private GameObject affectedObject;
 
@@ -34,6 +36,10 @@ public class Dog : MonoBehaviour
    [HideInInspector] public bool notActive = false;
     bool canMoveObject = false;
     bool movingObject = false;
+    bool lockJump = false;
+    bool canPlayStepSoundsAgain;
+    public bool pushing = false;
+    public bool pulling = false;
 
     float x;
 
@@ -58,6 +64,7 @@ public class Dog : MonoBehaviour
         HandleMovableObjects();
         HandleCharming();
         HandleJumping();
+        MovementAnimations();
 
         if (lockMovement)
         {
@@ -79,15 +86,8 @@ public class Dog : MonoBehaviour
 
     void Jump()
     {
-        if (audioSource != null && jumpSFX != null)
-        {
-            audioSource.PlayOneShot(jumpSFX);
-        }
-
-        if(animator != null)
-        {
-            //animator.Play(jumpAnimation); //jumpAnimation finns inte än.
-        }
+        audioSource.PlayOneShot(jumpSFX);
+        animator.Play("Jump");
 
         rb2d.velocity = new Vector2(rb2d.velocity.x, jumpVelocity);
         jumping = true;
@@ -107,6 +107,31 @@ public class Dog : MonoBehaviour
         wet = false;
     }
 
+    IEnumerator StepSoundsLoop()
+    {
+        //audioSource.PlayOneShot(STEP SOUND);
+        yield return new WaitForSeconds(timeBetweenStepSounds);
+        if (grounded && x != 0)
+            canPlayStepSoundsAgain = true;
+    }
+
+    void MovementAnimations()
+    {
+        if(x != 0)
+        {
+            animator.Play("Walking");
+        } else if (x == 0)
+        {
+            animator.Play("Idle");
+        }
+
+        if (canPlayStepSoundsAgain)
+        {
+            StartCoroutine(StepSoundsLoop());
+            canPlayStepSoundsAgain = false;
+        }
+    }
+
     void CheckIfGrounded()
     {
         if (Physics2D.Linecast(transform.position, groundCheckLeft.position, 1 << LayerMask.NameToLayer("Ground"))
@@ -120,7 +145,7 @@ public class Dog : MonoBehaviour
 
     void HandleJumping()
     {
-        if (!lockMovement && !notActive)
+        if (!lockMovement && !notActive && !lockJump)
         {
             if (Input.GetButtonDown("Jump") && grounded || jumpBuffer && grounded && !notActive)
             {
@@ -131,6 +156,11 @@ public class Dog : MonoBehaviour
             if (Input.GetButtonDown("Jump") && !grounded && !notActive)
             {
                 StartCoroutine(JumpBufferTimer());
+            }
+
+            if (Input.GetButtonDown("Jump") && swimming && !notActive)
+            {
+                Jump();
             }
         }
     }
@@ -144,26 +174,38 @@ public class Dog : MonoBehaviour
                 rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y / 2);
                 jumping = false;
             }
+            if (swimming)
+            {
+                rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y / 2.2f);
+                jumping = false;
+            }
         }
     }
 
-    //Hunden kan inte putta objekt utan bara drar.....
+
+    //Hunden ska kunna putta objekt i när den simmar.
     void HandleMovableObjects()
     {
         if (affectedObject != null)
         {
             if (Input.GetButton("Interact") && canMoveObject)
             {
-                if(affectedObject != null)
+                if (affectedObject != null)
                 {
                     affectedObject.transform.parent = gameObject.transform;
                     affectedObject.GetComponent<Rigidbody2D>().isKinematic = true;
+                    rb2d.isKinematic = true;
+                    Physics2D.IgnoreCollision(affectedObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
                     movingObject = true;
+                    lockJump = true;
                 }
             }
             else if(!Input.GetButton("Interact") && movingObject)
             {
                 affectedObject.GetComponent<Rigidbody2D>().isKinematic = false;
+                rb2d.GetComponent<Rigidbody2D>().isKinematic = false;
+                affectedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, affectedObject.transform.position.y);
+                lockJump = false;
                 affectedObject.transform.parent = null;
             }
         }
@@ -216,50 +258,25 @@ public class Dog : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
+
         if (other.gameObject.CompareTag("MoveableObject"))
         {
             
             affectedObject = other.gameObject;
 
             Vector3 hit = other.contacts[0].normal;
-            Debug.Log(hit);
             float angle = Vector3.Angle(hit, Vector3.up);
-            //affectedObject.GetComponent<Rigidbody2D>().sharedMaterial.friction = 0;
 
-            /*
-            if (Mathf.Approximately(angle, 0))
-            {
-                //Down
-                Debug.Log("Down");
-                canMoveObject = false;
-
-            }
-            if (Mathf.Approximately(angle, 180))
-            {
-                //Up
-                Debug.Log("Up");
-                canMoveObject = false;
-            }
-
-            else
-            {
-                canMoveObject = true;
-                affectedObject.GetComponent<Rigidbody2D>().isKinematic = true;
-            }
-            */
-            
             if (Mathf.Approximately(angle, 90))
             {
-                // Sides
                 Vector3 cross = Vector3.Cross(Vector3.forward, hit);
                 if (cross.y > 0)
-                { // left side of the player
-                    Debug.Log("Left");
+                { 
                     canMoveObject = true;
+                    
                 }
                 else if (cross.y < 0)
-                { // right side of the player
-                    Debug.Log("Right");
+                {
                     canMoveObject = true;
                 }
             }
@@ -276,11 +293,10 @@ public class Dog : MonoBehaviour
         {
             canMoveObject = false;
 
-            if (affectedObject.GetComponent<Rigidbody2D>().isKinematic)
-            {
                 affectedObject.GetComponent<Rigidbody2D>().isKinematic = false;
+                rb2d.GetComponent<Rigidbody2D>().isKinematic = false;
                 affectedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, affectedObject.transform.position.y);
-            }
+                lockJump = false;
         }
     }
 
