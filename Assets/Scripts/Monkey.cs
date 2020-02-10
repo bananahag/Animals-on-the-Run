@@ -395,9 +395,12 @@ public class Monkey : MonoBehaviour
             cage = other.gameObject;
         }
 
-        if (other.gameObject.tag == "Finish")
-        {
-            monkeyLevelComplete = true;
+        if (other.gameObject.tag == "Finish")
+
+        {
+
+            monkeyLevelComplete = true;
+
         }
     }
 
