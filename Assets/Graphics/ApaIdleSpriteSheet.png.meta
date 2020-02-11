@@ -1,12 +1,36 @@
 fileFormatVersion: 2
 guid: 63d14da88adefa0478fdffdd70ec9b33
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 1809752094986738943
+    second: ApaIdleSpriteSheet_0
+  - first:
+      213: 2193877260197521092
+    second: ApaIdleSpriteSheet_1
+  - first:
+      213: 3383376409723436749
+    second: ApaIdleSpriteSheet_2
+  - first:
+      213: -727397574995571447
+    second: ApaIdleSpriteSheet_3
+  - first:
+      213: 6205238314263537609
+    second: ApaIdleSpriteSheet_4
+  - first:
+      213: -100823829321892135
+    second: ApaIdleSpriteSheet_5
+  - first:
+      213: 3633520854092683217
+    second: ApaIdleSpriteSheet_6
+  - first:
+      213: -1963343127617873873
+    second: ApaIdleSpriteSheet_7
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -34,24 +58,24 @@ TextureImporter:
     filterMode: -1
     aniso: -1
     mipBias: -100
-    wrapU: -1
-    wrapV: -1
-    wrapW: -1
-  nPOTScale: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 800
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   maxTextureSizeSet: 0
@@ -70,13 +94,193 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: ApaIdleSpriteSheet_0
+      rect:
+        serializedVersion: 2
+        x: 612
+        y: 500
+        width: 776
+        height: 1288
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71e3ec4496f315546a0c63361e943cb1
+      internalID: 1809752094986738943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ApaIdleSpriteSheet_1
+      rect:
+        serializedVersion: 2
+        x: 2660
+        y: 500
+        width: 776
+        height: 1328
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f9fb84dd7d6c6e45844bc8a5fcfcb36
+      internalID: 2193877260197521092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ApaIdleSpriteSheet_2
+      rect:
+        serializedVersion: 2
+        x: 4684
+        y: 500
+        width: 760
+        height: 1312
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 402463977a005e248a5e1e258e20c112
+      internalID: 3383376409723436749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ApaIdleSpriteSheet_3
+      rect:
+        serializedVersion: 2
+        x: 6732
+        y: 500
+        width: 744
+        height: 1296
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d15afab560b3cc941a12beb5d5e60480
+      internalID: -727397574995571447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ApaIdleSpriteSheet_4
+      rect:
+        serializedVersion: 2
+        x: 8740
+        y: 500
+        width: 768
+        height: 1271
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50544afb51c5b634cb74bd34d8ea270b
+      internalID: 6205238314263537609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ApaIdleSpriteSheet_5
+      rect:
+        serializedVersion: 2
+        x: 10820
+        y: 500
+        width: 736
+        height: 1232
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3d99eb7239cd204d980d5d967016f2b
+      internalID: -100823829321892135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ApaIdleSpriteSheet_6
+      rect:
+        serializedVersion: 2
+        x: 12876
+        y: 500
+        width: 720
+        height: 1248
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6070c38dce62634d84c852653a98fec
+      internalID: 3633520854092683217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ApaIdleSpriteSheet_7
+      rect:
+        serializedVersion: 2
+        x: 14940
+        y: 500
+        width: 736
+        height: 1240
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a08c0c57e5205f439a33d82d80b1197
+      internalID: -1963343127617873873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
