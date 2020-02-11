@@ -5,21 +5,12 @@ using UnityEngine.SceneManagement;
 public class MenyUI : MonoBehaviour
 {
     public GameObject pauseMeny;
-    SwapCharacter player;
     public static int scene;
     bool paused = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (scene != 0)
-        {
-        player = GameObject.Find("Player").GetComponent<SwapCharacter>();
-
-        }
-        Scene current = SceneManager.GetActiveScene();
-        //SceneManager.GetActiveScene
-        
     }
 
     // Update is called once per frame
@@ -40,23 +31,11 @@ public class MenyUI : MonoBehaviour
             Time.timeScale = 1;
             pauseMeny.SetActive(false);
         }
-
-        if (scene != 0)
-        {
-            Debug.Log(scene + "inside call");
-            if (player.levelcompleted)
-            {
-                Debug.Log(scene + "inside call2");
-                paused = true;
-                NextLevel();
-            }
-        }
         
     }
     public void Resume()
     {
         paused = !paused;
-        Time.timeScale = 1;
     }
     public void NextLevel()
     {
@@ -64,11 +43,8 @@ public class MenyUI : MonoBehaviour
         {
             scene = 0;
         }
-        Debug.Log(scene + "int");
         scene++;
-            SceneManager.LoadScene(scene);
-       
-        
+        SceneManager.LoadScene(scene);
     }
 
     public void QuitGame()

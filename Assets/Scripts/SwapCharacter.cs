@@ -9,6 +9,7 @@ public class SwapCharacter : MonoBehaviour
     private Dog mDog;
     public int SelectedChar;
     private Camera cam;
+    private MenyUI mMeny;
     [HideInInspector]public bool levelcompleted = false;
     public enum activeCharacter
     {
@@ -16,12 +17,20 @@ public class SwapCharacter : MonoBehaviour
         Dog,
     }
     // Start is called before the first frame update
-    void Start()
+
+
+    private void Awake()
     {
-        SelectedChar = 0;
         mMonkey = characters[0].GetComponent<Monkey>();
         mDog = characters[1].GetComponent<Dog>();
         cam = Camera.main;
+    }
+    void Start()
+    {
+       
+        SelectedChar = 0;
+        mMeny = GameObject.Find("Meny stuff").GetComponent<MenyUI>();
+    
         
     }
 
@@ -67,7 +76,7 @@ public class SwapCharacter : MonoBehaviour
 
         if (mMonkey.monkeyLevelComplete && mDog.dogLevelComplete)
         {
-            levelcompleted = true;
+            mMeny.NextLevel();
         }
         
     }
