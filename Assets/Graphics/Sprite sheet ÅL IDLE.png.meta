@@ -1,34 +1,7 @@
 fileFormatVersion: 2
-guid: de6bd9e09d041bd4788a5fd94c65e7e0
+guid: 3c9a84ea30c9faf49ad27c012c1cc591
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -8758238562521212472
-    second: "Sprite sheet \xC5L IDLE_0"
-  - first:
-      213: -2229543893004838010
-    second: "Sprite sheet \xC5L IDLE_1"
-  - first:
-      213: 1352554711761013158
-    second: "Sprite sheet \xC5L IDLE_2"
-  - first:
-      213: 3951430347363503780
-    second: "Sprite sheet \xC5L IDLE_3"
-  - first:
-      213: -6887550771370139151
-    second: "Sprite sheet \xC5L IDLE_4"
-  - first:
-      213: -8499611280260073063
-    second: "Sprite sheet \xC5L IDLE_5"
-  - first:
-      213: 6104473161344558339
-    second: "Sprite sheet \xC5L IDLE_6"
-  - first:
-      213: 6384341569974632155
-    second: "Sprite sheet \xC5L IDLE_7"
-  - first:
-      213: 1097543867037273230
-    second: "Sprite sheet \xC5L IDLE_8"
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -58,7 +31,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: -1
     aniso: -1
     mipBias: -100
     wrapU: 1
@@ -67,12 +40,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 1500
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -90,43 +63,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Standalone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -135,175 +72,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: "Sprite sheet \xC5L IDLE_0"
-      rect:
-        serializedVersion: 2
-        x: 464
-        y: 286
-        width: 1072
-        height: 1636
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f374d76cb3b42e14e9fa7a29c71eb43c
-      internalID: -8758238562521212472
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Sprite sheet \xC5L IDLE_1"
-      rect:
-        serializedVersion: 2
-        x: 2517
-        y: 286
-        width: 1072
-        height: 1636
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ff6c0f26e3b98684ea33ecd389b33fbc
-      internalID: -2229543893004838010
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Sprite sheet \xC5L IDLE_2"
-      rect:
-        serializedVersion: 2
-        x: 4568
-        y: 286
-        width: 1072
-        height: 1636
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e4c46538053648b45a63d0ea0163fe7a
-      internalID: 1352554711761013158
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Sprite sheet \xC5L IDLE_4"
-      rect:
-        serializedVersion: 2
-        x: 6612
-        y: 286
-        width: 1072
-        height: 1636
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6fc63cb6ca1e30945b43ac6533731c0e
-      internalID: -6887550771370139151
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Sprite sheet \xC5L IDLE_5"
-      rect:
-        serializedVersion: 2
-        x: 8656
-        y: 286
-        width: 1072
-        height: 1636
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2e2973b339cfa2c40a7ab8133f23f2ab
-      internalID: -8499611280260073063
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Sprite sheet \xC5L IDLE_6"
-      rect:
-        serializedVersion: 2
-        x: 10708
-        y: 285
-        width: 1072
-        height: 1636
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 464b11d69cce94c4c9c5747a8888e721
-      internalID: 6104473161344558339
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Sprite sheet \xC5L IDLE_7"
-      rect:
-        serializedVersion: 2
-        x: 12757
-        y: 287
-        width: 1072
-        height: 1636
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 95bd24dc53232b744830bad391b311aa
-      internalID: 6384341569974632155
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Sprite sheet \xC5L IDLE_8"
-      rect:
-        serializedVersion: 2
-        x: 14808
-        y: 286
-        width: 1072
-        height: 1636
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3402c38422bcfa444a34f41913f40db2
-      internalID: 1097543867037273230
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []

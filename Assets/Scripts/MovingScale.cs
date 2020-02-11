@@ -36,10 +36,7 @@ public class MovingScale : MonoBehaviour
         {
             transform.position = AnchorPoint.transform.position;
         }
-        else
-        {
 
-        }
         
     }
 }

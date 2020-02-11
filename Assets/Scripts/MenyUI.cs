@@ -5,21 +5,15 @@ using UnityEngine.SceneManagement;
 public class MenyUI : MonoBehaviour
 {
     public GameObject pauseMeny;
+   
     public static int scene;
     bool paused = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             paused = !paused;
-           
         }
         if (paused)
         {
@@ -31,12 +25,13 @@ public class MenyUI : MonoBehaviour
             Time.timeScale = 1;
             pauseMeny.SetActive(false);
         }
-        
     }
+
     public void Resume()
     {
         paused = !paused;
     }
+    
     public void NextLevel()
     {
         if (scene == 3)
@@ -44,7 +39,9 @@ public class MenyUI : MonoBehaviour
             scene = 0;
         }
         scene++;
+        Debug.Log(scene + "int");
         SceneManager.LoadScene(scene);
+
     }
 
     public void QuitGame()
