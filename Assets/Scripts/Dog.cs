@@ -192,7 +192,7 @@ public class Dog : MonoBehaviour
     {
         if (affectedObject != null)
         {
-            if (Input.GetButton("Interact") && canMoveObject)
+            if (Input.GetButtonDown("Interact") && canMoveObject && movingObject == false)
             {
                 if (affectedObject != null)
                 {
@@ -216,7 +216,7 @@ public class Dog : MonoBehaviour
                     lockJump = true;
                 }
             }
-            else if(!Input.GetButton("Interact") && movingObject)
+            else if(Input.GetButtonDown("Interact") && movingObject)
             {
                 affectedObject.GetComponent<Rigidbody2D>().isKinematic = false;
                 rb2d.GetComponent<Rigidbody2D>().isKinematic = false;
@@ -224,6 +224,8 @@ public class Dog : MonoBehaviour
                 lockJump = false;
                 affectedObject.transform.parent = null;
                 positionChecked = false;
+                movingObject = false;
+                canMoveObject = false;
             }
         }
     }
