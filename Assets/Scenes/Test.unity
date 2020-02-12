@@ -1881,11 +1881,14 @@ MonoBehaviour:
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   rb2d: {fileID: 0}
+  oneWayLadder: 0
   x: 0
   y: 0
-  movement: {x: 0, y: 0}
+  ladderXPosition: 0
   facingRight: 0
   carryingBucket: 0
+  canClimb: 0
+  movement: {x: 0, y: 0}
   groundedState:
     monkey: {fileID: 5749670344719481480}
     stepSFX: {fileID: 8300000, guid: 3a62e33ab62681640bd2654aec3dd9c7, type: 3}
@@ -1906,6 +1909,8 @@ MonoBehaviour:
     landingTimeMultiplier: 0.015
   climbingState:
     monkey: {fileID: 5749670344719481480}
+    ladderCenterOffsetDistance: 0.25
+    climbingSpeed: 4
 --- !u!212 &5749670344719481532
 SpriteRenderer:
   m_ObjectHideFlags: 0
