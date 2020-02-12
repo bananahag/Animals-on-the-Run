@@ -25,13 +25,13 @@ public class MonkeyBehavior : MonoBehaviour
     public Rigidbody2D rb2d = null;
 
     [HideInInspector]
-    public float x, y;
+    public int oneWayLadder;//0 = no one way ladder, 1 = one way ladder facing right, 2 = one way ladder facing left
+    [HideInInspector]
+    public float x, y, ladderXPosition;
+    [HideInInspector]
+    public bool facingRight, carryingBucket, canClimb;
     [HideInInspector]
     public Vector2 movement;
-    [HideInInspector]
-    public bool facingRight;
-    [HideInInspector]
-    public bool carryingBucket;
 
     public MonkeyGrounded groundedState = new MonkeyGrounded();
     public MonkeyJumpsquat jumpsquatState = new MonkeyJumpsquat();
@@ -104,11 +104,34 @@ public class MonkeyBehavior : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.gameObject.tag == "Ladder")
+        {
+            ladderXPosition = other.gameObject.transform.position.x;
+            canClimb = true;
+            if (other.gameObject.GetComponent<OneWayLadder>() == null)
+                oneWayLadder = 0;
+            else
+            {
+                if (other.gameObject.GetComponent<OneWayLadder>().ladderIsFacingRight)
+                    oneWayLadder = 1;
+                else
+                    oneWayLadder = 2;
+            }
+        }
         currentState.OnTriggerEnter2D(other);
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
+        if (other.gameObject.tag == "Ladder")
+        {
+            /*if (y > 0.0f && !carrying && !jumping && rb2d.velocity.y == 4.0f && !Input.GetButtonDown("Jump"))
+            {
+                audioSource.PlayOneShot(topOfLadderSFX);
+            }*/
+            canClimb = false;
+            oneWayLadder = 0;
+        }
         currentState.OnTriggerExit2D(other);
     }
 

@@ -49,5 +49,7 @@ public class MonkeyLanding : MonkeyState
     public override void FixedUpdate()
     {
         monkey.movement = new Vector2(0.0f, monkey.rb2d.velocity.y);
+        if (monkey.y > 0.0f && monkey.canClimb)
+            monkey.ChangeState(monkey.climbingState);
     }
 }

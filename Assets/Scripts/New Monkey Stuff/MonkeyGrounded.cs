@@ -22,21 +22,25 @@ public class MonkeyGrounded : MonkeyState
     public override void Update()
     {
         CheckInput();
-    }
-
-    public override void FixedUpdate()
-    {
         if (monkey.x > 0)
             monkey.facingRight = true;
         else if (monkey.x < 0)
             monkey.facingRight = false;
 
+        GroundedAnimations();
+    }
+
+    public override void FixedUpdate()
+    {
         if (monkey.carryingBucket)
             monkey.movement = new Vector2(monkey.x * walkingSpeedWhenCarryingBucket, monkey.rb2d.velocity.y);
         else
             monkey.movement = new Vector2(monkey.x * walkingSpeed, monkey.rb2d.velocity.y);
 
-        GroundedAnimations();
+        if (monkey.y > 0.0f && monkey.canClimb)
+            monkey.ChangeState(monkey.climbingState);
+
+        
         CheckIfFalling();
     }
 
@@ -68,8 +72,8 @@ public class MonkeyGrounded : MonkeyState
 
     void CheckIfFalling()
     {
-        //if (!monkey.grounded)
-            //Debug.Log("I'm not on the ground! Oh dang!");//monkey.ChangeState(monkey.inAirState);
+        if (!monkey.grounded)
+            monkey.ChangeState(monkey.inAirState);
     }
 
     public void PlayStepSound()

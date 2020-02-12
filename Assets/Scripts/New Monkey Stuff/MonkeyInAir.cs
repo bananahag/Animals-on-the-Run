@@ -14,13 +14,18 @@ public class MonkeyInAir : MonkeyState
         base.OnValidate(monkey);
     }
 
-    public override void FixedUpdate()
+    public override void Update()
     {
         if (monkey.x > 0)
             monkey.facingRight = true;
         else if (monkey.x < 0)
             monkey.facingRight = false;
 
+        AirAnimations();
+    }
+
+    public override void FixedUpdate()
+    {
         monkey.movement = new Vector2(monkey.x * airSpeed, monkey.rb2d.velocity.y);
 
         if (monkey.grounded && !monkey.jumping)
@@ -29,10 +34,13 @@ public class MonkeyInAir : MonkeyState
         if (monkey.rb2d.velocity.y != 0)
             monkey.landingVelocity = monkey.rb2d.velocity.y * -1;
 
+        if (monkey.y != 0.0f && monkey.canClimb && !monkey.grounded)
+            monkey.ChangeState(monkey.climbingState);
+
         if (monkey.jumping)
             CheckIfJumping();
 
-        AirAnimations();
+        
     }
 
     void CheckIfJumping()
