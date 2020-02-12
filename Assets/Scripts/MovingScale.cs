@@ -49,7 +49,7 @@ public class MovingScale : MonoBehaviour
         {
             print(collision.tag);
             amountofboxes++;
-            collision.gameObject.transform.SetParent(transform);
+           // collision.gameObject.transform.SetParent(transform);
            
         }
 
