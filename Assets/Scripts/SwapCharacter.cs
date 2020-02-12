@@ -4,25 +4,31 @@ using UnityEngine;
 
 public class SwapCharacter : MonoBehaviour
 {
+    MenyUI mMeny;
     public List<GameObject> characters;
     private Monkey mMonkey;
     private Dog mDog;
     public int SelectedChar;
     private Camera cam;
-    [HideInInspector]public bool levelcompleted = false;
+    
     public enum activeCharacter
     {
         Monkey,
         Dog,
     }
-    // Start is called before the first frame update
+
+    private void Awake()
+    {
+
+        mMonkey = characters[0].GetComponent<Monkey>();
+        mDog = characters[1].GetComponent<Dog>();
+    }
     void Start()
     {
         SelectedChar = 0;
-        mMonkey = characters[0].GetComponent<Monkey>();
-        mDog = characters[1].GetComponent<Dog>();
-        cam = Camera.main;
         
+        cam = Camera.main;
+        mMeny = GameObject.Find("Meny").GetComponent<MenyUI>();
     }
 
     // Update is called once per frame
@@ -67,7 +73,7 @@ public class SwapCharacter : MonoBehaviour
 
         if (mMonkey.monkeyLevelComplete && mDog.dogLevelComplete)
         {
-            levelcompleted = true;
+            mMeny.NextLevel();
         }
         
     }

@@ -517,7 +517,7 @@ public class Monkey : MonoBehaviour
         float landingTime = 0.015f * landingVelocity;
         if (landingTime > maxLandingTime)
             landingTime = maxLandingTime;
-        print(landingTime);
+        
         yield return new WaitForSeconds(landingTime);
         if (!scared)
             cannotMove = false;
