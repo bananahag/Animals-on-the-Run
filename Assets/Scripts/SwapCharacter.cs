@@ -19,14 +19,11 @@ public class SwapCharacter : MonoBehaviour
 
     private void Awake()
     {
-        
+
         mMonkey = characters[0].GetComponent<Monkey>();
         mDog = characters[1].GetComponent<Dog>();
     }
-    // Start is called before the first frame update
-
-
-    private void Awake()
+    void Start()
     {
         SelectedChar = 0;
         
