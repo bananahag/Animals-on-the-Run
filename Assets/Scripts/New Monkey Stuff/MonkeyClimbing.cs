@@ -34,6 +34,11 @@ public class MonkeyClimbing : MonkeyState
         monkey.rb2d.gravityScale = 0.0f;
         monkey.movement = new Vector2(0.0f, 0.0f);
         canChangeClimbingDirection = false;
+        canPlayClimbingSoundAgain = true;
+        timePassed1 = 0.0f;
+        timePassed2 = 0.0f;
+        timePassed3 = 0.0f;
+
         if (monkey.transform.position.x <= monkey.ladderXPosition && monkey.oneWayLadder == 0 || monkey.oneWayLadder == 2)
         {
             monkey.transform.position = new Vector3(monkey.ladderXPosition - ladderCenterOffsetDistance, monkey.transform.position.y, monkey.transform.position.z);
@@ -53,21 +58,24 @@ public class MonkeyClimbing : MonkeyState
     {
         monkey.rb2d.gravityScale = monkey.startGravityScale;
         monkey.movement = new Vector2(monkey.rb2d.velocity.x, monkey.rb2d.velocity.y);
-        //monkey.canChangeClimbingDirection = false;
         monkey.animator.enabled = true;
     }
 
     public override void Update()
     {
-        CanChangeClimbingDirectionTimer();
-        //StopClimbing();
         ClimbingSoundsLoop();
+        CheckInput();
     }
 
     public override void FixedUpdate()
     {
         monkey.movement = new Vector2(0.0f, monkey.y * climbingSpeed);
-        if (!monkey.canClimb ||monkey.grounded && monkey.y < 0.0f)
+        if (!monkey.canClimb)
+        {
+            Debug.Log("Test");
+            monkey.ChangeState(monkey.inAirState);
+        }
+        if (monkey.grounded && monkey.y < 0.0f)
             monkey.ChangeState(monkey.inAirState);
 
         if (monkey.rb2d.velocity.y != 0)
@@ -76,9 +84,18 @@ public class MonkeyClimbing : MonkeyState
         Climbing();
     }
 
+    void CheckInput()
+    {
+        if (Input.GetButtonDown("Jump"))
+        {
+            monkey.audioSource.PlayOneShot(ladderClimbSFX);
+            monkey.ChangeState(monkey.jumpsquatState);
+            monkey.rb2d.velocity = new Vector2(0.0f, 0.0f);
+        }
+    }
+
     void Climbing()
     {
-        
         if (monkey.y != 0)
             monkey.animator.enabled = true;
         else
@@ -99,19 +116,17 @@ public class MonkeyClimbing : MonkeyState
             }
 
             if (monkey.y == 0)
-            {
                 StopClimbing();
-            }
             else
                 timePassed2 = 0.0f;
         }
 
-        /*if (monkey.oneWayLadder != 0 && monkey.y == 0)
+        if (monkey.oneWayLadder != 0 && monkey.y == 0)
         {
             if (monkey.oneWayLadder == 1 && monkey.x > 0.0f)
-                StartCoroutine(StopClimbing());
+                StopClimbing();
             else if (monkey.oneWayLadder == 2 && monkey.x < 0.0f)
-                StartCoroutine(StopClimbing());
+                StopClimbing();
         }
         if (monkey.x == 0.0f)
         {
@@ -121,12 +136,13 @@ public class MonkeyClimbing : MonkeyState
 
         if (monkey.y != 0.0f && canPlayClimbingSoundAgain)
         {
-            StartCoroutine(ClimbingSoundsLoop());
+            monkey.audioSource.PlayOneShot(ladderClimbSFX);
+            timePassed3 = 0.0f;
             canPlayClimbingSoundAgain = false;
         }
 
         if (!canChangeClimbingDirection)
-            StartCoroutine(CanChangeClimbingDirectionTimer());*/
+            CanChangeClimbingDirectionTimer();
 
     }
 
@@ -151,29 +167,25 @@ public class MonkeyClimbing : MonkeyState
         if (stopClimbingTime < timePassed2)
         {
             if (holdingRight && monkey.x > 0.0f && monkey.y == 0 || !holdingRight && monkey.x < 0.0f && monkey.y == 0)
-            {
-                monkey.rb2d.gravityScale = monkey.startGravityScale;
-                monkey.animator.enabled = true;
-            }
+                monkey.ChangeState(monkey.inAirState);
         }
     }
 
     void ClimbingSoundsLoop()
     {
-        timePassed3 += Time.deltaTime;
-        if (timeBetweenClimbingSounds < timePassed3)
+        if (!canPlayClimbingSoundAgain)
         {
-
+            timePassed3 += Time.deltaTime;
+            if (timeBetweenClimbingSounds < timePassed3)
+            {
+                if (monkey.y != 0.0f)
+                {
+                    monkey.audioSource.PlayOneShot(ladderClimbSFX);
+                    timePassed3 = 0.0f;
+                }
+                else
+                    canPlayClimbingSoundAgain = true;
+            }
         }
     }
-
-    /*IEnumerator ClimbifffngSoundsLoop()
-    {
-        audioSource.PlayOneShot(ladderClimbSFX);
-        yield return new WaitForSeconds(timeBetweenClimbingSounds);
-        if (climbing && y != 0.0f)
-            StartCoroutine(ClimbingSoundsLoop());
-        else
-            canPlayClimbingSoundAgain = true;
-    }*/
 }
