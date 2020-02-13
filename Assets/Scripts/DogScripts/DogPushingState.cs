@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DogJumpingState : DogState
+public class DogPushingState : DogState
 {
-
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;

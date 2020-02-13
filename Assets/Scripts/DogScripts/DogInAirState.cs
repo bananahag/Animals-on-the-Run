@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DogGroundedState : DogState
+public class DogInAirState : DogState
 {
-
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;
@@ -22,25 +21,12 @@ public class DogGroundedState : DogState
 
     public override void Update()
     {
-        CheckInput();
 
-        if (!dog.grounded)
-        {
-            dog.ChangeState(dog.inAirState);
-        }
     }
 
     public override void FixedUpdate()
     {
 
-    }
-
-    public void CheckInput()
-    {
-        if (Input.GetButtonDown("Jump"))
-        {
-            dog.ChangeState(dog.inAirState);
-        }
     }
 
     public override void OnTriggerEnter2D(Collider2D other)
@@ -53,4 +39,11 @@ public class DogGroundedState : DogState
 
     }
 
+    public void CheckIfFalling()
+    {
+        if(dog.rb2d.velocity.y < 0)
+        {
+            dog.animator.Play("DogFalling");
+        }
+    }
 }
