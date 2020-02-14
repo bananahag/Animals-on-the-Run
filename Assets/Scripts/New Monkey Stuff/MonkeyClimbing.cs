@@ -21,6 +21,7 @@ public class MonkeyClimbing : MonkeyState
     public float canChangeClimbingDirectionTime = 0.5f;
 
     bool canChangeClimbingDirection, canPlayClimbingSoundAgain;
+    bool onTopOfTheLadder;
     float timePassed1, timePassed2, timePassed3;
 
     public override void OnValidate(MonkeyBehavior monkey)
@@ -64,24 +65,39 @@ public class MonkeyClimbing : MonkeyState
     public override void Update()
     {
         ClimbingSoundsLoop();
-        CheckInput();
+        if (monkey.active)
+            CheckInput();
     }
 
     public override void FixedUpdate()
     {
-        monkey.movement = new Vector2(0.0f, monkey.y * climbingSpeed);
+        
+        Climbing();
         if (!monkey.canClimb)
         {
-            Debug.Log("Test");
-            monkey.ChangeState(monkey.inAirState);
+            if (monkey.y > 0.0f)
+                onTopOfTheLadder = true;
+            else if (!onTopOfTheLadder && monkey.landingVelocity > 0.0f)
+                monkey.ChangeState(monkey.inAirState);
         }
+        else
+            onTopOfTheLadder = false;
         if (monkey.grounded && monkey.y < 0.0f)
             monkey.ChangeState(monkey.inAirState);
 
         if (monkey.rb2d.velocity.y != 0)
             monkey.landingVelocity = monkey.rb2d.velocity.y * -1;
 
-        Climbing();
+        Debug.Log(onTopOfTheLadder);
+        if (onTopOfTheLadder)
+        {
+            if (monkey.y > 0.0f)
+                monkey.movement = new Vector2(0.0f, 0.0f);
+            else
+                monkey.movement = new Vector2(0.0f, monkey.y * climbingSpeed);
+        }
+        else
+            monkey.movement = new Vector2(0.0f, monkey.y * climbingSpeed);
     }
 
     void CheckInput()
@@ -96,7 +112,7 @@ public class MonkeyClimbing : MonkeyState
 
     void Climbing()
     {
-        if (monkey.y != 0)
+        if (monkey.y != 0 && !onTopOfTheLadder || onTopOfTheLadder && monkey.y < 0.0f)
             monkey.animator.enabled = true;
         else
             monkey.animator.enabled = false;
@@ -134,7 +150,7 @@ public class MonkeyClimbing : MonkeyState
             timePassed2 = 0.0f;
         }
 
-        if (monkey.y != 0.0f && canPlayClimbingSoundAgain)
+        if (monkey.y != 0.0f && canPlayClimbingSoundAgain && !onTopOfTheLadder || monkey.y < 0.0f && canPlayClimbingSoundAgain && onTopOfTheLadder)
         {
             monkey.audioSource.PlayOneShot(ladderClimbSFX);
             timePassed3 = 0.0f;
@@ -178,7 +194,7 @@ public class MonkeyClimbing : MonkeyState
             timePassed3 += Time.deltaTime;
             if (timeBetweenClimbingSounds < timePassed3)
             {
-                if (monkey.y != 0.0f)
+                if (monkey.y != 0.0f && !onTopOfTheLadder || onTopOfTheLadder && monkey.y < 0.0f)
                 {
                     monkey.audioSource.PlayOneShot(ladderClimbSFX);
                     timePassed3 = 0.0f;

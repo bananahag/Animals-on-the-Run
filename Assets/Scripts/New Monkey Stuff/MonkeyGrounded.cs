@@ -21,7 +21,8 @@ public class MonkeyGrounded : MonkeyState
 
     public override void Update()
     {
-        CheckInput();
+        if (monkey.active)
+            CheckInput();
         if (monkey.x > 0)
             monkey.facingRight = true;
         else if (monkey.x < 0)

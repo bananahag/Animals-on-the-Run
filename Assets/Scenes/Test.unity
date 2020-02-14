@@ -955,7 +955,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.14783804}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -966,7 +966,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 1}
+  m_Size: {x: 0.1, y: 0.7043239}
   m_EdgeRadius: 0
 --- !u!212 &1409145224
 SpriteRenderer:
@@ -1889,6 +1889,7 @@ MonoBehaviour:
   carryingBucket: 0
   canClimb: 0
   movement: {x: 0, y: 0}
+  active: 0
   groundedState:
     monkey: {fileID: 5749670344719481480}
     stepSFX: {fileID: 8300000, guid: 3a62e33ab62681640bd2654aec3dd9c7, type: 3}

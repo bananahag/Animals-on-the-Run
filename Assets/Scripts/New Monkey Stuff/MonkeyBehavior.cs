@@ -33,6 +33,9 @@ public class MonkeyBehavior : MonoBehaviour
     [HideInInspector]
     public Vector2 movement;
 
+    [HideInInspector]
+    public bool active;
+
     public MonkeyGrounded groundedState = new MonkeyGrounded();
     public MonkeyJumpsquat jumpsquatState = new MonkeyJumpsquat();
     public MonkeyInAir inAirState = new MonkeyInAir();
@@ -62,6 +65,8 @@ public class MonkeyBehavior : MonoBehaviour
         rb2d.freezeRotation = true;
         startGravityScale = rb2d.gravityScale;
 
+        active = true;
+
         currentState = groundedState;
         currentState.Enter();
     }
@@ -69,12 +74,27 @@ public class MonkeyBehavior : MonoBehaviour
     void Update()
     {
         currentState.Update();
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            if (active)
+                active = false;
+            else
+                active = true;
+        }
     }
 
     void FixedUpdate()
     {
-        x = Input.GetAxisRaw("Horizontal");
-        y = Input.GetAxisRaw("Vertical");
+        if (active)
+        {
+            x = Input.GetAxisRaw("Horizontal");
+            y = Input.GetAxisRaw("Vertical");
+        }
+        else
+        {
+            x = 0.0f;
+            y = 0.0f;
+        }
 
         if (facingRight)
             spriteRenderer.flipX = false;
@@ -124,14 +144,7 @@ public class MonkeyBehavior : MonoBehaviour
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag == "Ladder")
-        {
-            /*if (y > 0.0f && !carrying && !jumping && rb2d.velocity.y == 4.0f && !Input.GetButtonDown("Jump"))
-            {
-                audioSource.PlayOneShot(topOfLadderSFX);
-            }*/
             canClimb = false;
-            oneWayLadder = 0;
-        }
         currentState.OnTriggerExit2D(other);
     }
 

@@ -45,7 +45,7 @@ public class MonkeyInAir : MonkeyState
 
     void CheckIfJumping()
     {
-        if (!Input.GetButton("Jump") && monkey.rb2d.velocity.y >= 0.0f)
+        if (!Input.GetButton("Jump") && monkey.rb2d.velocity.y >= 0.0f || !monkey.active)
         {
             monkey.movement = new Vector2(monkey.rb2d.velocity.x, monkey.rb2d.velocity.y / 2.0f);
             monkey.jumping = false;
