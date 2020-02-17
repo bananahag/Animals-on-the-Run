@@ -7,13 +7,9 @@ public class MonkeyBehavior : MonoBehaviour
     [Tooltip("If either of these transforms touches an object with the ''Ground'' layer the monkey will be grounded.")]
     public Transform groundCheckLeft = null, groundCheckRight = null;
     [HideInInspector]
-    public bool grounded;
+    public bool grounded, jumping, jumpBuffer;
     [HideInInspector]
-    public bool jumping;
-    [HideInInspector]
-    public float landingVelocity;
-    [HideInInspector]
-    public float startGravityScale;
+    public float landingVelocity, startGravityScale;
 
     [HideInInspector]
     public AudioSource audioSource = null;
@@ -29,9 +25,11 @@ public class MonkeyBehavior : MonoBehaviour
     [HideInInspector]
     public float x, y, ladderXPosition;
     [HideInInspector]
-    public bool facingRight, carryingBucket, canClimb;
+    public bool facingRight, carryingBucket, canClimb, canPickUpEel, canPullLever, canOpenCage, monkeyLevelComplete;
     [HideInInspector]
     public Vector2 movement;
+    [HideInInspector]
+    public GameObject lever, cage;
 
     [HideInInspector]
     public bool active;
@@ -41,6 +39,9 @@ public class MonkeyBehavior : MonoBehaviour
     public MonkeyInAir inAirState = new MonkeyInAir();
     public MonkeyLanding landingState = new MonkeyLanding();
     public MonkeyClimbing climbingState = new MonkeyClimbing();
+    public MonkeyPickingUp pickingUpState = new MonkeyPickingUp();
+    public MonkeyPuttingDown puttingDownState = new MonkeyPuttingDown();
+    public MonkeyInteract interactState = new MonkeyInteract();
 
     MonkeyState currentState = null;
 
@@ -51,6 +52,9 @@ public class MonkeyBehavior : MonoBehaviour
         inAirState.OnValidate(this);
         landingState.OnValidate(this);
         climbingState.OnValidate(this);
+        pickingUpState.OnValidate(this);
+        puttingDownState.OnValidate(this);
+        interactState.OnValidate(this);
 
         if (groundCheckLeft == null || groundCheckRight == null)
             Debug.LogWarning("At least one player ground check is not assigned!");
@@ -138,14 +142,52 @@ public class MonkeyBehavior : MonoBehaviour
                     oneWayLadder = 2;
             }
         }
-        currentState.OnTriggerEnter2D(other);
+
+        if (other.gameObject.tag == "Eel")
+            canPickUpEel = true;
+
+        if (other.gameObject.tag == "Lever")
+        {
+            canPullLever = true;
+            lever = other.gameObject;
+        }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Human") || other.gameObject.layer == LayerMask.NameToLayer("AboveWater"))
+        {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Human") && other.gameObject.GetComponent<Human>().charmed) { }
+            else
+            {
+                Debug.Log("am here " + other.gameObject.name);
+                //scaryObject = other.gameObject;
+            }
+        }
+
+        if (other.gameObject.tag == "Cage" && !other.gameObject.GetComponent<Cage>().opened)
+        {
+            canOpenCage = true;
+            cage = other.gameObject;
+        }
+
+        if (other.gameObject.tag == "Finish")
+            monkeyLevelComplete = true;
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag == "Ladder")
             canClimb = false;
-        currentState.OnTriggerExit2D(other);
+
+        if (other.gameObject.tag == "Eel")
+            canPickUpEel = false;
+
+        if (other.gameObject.tag == "Lever")
+            canPullLever = false;
+
+        if (other.gameObject.tag == "Cage")
+            canOpenCage = false;
+
+        if (other.gameObject.tag == "Finish")
+            monkeyLevelComplete = false;
     }
 
     public void ChangeState(MonkeyState targetState)

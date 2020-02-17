@@ -1875,6 +1875,7 @@ MonoBehaviour:
   groundCheckRight: {fileID: 5749670345052922200}
   grounded: 0
   jumping: 0
+  jumpBuffer: 0
   landingVelocity: 0
   startGravityScale: 0
   audioSource: {fileID: 0}
@@ -1888,7 +1889,13 @@ MonoBehaviour:
   facingRight: 0
   carryingBucket: 0
   canClimb: 0
+  canPickUpEel: 0
+  canPullLever: 0
+  canOpenCage: 0
+  monkeyLevelComplete: 0
   movement: {x: 0, y: 0}
+  lever: {fileID: 0}
+  cage: {fileID: 0}
   active: 0
   groundedState:
     monkey: {fileID: 5749670344719481480}
@@ -1903,6 +1910,8 @@ MonoBehaviour:
   inAirState:
     monkey: {fileID: 5749670344719481480}
     airSpeed: 5
+    cannotClimbAfterJumpingTimer: 0.25
+    jumpBufferDuration: 0.25
   landingState:
     monkey: {fileID: 5749670344719481480}
     landingSFX: {fileID: 8300000, guid: 3a62e33ab62681640bd2654aec3dd9c7, type: 3}
@@ -1916,6 +1925,18 @@ MonoBehaviour:
     timeBetweenClimbingSounds: 0.25
     stopClimbingTime: 0.5
     canChangeClimbingDirectionTime: 0.5
+  pickingUpState:
+    monkey: {fileID: 5749670344719481480}
+    pickingUpSFX: {fileID: 8300000, guid: de497eae1292bee428ef2e506ecffe8b, type: 3}
+    pickUpTime: 1
+  puttingDownState:
+    monkey: {fileID: 5749670344719481480}
+    putDownSFX: {fileID: 8300000, guid: b769c3d58fe643a478ae807aa96df45d, type: 3}
+    putDownTime: 1
+  interactState:
+    monkey: {fileID: 5749670344719481480}
+    interactSFX: {fileID: 8300000, guid: 61246074655197b4e9b9fbc7ba6719d6, type: 3}
+    interactTime: 1
 --- !u!212 &5749670344719481532
 SpriteRenderer:
   m_ObjectHideFlags: 0

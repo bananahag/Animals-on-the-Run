@@ -8,10 +8,29 @@ public class MonkeyInAir : MonkeyState
 {
     [Tooltip("The speed of the monkey when she is in the air. (Only affects the horizontal speed)")]
     public float airSpeed = 5.0f;
+    [Tooltip("The duration of time (in seconds) where the monkey is unable to climb ladders after jumping. When the timer is up the monkey is able to climb again.")]
+    public float cannotClimbAfterJumpingTimer = 0.25f;
+    [Tooltip("The time (in seconds) you can press jump before landing to still jump when you land. Basically when you press jump a little bit too early the monkey still jumps. Please ask Albin if you're confused about what this means.")]
+    public float jumpBufferDuration = 0.25f;
+
+    bool canClimb;
+    float timePassed = 0.0f, timePassed2 = 0.0f;
 
     public override void OnValidate(MonkeyBehavior monkey)
     {
         base.OnValidate(monkey);
+    }
+
+    public override void Enter()
+    {
+        timePassed = 0.0f;
+        timePassed2 = 0.0f;
+        monkey.jumpBuffer = false;
+
+        if (monkey.jumping)
+            canClimb = false;
+        else
+            canClimb = true;
     }
 
     public override void Update()
@@ -22,10 +41,13 @@ public class MonkeyInAir : MonkeyState
             monkey.facingRight = false;
 
         AirAnimations();
+        if (monkey.active)
+            CheckInput();
     }
 
     public override void FixedUpdate()
     {
+        Debug.Log(monkey.jumpBuffer);
         monkey.movement = new Vector2(monkey.x * airSpeed, monkey.rb2d.velocity.y);
 
         if (monkey.grounded && !monkey.jumping)
@@ -34,13 +56,39 @@ public class MonkeyInAir : MonkeyState
         if (monkey.rb2d.velocity.y != 0)
             monkey.landingVelocity = monkey.rb2d.velocity.y * -1;
 
-        if (monkey.y != 0.0f && monkey.canClimb && !monkey.grounded)
+        if (monkey.y != 0.0f && monkey.canClimb && canClimb && !monkey.grounded)
             monkey.ChangeState(monkey.climbingState);
 
         if (monkey.jumping)
             CheckIfJumping();
 
-        
+        if (!canClimb)
+            CannotClimbAfterJumping();
+
+        if (monkey.jumpBuffer)
+            JumpBufferTimer();
+        else
+            timePassed2 = 0.0f;
+    }
+
+    void CheckInput()
+    {
+        if (Input.GetButtonDown("Jump"))
+            monkey.jumpBuffer = true;
+    }
+
+    void CannotClimbAfterJumping ()
+    {
+        timePassed += Time.deltaTime;
+        if (cannotClimbAfterJumpingTimer < timePassed)
+            canClimb = true;
+    }
+
+    void JumpBufferTimer()
+    {
+        timePassed2 += Time.deltaTime;
+        if (jumpBufferDuration < timePassed2)
+            monkey.jumpBuffer = false;
     }
 
     void CheckIfJumping()

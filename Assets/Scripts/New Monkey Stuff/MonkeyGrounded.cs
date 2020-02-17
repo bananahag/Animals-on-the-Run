@@ -47,9 +47,28 @@ public class MonkeyGrounded : MonkeyState
 
     void CheckInput()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
+        if (Input.GetButtonDown("Jump") || monkey.jumpBuffer)
             monkey.ChangeState(monkey.jumpsquatState);
+
+        if (Input.GetButtonDown("Interact"))
+        {
+            if (monkey.canPickUpEel && !monkey.carryingBucket)
+                monkey.ChangeState(monkey.pickingUpState);
+            else if (monkey.carryingBucket)
+                monkey.ChangeState(monkey.puttingDownState);
+
+            else if (monkey.canOpenCage)
+            {
+                monkey.cage.GetComponent<Cage>().Open();
+                monkey.ChangeState(monkey.interactState);
+                monkey.canOpenCage = false;
+            }
+            
+            else if (monkey.canPullLever)
+            {
+                monkey.lever.GetComponent<ButtonOrLever>().Activate();
+                monkey.ChangeState(monkey.interactState);
+            }
         }
     }
 

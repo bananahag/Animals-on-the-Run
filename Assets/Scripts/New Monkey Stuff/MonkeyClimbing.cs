@@ -26,7 +26,7 @@ public class MonkeyClimbing : MonkeyState
 
     public override void OnValidate(MonkeyBehavior monkey)
     {
-        base.OnValidate(monkey);//CAN CLIMB AFTER JUMPING THING
+        base.OnValidate(monkey);
     }
 
     public override void Enter()
@@ -88,7 +88,6 @@ public class MonkeyClimbing : MonkeyState
         if (monkey.rb2d.velocity.y != 0)
             monkey.landingVelocity = monkey.rb2d.velocity.y * -1;
 
-        Debug.Log(onTopOfTheLadder);
         if (onTopOfTheLadder)
         {
             if (monkey.y > 0.0f)
