@@ -40,7 +40,8 @@ public class MonkeyScared : MonkeyState
             monkey.rb2d.velocity = new Vector2(0.0f, 0.0f);
             secondPhase = true;
         }
-        
+
+        monkey.jumpBuffer = false;
     }
 
     public override void Exit()
