@@ -44,13 +44,15 @@ public class MonkeyLanding : MonkeyState
         timePassed += Time.deltaTime;
         if (landingTime < timePassed)
         {
-            if (monkey.jumpBuffer)
+            if (monkey.scaredCheck)
+                monkey.ChangeState(monkey.scaredState);
+            else if (monkey.jumpBuffer)
                 monkey.ChangeState(monkey.jumpsquatState);
             else
                 monkey.ChangeState(monkey.groundedState);
         }
 
-        if (monkey.active)
+        if (monkey.active && !monkey.scaredCheck)
             CheckInput();
     }
 

@@ -38,7 +38,7 @@ public class MonkeyGrounded : MonkeyState
         else
             monkey.movement = new Vector2(monkey.x * walkingSpeed, monkey.rb2d.velocity.y);
 
-        if (monkey.y > 0.0f && monkey.canClimb)
+        if (monkey.y > 0.0f && monkey.canClimb && !monkey.carryingBucket)
             monkey.ChangeState(monkey.climbingState);
 
         

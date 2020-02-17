@@ -25,11 +25,11 @@ public class MonkeyBehavior : MonoBehaviour
     [HideInInspector]
     public float x, y, ladderXPosition;
     [HideInInspector]
-    public bool facingRight, carryingBucket, canClimb, canPickUpEel, canPullLever, canOpenCage, monkeyLevelComplete;
+    public bool facingRight, carryingBucket, canClimb, canPickUpEel, canPullLever, canOpenCage, scaredCheck, runAwayScared, monkeyLevelComplete;
     [HideInInspector]
     public Vector2 movement;
     [HideInInspector]
-    public GameObject lever, cage;
+    public GameObject lever, cage, scaryObject;
 
     [HideInInspector]
     public bool active;
@@ -42,6 +42,7 @@ public class MonkeyBehavior : MonoBehaviour
     public MonkeyPickingUp pickingUpState = new MonkeyPickingUp();
     public MonkeyPuttingDown puttingDownState = new MonkeyPuttingDown();
     public MonkeyInteract interactState = new MonkeyInteract();
+    public MonkeyScared scaredState = new MonkeyScared();
 
     MonkeyState currentState = null;
 
@@ -55,6 +56,7 @@ public class MonkeyBehavior : MonoBehaviour
         pickingUpState.OnValidate(this);
         puttingDownState.OnValidate(this);
         interactState.OnValidate(this);
+        scaredState.OnValidate(this);
 
         if (groundCheckLeft == null || groundCheckRight == null)
             Debug.LogWarning("At least one player ground check is not assigned!");
@@ -89,7 +91,7 @@ public class MonkeyBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (active)
+        if (active && !scaredCheck)
         {
             x = Input.GetAxisRaw("Horizontal");
             y = Input.GetAxisRaw("Vertical");
@@ -154,11 +156,17 @@ public class MonkeyBehavior : MonoBehaviour
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Human") || other.gameObject.layer == LayerMask.NameToLayer("AboveWater"))
         {
+            if (other.gameObject.layer == LayerMask.NameToLayer("AboveWater"))
+                runAwayScared = true;
+            else
+                runAwayScared = false;
             if (other.gameObject.layer == LayerMask.NameToLayer("Human") && other.gameObject.GetComponent<Human>().charmed) { }
             else
             {
                 Debug.Log("am here " + other.gameObject.name);
-                //scaryObject = other.gameObject;
+                scaryObject = other.gameObject;
+                scaredCheck = false;
+                ChangeState(scaredState);
             }
         }
 

@@ -47,7 +47,6 @@ public class MonkeyInAir : MonkeyState
 
     public override void FixedUpdate()
     {
-        Debug.Log(monkey.jumpBuffer);
         monkey.movement = new Vector2(monkey.x * airSpeed, monkey.rb2d.velocity.y);
 
         if (monkey.grounded && !monkey.jumping)
