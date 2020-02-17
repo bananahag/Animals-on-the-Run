@@ -21,7 +21,8 @@ public class MonkeyGrounded : MonkeyState
 
     public override void Update()
     {
-        CheckInput();
+        if (monkey.active)
+            CheckInput();
         if (monkey.x > 0)
             monkey.facingRight = true;
         else if (monkey.x < 0)
@@ -37,7 +38,7 @@ public class MonkeyGrounded : MonkeyState
         else
             monkey.movement = new Vector2(monkey.x * walkingSpeed, monkey.rb2d.velocity.y);
 
-        if (monkey.y > 0.0f && monkey.canClimb)
+        if (monkey.y > 0.0f && monkey.canClimb && !monkey.carryingBucket)
             monkey.ChangeState(monkey.climbingState);
 
         
@@ -46,9 +47,28 @@ public class MonkeyGrounded : MonkeyState
 
     void CheckInput()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
+        if (Input.GetButtonDown("Jump") || monkey.jumpBuffer)
             monkey.ChangeState(monkey.jumpsquatState);
+
+        if (Input.GetButtonDown("Interact"))
+        {
+            if (monkey.canPickUpEel && !monkey.carryingBucket)
+                monkey.ChangeState(monkey.pickingUpState);
+            else if (monkey.carryingBucket)
+                monkey.ChangeState(monkey.puttingDownState);
+
+            else if (monkey.canOpenCage)
+            {
+                monkey.cage.GetComponent<Cage>().Open();
+                monkey.ChangeState(monkey.interactState);
+                monkey.canOpenCage = false;
+            }
+            
+            else if (monkey.canPullLever)
+            {
+                monkey.lever.GetComponent<ButtonOrLever>().Activate();
+                monkey.ChangeState(monkey.interactState);
+            }
         }
     }
 
