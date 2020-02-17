@@ -21,6 +21,9 @@ public class Dog : MonoBehaviour
     public float leftInteractPos = -1f;
     public float rightInteractPos = 1f;
 
+    public float yInteractOffsetAbove = 0.9f;
+    public float yInteractOffsetBelow = -0.9f;
+
     private GameObject human;
     private GameObject affectedObject;
     private float interactPosition;
@@ -192,7 +195,7 @@ public class Dog : MonoBehaviour
     {
         if (affectedObject != null)
         {
-            if (Input.GetButton("Interact") && canMoveObject)
+            if (Input.GetButtonDown("Interact") && canMoveObject && movingObject == false)
             {
                 if (affectedObject != null)
                 {
@@ -216,7 +219,7 @@ public class Dog : MonoBehaviour
                     lockJump = true;
                 }
             }
-            else if(!Input.GetButton("Interact") && movingObject)
+            else if(Input.GetButtonDown("Interact") && movingObject)
             {
                 affectedObject.GetComponent<Rigidbody2D>().isKinematic = false;
                 rb2d.GetComponent<Rigidbody2D>().isKinematic = false;
@@ -224,6 +227,8 @@ public class Dog : MonoBehaviour
                 lockJump = false;
                 affectedObject.transform.parent = null;
                 positionChecked = false;
+                movingObject = false;
+                canMoveObject = false;
             }
         }
     }
@@ -276,22 +281,13 @@ public class Dog : MonoBehaviour
 
             Vector3 dir = affectedObject.transform.position - transform.position;
             Debug.Log(dir);
-            if(dir.y >= 0.9 || dir.y <= -0.9)
+            if (dir.y >= yInteractOffsetAbove || dir.y <= yInteractOffsetBelow)
             {
                 canMoveObject = false;
             }
             else
             {
                 canMoveObject = true;
-                /*if (dir.x < 0)
-                {
-                    interactPosition = leftInteractPos;
-                }
-                if (dir.x > 0)
-                {
-                    interactPosition = RightInteractPos;
-                }
-                */
             }
         }
     }
