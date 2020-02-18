@@ -24,7 +24,6 @@ public class MonkeyLanding : MonkeyState
     public override void Enter()
     {
         timePassed = 0.0f;
-        monkey.rb2d.gravityScale = 0.0f;
         monkey.animator.Play("Placeholder Monkey Land");
         monkey.audioSource.PlayOneShot(landingSFX);
 
