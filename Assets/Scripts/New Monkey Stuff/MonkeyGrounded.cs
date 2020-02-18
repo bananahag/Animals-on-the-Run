@@ -10,9 +10,9 @@ public class MonkeyGrounded : MonkeyState
     public AudioClip stepSFX;
 
     [Tooltip("The walking speed of the monkey when she IS NOT carrying the bucket.")]
-    public float walkingSpeed = 5.0f;
+    public float walkingSpeed = 4.0f;
     [Tooltip("The walking speed of the monkey when she IS carrying the bucket.")]
-    public float walkingSpeedWhenCarryingBucket = 3.5f;
+    public float walkingSpeedWhenCarryingBucket = 3.0f;
 
     public override void OnValidate(MonkeyBehavior monkey)
     {
