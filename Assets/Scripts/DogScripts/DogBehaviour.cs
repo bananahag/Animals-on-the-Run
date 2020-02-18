@@ -35,6 +35,7 @@ public class DogBehaviour : MonoBehaviour
 
     public DogGroundedState groundedState = new DogGroundedState();
     public DogInAirState inAirState = new DogInAirState();
+    public DogPushingState pushingState = new DogPushingState();
 
 
     DogState currentState = null;

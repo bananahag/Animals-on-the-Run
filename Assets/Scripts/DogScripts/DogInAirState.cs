@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DogInAirState : DogState
 {
+
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;
@@ -39,11 +40,15 @@ public class DogInAirState : DogState
 
     }
 
-    public void CheckIfFalling()
+    public void AirAnimations()
     {
-        if(dog.rb2d.velocity.y < 0)
+        if (dog.movement.y < 0)
         {
             dog.animator.Play("DogFalling");
+        }
+        else if (dog.movement.y >= 0)
+        {
+            dog.animator.Play("DogJumping");
         }
     }
 }
