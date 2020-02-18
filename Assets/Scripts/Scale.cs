@@ -4,28 +4,31 @@ using UnityEngine;
 
 public class Scale : MonoBehaviour
 {
+    [Tooltip("The anchor for the left part of the scale")]
     public GameObject leftAnchor;
-    Vector2 leftStartpos;
+    [Tooltip("The anchor for the right part of the scale")]
     public GameObject rightAnchor;
+    [Tooltip("The right scale which is a part of the scalelift")]
     public GameObject connectedScale;
-    Vector2 rightStartpos;
-    [Tooltip("Gamer juice")]
-    public List<Transform> leftAnchorpoints;
-    public List<Transform> rightAnchorpoints;
-    public int amountofboxes;
-    float startTime;
-    public float speed = 1.0f;
-    bool notCalled;
     public Rigidbody2D rb;
+
+    [Tooltip("Amount of positions the scale will move between, you have to place them out for the left side")]
+    public List<Transform> leftAnchorpoints;
+    Vector2 leftStartpos;
+
+    [HideInInspector]
+    public int amountofboxes;
+    [Tooltip("Sets the speed of the lift")]
+    public float speed = 1.0f;
+
+    float startTime;
     bool movingDown = false;
     bool movingUP = false;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        leftStartpos = leftAnchor.transform.position;
-        rightStartpos = rightAnchor.transform.position;
-        
+        leftStartpos = leftAnchor.transform.position; 
     }
 
     // Update is called once per frame
@@ -42,6 +45,15 @@ public class Scale : MonoBehaviour
     }
     void UpdateScale(float distCovered)
     {
+        if (amountofboxes < 0)
+        {
+            amountofboxes = 0;
+
+        }
+        else if (amountofboxes > leftAnchorpoints.Count)
+        {
+            amountofboxes = leftAnchorpoints.Count;
+        }
         if (movingDown)
         {
             if (amountofboxes == 1)
@@ -49,10 +61,12 @@ public class Scale : MonoBehaviour
                 float fracjourney = distCovered / Vector3.Distance(leftStartpos, leftAnchorpoints[0].position);
                 leftAnchor.transform.position = Vector3.Lerp(leftStartpos, leftAnchorpoints[0].position, fracjourney);
             }
-            else if (amountofboxes == 2)
+            else
             {
-                float fracjourney = distCovered / Vector3.Distance(leftAnchorpoints[0].position, leftAnchorpoints[1].position);
-                leftAnchor.transform.position = Vector3.Lerp(leftAnchorpoints[0].position, leftAnchorpoints[1].position, fracjourney);
+               
+                float fracjourney = distCovered / Vector3.Distance(leftAnchorpoints[amountofboxes -2].position, leftAnchorpoints[amountofboxes - 1].position);
+                leftAnchor.transform.position = Vector3.Lerp(leftAnchorpoints[amountofboxes - 2].position, leftAnchorpoints[amountofboxes - 1].position, fracjourney);
+                
             }
         }
 
@@ -63,10 +77,10 @@ public class Scale : MonoBehaviour
                 float fracjourney = distCovered / Vector3.Distance(leftAnchorpoints[0].position, leftStartpos);
                 leftAnchor.transform.position = Vector3.Lerp(leftAnchorpoints[0].position, leftStartpos, fracjourney);
             }
-            else if (amountofboxes == 1)
+            else
             {
-                float fracjourney = distCovered / Vector3.Distance(leftAnchorpoints[1].position, leftAnchorpoints[0].position);
-                leftAnchor.transform.position = Vector3.Lerp(leftAnchorpoints[1].position, leftAnchorpoints[0].position, fracjourney);
+                float fracjourney = distCovered / Vector3.Distance(leftAnchorpoints[amountofboxes].position, leftAnchorpoints[amountofboxes - 1].position);
+                leftAnchor.transform.position = Vector3.Lerp(leftAnchorpoints[amountofboxes].position, leftAnchorpoints[amountofboxes - 1].position, fracjourney);
             }
         }
     }
