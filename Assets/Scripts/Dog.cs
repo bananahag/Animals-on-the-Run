@@ -81,6 +81,9 @@ public class Dog : MonoBehaviour
         {
             rb2d.velocity = new Vector2(0, 0);
         }
+        radius = GetComponent<SpriteRenderer>().size.x;
+
+        
     }
 
     void FixedUpdate()
@@ -215,13 +218,13 @@ public class Dog : MonoBehaviour
                         }
                         positionChecked = true;
                     }
-                    transform.position = new Vector3(affectedObject.transform.position.x - interactPosition, transform.position.y, 0);
+                    //transform.position = new Vector3(affectedObject.transform.position.x - interactPosition, transform.position.y, 0);
                     //affectedObject.transform.parent = gameObject.transform;
                     //affectedObject.GetComponent<Rigidbody2D>().isKinematic = true;
 
 
                     // rb2d.isKinematic = true;
-                    affectedObject.GetComponent<MovableObject>().pickup(gameObject);
+                    affectedObject.GetComponent<MovableObject>().Pickup(gameObject);
                     movingObject = true;
                     lockJump = true;
                 }
@@ -242,7 +245,7 @@ public class Dog : MonoBehaviour
                 movingObject = false;
                 canMoveObject = true;
                 dropBox = false;
-                affectedObject.GetComponent<MovableObject>().drop();
+                affectedObject.GetComponent<MovableObject>().Drop();
             }
             if(movingObject && !grounded)
             {

@@ -7,7 +7,7 @@ public class MovableObject : MonoBehaviour
     Collider2D objectCollider;
     private Transform ColliderTransform;
     private bool carried;
-    private bool side; //right = true, left = false
+    private bool rightSide; //right = true, left = false
     private GameObject carry;
 
     void Start()
@@ -24,26 +24,26 @@ public class MovableObject : MonoBehaviour
         }
     }
 
-    public bool isCarried()
+    public bool IsCarried()
     {
         return carried;
     }
 
-    public void pickup(GameObject carrier)
+    public void Pickup(GameObject carrier)
     {
         carried = true;
         carry = carrier;
-        if(this.GetComponent<Transform>().position.x - carrier.GetComponent<Transform>().position.x < 0)
+        if(this.GetComponent<Transform>().position.x  > carry.transform.position.x)
         {
-            side = true;
+            rightSide = true;
         } else
         {
-            side = false;
+            rightSide = false;
         }
 
     }
 
-    public void drop() {
+    public void Drop() {
         carry = null;
         carried = false;
     }
@@ -52,7 +52,14 @@ public class MovableObject : MonoBehaviour
     {
         if (carried)
         {
-            transform.position = carry.GetComponent<Transform>().position + new Vector3(carry.GetComponent<Dog>().radius, 0, 0);
+            if(rightSide == true)
+            {
+                transform.position = carry.GetComponent<Transform>().position + new Vector3(carry.GetComponent<Dog>().radius, 0, 0);
+            }
+            else if(rightSide == false)
+            {
+                transform.position = carry.GetComponent<Transform>().position - new Vector3(carry.GetComponent<Dog>().radius, 0, 0);
+            }
         }
     }
 }
