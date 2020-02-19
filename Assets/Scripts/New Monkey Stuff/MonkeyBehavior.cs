@@ -91,6 +91,7 @@ public class MonkeyBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
+        print(grounded);
         if (active && !scaredCheck)
         {
             x = Input.GetAxisRaw("Horizontal");
