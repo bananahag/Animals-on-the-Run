@@ -486,6 +486,54 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 522960058}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &712267011 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8443743008357493128, guid: 81d494fd4a448974f94aaf1d5de7e2a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8443743006458471503}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &712267012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712267011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1522d9d8505454b858293982980307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundCheckLeft: {fileID: 8443743006458471507}
+  groundCheckRight: {fileID: 8443743006458471506}
+  grounded: 0
+  jumping: 0
+  landingVelocity: 0
+  startGravityScale: 0
+  audioSource: {fileID: 0}
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  rb2d: {fileID: 0}
+  x: 0
+  movement: {x: 0, y: 0}
+  facingRight: 0
+  carryingBucket: 0
+  active: 0
+  jumpBuffer: 0
+  groundedState:
+    dog: {fileID: 712267012}
+    stepSFX: {fileID: 0}
+    walkingSpeed: 4
+  inAirState:
+    dog: {fileID: 712267012}
+  pushingState:
+    dog: {fileID: 712267012}
+    leftInteractPos: -1
+    rightInteractPos: 1
+    yInteractOffsetAbove: 0.9
+    yInteractOffsetBelow: -0.9
+  charmingState:
+    dog: {fileID: 712267012}
 --- !u!1001 &987409784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -845,6 +893,11 @@ PrefabInstance:
       propertyPath: radius
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8443743008357493127, guid: 81d494fd4a448974f94aaf1d5de7e2a4,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8443743008357493124, guid: 81d494fd4a448974f94aaf1d5de7e2a4,
         type: 3}
       propertyPath: m_Controller
@@ -861,6 +914,18 @@ GameObject:
 --- !u!95 &8443743006458471505 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 8443743008357493124, guid: 81d494fd4a448974f94aaf1d5de7e2a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8443743006458471503}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8443743006458471506 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8443743006821892592, guid: 81d494fd4a448974f94aaf1d5de7e2a4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8443743006458471503}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8443743006458471507 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8443743006692847185, guid: 81d494fd4a448974f94aaf1d5de7e2a4,
     type: 3}
   m_PrefabInstance: {fileID: 8443743006458471503}
   m_PrefabAsset: {fileID: 0}

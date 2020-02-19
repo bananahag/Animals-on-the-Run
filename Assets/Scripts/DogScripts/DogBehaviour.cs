@@ -32,22 +32,41 @@ public class DogBehaviour : MonoBehaviour
     public bool facingRight;
     [HideInInspector]
     public bool carryingBucket;
+    [HideInInspector]
+    public bool active;
+    [HideInInspector]
+    public bool jumpBuffer;
 
     public DogGroundedState groundedState = new DogGroundedState();
     public DogInAirState inAirState = new DogInAirState();
     public DogPushingState pushingState = new DogPushingState();
-
+    public DogCharmingState charmingState = new DogCharmingState();
+    public DogJumpsquatState jumpsquatState = new DogJumpsquatState();
+    public DogSwimmingState swimmingState = new DogSwimmingState();
 
     DogState currentState = null;
 
     public void OnValidate()
     {
+        groundedState.OnValidate(this);
+        inAirState.OnValidate(this);
+        pushingState.OnValidate(this);
+        charmingState.OnValidate(this);
+        jumpsquatState.OnValidate(this);
+        swimmingState.OnValidate(this);
+
         if (groundCheckLeft == null || groundCheckRight == null)
             Debug.LogWarning("At least one player ground check is not assigned!");
     }
 
     void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rb2d = GetComponent<Rigidbody2D>();
+        rb2d.freezeRotation = true;
+        active = true;
         currentState = groundedState;
         currentState.Enter();
     }
@@ -67,11 +86,15 @@ public class DogBehaviour : MonoBehaviour
             spriteRenderer.flipX = true;
 
         GroundCheck();
-        CheckIfInAir();
+        //CheckIfInAir();
 
         currentState.FixedUpdate();
 
         rb2d.velocity = movement;
+    }
+    public void PlayStepSound()
+    {
+        groundedState.PlayStepSound();
     }
 
     void GroundCheck()

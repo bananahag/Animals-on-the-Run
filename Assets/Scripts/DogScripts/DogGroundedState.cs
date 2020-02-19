@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class DogGroundedState : DogState
 {
+    public AudioClip stepSFX;
+    public float walkingSpeed = 4.0f;
 
     public override void OnValidate(DogBehaviour dog)
     {
@@ -22,7 +25,16 @@ public class DogGroundedState : DogState
 
     public override void Update()
     {
-        CheckInput();
+        if (dog.active)
+        {
+            CheckInput();
+        }
+
+        if (dog.x > 0)
+            dog.facingRight = true;
+        else if (dog.x < 0)
+            dog.facingRight = false;
+
         GroundedAnimations();
 
         if (!dog.grounded)
@@ -33,15 +45,16 @@ public class DogGroundedState : DogState
 
     public override void FixedUpdate()
     {
+        dog.movement = new Vector2(dog.x * walkingSpeed, dog.rb2d.velocity.y);
 
+        CheckIfFalling();
     }
 
     public void CheckInput()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
-            dog.ChangeState(dog.inAirState);
-        }
+        if (Input.GetButtonDown("Jump") || dog.jumpBuffer)
+            dog.ChangeState(dog.jumpsquatState);
+        //Interacts, Charm & movable objects.
     }
 
     public override void OnTriggerEnter2D(Collider2D other)
@@ -61,12 +74,23 @@ public class DogGroundedState : DogState
     {
         if (dog.movement.x != 0)
         {
-            dog.animator.Play("DogRunning");
+            dog.animator.Play("Walking");
         }
         if (dog.movement.x == 0)
         {
-            dog.animator.Play("DogIdle");
+            dog.animator.Play("Idle");
         }
     }
+
+    void CheckIfFalling()
+    {
+        if (!dog.grounded)
+            dog.ChangeState(dog.inAirState);
+    }
+    public void PlayStepSound()
+    {
+        dog.audioSource.PlayOneShot(stepSFX);
+    }
+
 
 }

@@ -218,12 +218,6 @@ public class Dog : MonoBehaviour
                         }
                         positionChecked = true;
                     }
-                    //transform.position = new Vector3(affectedObject.transform.position.x - interactPosition, transform.position.y, 0);
-                    //affectedObject.transform.parent = gameObject.transform;
-                    //affectedObject.GetComponent<Rigidbody2D>().isKinematic = true;
-
-
-                    // rb2d.isKinematic = true;
                     affectedObject.GetComponent<MovableObject>().Pickup(gameObject);
                     movingObject = true;
                     lockJump = true;
@@ -237,7 +231,7 @@ public class Dog : MonoBehaviour
             {
                 affectedObject.GetComponent<Rigidbody2D>().isKinematic = false;
                 rb2d.GetComponent<Rigidbody2D>().isKinematic = false;
-                affectedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0   /*affectedObject.transform.position.y*/);
+                affectedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
 
                 lockJump = false;
                 affectedObject.transform.parent = null;
@@ -247,10 +241,10 @@ public class Dog : MonoBehaviour
                 dropBox = false;
                 affectedObject.GetComponent<MovableObject>().Drop();
             }
-            if(movingObject && !grounded)
+            /*if(movingObject && !grounded)
             {
-                dropBox = false;
-            }
+                dropBox = true;
+            }*/
         }
     }
 
