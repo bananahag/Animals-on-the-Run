@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DogJumpingState : DogState
+public class DogInAirState : DogState
 {
 
     public override void OnValidate(DogBehaviour dog)
@@ -40,4 +40,15 @@ public class DogJumpingState : DogState
 
     }
 
+    public void AirAnimations()
+    {
+        if (dog.movement.y < 0)
+        {
+            dog.animator.Play("DogFalling");
+        }
+        else if (dog.movement.y >= 0)
+        {
+            dog.animator.Play("DogJumping");
+        }
+    }
 }

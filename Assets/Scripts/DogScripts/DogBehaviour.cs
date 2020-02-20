@@ -34,7 +34,8 @@ public class DogBehaviour : MonoBehaviour
     public bool carryingBucket;
 
     public DogGroundedState groundedState = new DogGroundedState();
-    public DogJumpingState jumpingState = new DogJumpingState();
+    public DogInAirState inAirState = new DogInAirState();
+    public DogPushingState pushingState = new DogPushingState();
 
 
     DogState currentState = null;
@@ -66,6 +67,7 @@ public class DogBehaviour : MonoBehaviour
             spriteRenderer.flipX = true;
 
         GroundCheck();
+        CheckIfInAir();
 
         currentState.FixedUpdate();
 
@@ -96,5 +98,13 @@ public class DogBehaviour : MonoBehaviour
         currentState.Exit();
         currentState = targetState;
         currentState.Enter();
+    }
+
+    public void CheckIfInAir()
+    {
+        if(grounded != true)
+        {
+            ChangeState(inAirState);
+        }
     }
 }
