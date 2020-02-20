@@ -6,6 +6,8 @@ public class Elevator : MonoBehaviour
 {
     [Tooltip("The sound effect that plays when a player character gets squished.")]
     public AudioClip squishedSFX;
+    [Tooltip("What is this sound effect? I don't know. Don't ask Albin about this because he won't be able to help you.")]
+    public AudioClip mysterySFX;
     [Tooltip("The sound effect that plays when a player grows agter being squished.")]
     public AudioClip growSFX;
 
@@ -127,7 +129,13 @@ public class Elevator : MonoBehaviour
     {
 
         if (canPlayFlattenSound)
+        {
+            int whatDoesThisDo = Random.Range(1, 11);
+            if (whatDoesThisDo == 10)
+                audioSource.PlayOneShot(mysterySFX);
             audioSource.PlayOneShot(squishedSFX);
+
+        }
         timePassed2 = 0.0f;
         isFlat = true;
         canPlayFlattenSound = false;
