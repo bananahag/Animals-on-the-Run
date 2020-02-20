@@ -7,7 +7,7 @@ using UnityEngine;
 public class MonkeyInAir : MonkeyState
 {
     [Tooltip("The speed of the monkey when she is in the air. (Only affects the horizontal speed)")]
-    public float airSpeed = 5.0f;
+    public float airSpeed = 4.0f;
     [Tooltip("The duration of time (in seconds) where the monkey is unable to climb ladders after jumping. When the timer is up the monkey is able to climb again.")]
     public float cannotClimbAfterJumpingTimer = 0.25f;
     [Tooltip("The time (in seconds) you can press jump before landing to still jump when you land. Basically when you press jump a little bit too early the monkey still jumps. Please ask Albin if you're confused about what this means.")]
@@ -104,9 +104,14 @@ public class MonkeyInAir : MonkeyState
 
     void AirAnimations()
     {
-        if (monkey.rb2d.velocity.y > 0.0f)
-            monkey.animator.Play("Placeholder Monkey Jump");
-        else if (monkey.rb2d.velocity.y < 0.0f)
-            monkey.animator.Play("Placeholder Monkey Fall");
+        if (!monkey.carryingBucket)
+        {
+            if (monkey.rb2d.velocity.y > 0.0f)
+                monkey.animator.Play("Placeholder Monkey Jump");
+            else if (monkey.rb2d.velocity.y < 0.0f)
+                monkey.animator.Play("Placeholder Monkey Fall");
+        }
+        else
+            monkey.animator.Play("Placeholder Monkey Fall Bucket");
     }
 }

@@ -33,6 +33,7 @@ public class MonkeyPuttingDown : MonkeyState
 
     public override void Update()
     {
+        monkey.animator.Play("Placeholder Monkey Pickdown");
         timePassed += Time.deltaTime;
         if (putDownTime < timePassed)
         {

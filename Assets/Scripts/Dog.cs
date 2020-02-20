@@ -28,6 +28,9 @@ public class Dog : MonoBehaviour
     private GameObject affectedObject;
     private float interactPosition;
 
+
+    public float radius;
+
     Vector2 movement;
 
     [HideInInspector] public bool dogLevelComplete = false;
@@ -38,7 +41,7 @@ public class Dog : MonoBehaviour
     bool swimming = false;
     bool jumping;
     bool jumpBuffer;
-    bool grounded;
+    public bool grounded;
    [HideInInspector] public bool notActive = false;
     bool canMoveObject = false;
     bool movingObject = false;
@@ -47,6 +50,7 @@ public class Dog : MonoBehaviour
     public bool pushing = false;
     public bool pulling = false;
     private bool positionChecked = false;
+    private bool dropBox = false;
 
     float x;
 
@@ -77,6 +81,9 @@ public class Dog : MonoBehaviour
         {
             rb2d.velocity = new Vector2(0, 0);
         }
+        radius = GetComponent<SpriteRenderer>().size.x;
+
+        
     }
 
     void FixedUpdate()
@@ -211,24 +218,38 @@ public class Dog : MonoBehaviour
                         }
                         positionChecked = true;
                     }
-                    transform.position = new Vector3(affectedObject.transform.position.x - interactPosition, transform.position.y, 0);
-                    affectedObject.transform.parent = gameObject.transform;
-                    affectedObject.GetComponent<Rigidbody2D>().isKinematic = true;
-                    rb2d.isKinematic = true;
+                    //transform.position = new Vector3(affectedObject.transform.position.x - interactPosition, transform.position.y, 0);
+                    //affectedObject.transform.parent = gameObject.transform;
+                    //affectedObject.GetComponent<Rigidbody2D>().isKinematic = true;
+
+
+                    // rb2d.isKinematic = true;
+                    affectedObject.GetComponent<MovableObject>().Pickup(gameObject);
                     movingObject = true;
                     lockJump = true;
                 }
             }
             else if(Input.GetButtonDown("Interact") && movingObject)
             {
+                dropBox = true;
+            }
+            if(dropBox)
+            {
                 affectedObject.GetComponent<Rigidbody2D>().isKinematic = false;
                 rb2d.GetComponent<Rigidbody2D>().isKinematic = false;
-                affectedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, affectedObject.transform.position.y);
+                affectedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0   /*affectedObject.transform.position.y*/);
+
                 lockJump = false;
                 affectedObject.transform.parent = null;
                 positionChecked = false;
                 movingObject = false;
-                canMoveObject = false;
+                canMoveObject = true;
+                dropBox = false;
+                affectedObject.GetComponent<MovableObject>().Drop();
+            }
+            if(movingObject && !grounded)
+            {
+                dropBox = false;
             }
         }
     }
