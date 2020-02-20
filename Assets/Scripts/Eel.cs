@@ -5,13 +5,16 @@ using UnityEngine;
 public class Eel : MonoBehaviour
 {
     public GameObject LightObj;
-    public GameObject ElectricThing;
+    public GameObject Electricity;
     public bool canEelActivate = false;
+
+    bool lightIsActive;
     
 
     void Start()
     {
         LightObj.SetActive(false);
+        lightIsActive = false;
     }
 
     void Update()
@@ -22,29 +25,27 @@ public class Eel : MonoBehaviour
     }
     void EelLight()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetButtonDown("Light"))
         {
-            LightObj.SetActive(true);
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            LightObj.SetActive(false);
+            if (lightIsActive)
+            {
+                lightIsActive = false;
+                LightObj.SetActive(false);
+            }
+            else
+            {
+                lightIsActive = true;
+                LightObj.SetActive(true);
+            }
+            
         }
     }
 
     void EelElectricity()
     {
-        if (Input.GetKeyDown(KeyCode.F) && canEelActivate == true)
+        if (Input.GetButtonDown("Interact"))
         {
             Debug.Log("yep");
-        }
-    }
-
-    void OnTriggerEnter2D(Collider other)
-    {
-        if (other.gameObject.tag == "ElectricThing")
-        {
-            canEelActivate = true;
         }
     }
 }
