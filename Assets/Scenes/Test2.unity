@@ -526,6 +526,8 @@ MonoBehaviour:
     walkingSpeed: 4
   inAirState:
     dog: {fileID: 712267012}
+    jumpBufferDuration: 0.25
+    airSpeed: 4
   pushingState:
     dog: {fileID: 712267012}
     leftInteractPos: -1
@@ -533,6 +535,13 @@ MonoBehaviour:
     yInteractOffsetAbove: 0.9
     yInteractOffsetBelow: -0.9
   charmingState:
+    dog: {fileID: 712267012}
+  jumpsquatState:
+    dog: {fileID: 712267012}
+    jumpSFX: {fileID: 0}
+    jumpSquatTime: 0.125
+    jumpVelocity: 10
+  swimmingState:
     dog: {fileID: 712267012}
 --- !u!1001 &987409784
 PrefabInstance:
@@ -856,7 +865,7 @@ PrefabInstance:
     - target: {fileID: 8443743008357493126, guid: 81d494fd4a448974f94aaf1d5de7e2a4,
         type: 3}
       propertyPath: m_CollisionDetection
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8443743008357493126, guid: 81d494fd4a448974f94aaf1d5de7e2a4,
         type: 3}

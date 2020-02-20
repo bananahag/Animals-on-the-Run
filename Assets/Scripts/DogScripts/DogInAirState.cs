@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class DogInAirState : DogState
 {
-    float timePassed;
+    float timePassed = 0.0f;
     [Tooltip("The time (in seconds) you can press jump before landing to still jump when you land. Basically when you press jump a little bit too early the dog still jumps. Please ask Albin if you're confused about what this means.")]
     public float jumpBufferDuration = 0.25f;
     public float airSpeed = 4.0f;
@@ -42,8 +42,6 @@ public class DogInAirState : DogState
         {
             dog.facingRight = false;
         }
-
-
     }
 
     public override void FixedUpdate()
@@ -57,7 +55,7 @@ public class DogInAirState : DogState
         }
         if (dog.rb2d.velocity.y != 0)
         {
-            dog.landingVelocity = dog.rb2d.velocity.y * -1;
+            dog.landingVelocity = dog.rb2d.velocity.y * -2;
         }
         if (dog.jumping)
         {
@@ -71,16 +69,6 @@ public class DogInAirState : DogState
         {
             timePassed = 0.0f;
         }
-    }
-
-    public override void OnTriggerEnter2D(Collider2D other)
-    {
-
-    }
-
-    public override void OnTriggerExit2D(Collider2D other)
-    {
-
     }
 
     void JumpBufferTimer()
