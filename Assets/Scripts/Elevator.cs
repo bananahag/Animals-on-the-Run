@@ -29,7 +29,7 @@ public class Elevator : MonoBehaviour
     bool goingUp;
 
     float flattenAmount, widenAmount, timeFlattened = 1.0f;
-    bool isFlat;
+    bool isFlat, canPlayFlattenSound;
     bool touchingPlayer;
     GameObject monkey, dog, eel;
 
@@ -45,6 +45,7 @@ public class Elevator : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         fraction = 0.0f;
         flattenAmount = 1.0f;
+        canPlayFlattenSound = true;
         widenAmount = 1.0f;
     }
 
@@ -125,10 +126,11 @@ public class Elevator : MonoBehaviour
     void FlattenMonkey()
     {
 
-        if (!isFlat)
+        if (canPlayFlattenSound)
             audioSource.PlayOneShot(squishedSFX);
         timePassed2 = 0.0f;
         isFlat = true;
+        canPlayFlattenSound = false;
         flattenAmount -= 0.1f / travelTime;
         widenAmount += 0.1f / travelTime;
         if (flattenAmount < 0.2f)
@@ -143,6 +145,7 @@ public class Elevator : MonoBehaviour
 
     void UnflattenMonkey()//Unflatten is probably a word
     {
+        canPlayFlattenSound = true;
         timePassed2 += Time.deltaTime;
         if (timeFlattened < timePassed2)
         {
