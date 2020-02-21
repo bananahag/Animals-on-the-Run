@@ -82,16 +82,26 @@ MonoBehaviour:
   groundCheckRight: {fileID: 6471133316735740407}
   jumpSFX: {fileID: 0}
   scaredSFX: {fileID: 0}
+  interactSFX: {fileID: 0}
+  stepSFX: {fileID: 0}
+  ladderClimbSFX: {fileID: 0}
+  topOfLadderSFX: {fileID: 0}
+  liftEel: {fileID: 0}
+  dropEel: {fileID: 0}
   walkingSpeed: 5
   walkingSpeedWhenCarryingBucket: 3.5
-  timeBetweenStepSounds: 0.5
+  stopWhileScaredTime: 0.5
   walkAwayScaredTime: 0.5
-  climbingHorizontallySpeed: 2.5
-  climbingVerticallySpeed: 4
+  climbingSpeed: 4
   timeBetweenClimbingSounds: 0.5
   climbingOffsetFromCenterDistance: 0.25
+  stopClimbingTime: 0.5
+  canClimbAgainAfterJumpingTime: 0.25
+  canChangeClimbingDirectionTime: 0.5
   jumpVelocity: 10
+  jumpSquatTime: 0.125
   jumpBufferTime: 0.25
+  maxLandingTime: 0.2
   CurrentChar: 1
   timeStoppedWhenPickingUpEel: 1
   timeStoppedWhenActivating: 1
@@ -160,12 +170,18 @@ MonoBehaviour:
   groundCheckLeft: {fileID: 6471133315655668851}
   groundCheckRight: {fileID: 6471133317471118962}
   jumpSFX: {fileID: 0}
+  animator: {fileID: 0}
+  noFrictionMaterial: {fileID: 0}
   walkingSpeed: 5
   jumpVelocity: 10
   jumpBufferTime: 0.25
   wetDuration: 10
+  timeBetweenStepSounds: 0.5
   dogLevelComplete: 0
   lockMovement: 0
+  notActive: 0
+  pushing: 0
+  pulling: 0
 --- !u!1 &6471133315655668850
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,10 +258,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characters:
-  - {fileID: 219252555725914346}
+  - {fileID: 5528774462005992682, guid: bdd410843c7e28247b2800b8034d6f3c, type: 3}
   - {fileID: 219252556310298225}
   SelectedChar: 0
-  levelcompleted: 0
 --- !u!1 &6471133316735740406
 GameObject:
   m_ObjectHideFlags: 0
