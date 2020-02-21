@@ -12,7 +12,7 @@ public class MonkeyClimbing : MonkeyState
     [Tooltip("The distance between the center of the monkey and the center of the ladder when climbing.")]
     public float ladderCenterOffsetDistance = 0.25f;
     [Tooltip("The vertical climbing speed of the monkey.")]
-    public float climbingSpeed = 4.0f;
+    public float climbingSpeed = 3.5f;
     [Tooltip("Time (in seconds) between each sound effect when climbing.")]
     public float timeBetweenClimbingSounds = 0.25f;
     [Tooltip("Time (in seconds) before the monkey lets go of the ladder when holding left or right.")]
