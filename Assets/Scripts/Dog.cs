@@ -18,9 +18,18 @@ public class Dog : MonoBehaviour
     public float jumpBufferTime = 0.25f;
     public float wetDuration = 10;
     public float timeBetweenStepSounds = 0.5f;
+    public float leftInteractPos = -1f;
+    public float rightInteractPos = 1f;
+
+    public float yInteractOffsetAbove = 0.9f;
+    public float yInteractOffsetBelow = -0.9f;
 
     private GameObject human;
     private GameObject affectedObject;
+    private float interactPosition;
+
+
+    public float radius;
 
     Vector2 movement;
 
@@ -32,7 +41,7 @@ public class Dog : MonoBehaviour
     bool swimming = false;
     bool jumping;
     bool jumpBuffer;
-    bool grounded;
+    public bool grounded;
    [HideInInspector] public bool notActive = false;
     bool canMoveObject = false;
     bool movingObject = false;
@@ -40,6 +49,8 @@ public class Dog : MonoBehaviour
     bool canPlayStepSoundsAgain;
     public bool pushing = false;
     public bool pulling = false;
+    private bool positionChecked = false;
+    private bool dropBox = false;
 
     float x;
 
@@ -64,12 +75,15 @@ public class Dog : MonoBehaviour
         HandleMovableObjects();
         HandleCharming();
         HandleJumping();
-        MovementAnimations();
+        //MovementAnimations();
 
         if (lockMovement)
         {
             rb2d.velocity = new Vector2(0, 0);
         }
+        radius = GetComponent<SpriteRenderer>().size.x;
+
+        
     }
 
     void FixedUpdate()
@@ -188,25 +202,54 @@ public class Dog : MonoBehaviour
     {
         if (affectedObject != null)
         {
-            if (Input.GetButton("Interact") && canMoveObject)
+            if (Input.GetButtonDown("Interact") && canMoveObject && movingObject == false)
             {
                 if (affectedObject != null)
                 {
-                    affectedObject.transform.parent = gameObject.transform;
-                    affectedObject.GetComponent<Rigidbody2D>().isKinematic = true;
-                    rb2d.isKinematic = true;
-                    Physics2D.IgnoreCollision(affectedObject.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+                    if (!positionChecked)
+                    {
+                        if(transform.position.x > affectedObject.transform.position.x)
+                        {
+                            interactPosition = leftInteractPos;
+                        }
+                        else
+                        {
+                            interactPosition = rightInteractPos;
+                        }
+                        positionChecked = true;
+                    }
+                    //transform.position = new Vector3(affectedObject.transform.position.x - interactPosition, transform.position.y, 0);
+                    //affectedObject.transform.parent = gameObject.transform;
+                    //affectedObject.GetComponent<Rigidbody2D>().isKinematic = true;
+
+
+                    // rb2d.isKinematic = true;
+                    affectedObject.GetComponent<MovableObject>().Pickup(gameObject);
                     movingObject = true;
                     lockJump = true;
                 }
             }
-            else if(!Input.GetButton("Interact") && movingObject)
+            else if(Input.GetButtonDown("Interact") && movingObject)
+            {
+                dropBox = true;
+            }
+            if(dropBox)
             {
                 affectedObject.GetComponent<Rigidbody2D>().isKinematic = false;
                 rb2d.GetComponent<Rigidbody2D>().isKinematic = false;
-                affectedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, affectedObject.transform.position.y);
+                affectedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0   /*affectedObject.transform.position.y*/);
+
                 lockJump = false;
                 affectedObject.transform.parent = null;
+                positionChecked = false;
+                movingObject = false;
+                canMoveObject = true;
+                dropBox = false;
+                affectedObject.GetComponent<MovableObject>().Drop();
+            }
+            if(movingObject && !grounded)
+            {
+                dropBox = false;
             }
         }
     }
@@ -234,8 +277,6 @@ public class Dog : MonoBehaviour
         }
     }
 
-
-
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
@@ -254,49 +295,21 @@ public class Dog : MonoBehaviour
             
             dogLevelComplete = true;
         }
-    }
 
-    void OnCollisionEnter2D(Collision2D other)
-    {
-
-        if (other.gameObject.CompareTag("MoveableObject"))
+        if (other.gameObject.CompareTag("MovableObject"))
         {
-            
             affectedObject = other.gameObject;
 
-            Vector3 hit = other.contacts[0].normal;
-            float angle = Vector3.Angle(hit, Vector3.up);
-
-            if (Mathf.Approximately(angle, 90))
-            {
-                Vector3 cross = Vector3.Cross(Vector3.forward, hit);
-                if (cross.y > 0)
-                { 
-                    canMoveObject = true;
-                    
-                }
-                else if (cross.y < 0)
-                {
-                    canMoveObject = true;
-                }
-            }
-            else
+            Vector3 dir = affectedObject.transform.position - transform.position;
+            Debug.Log(dir);
+            if (dir.y >= yInteractOffsetAbove || dir.y <= yInteractOffsetBelow)
             {
                 canMoveObject = false;
             }
-        }
-    }
-
-    void OnCollisionExit2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("MoveableObject"))
-        {
-            canMoveObject = false;
-
-                affectedObject.GetComponent<Rigidbody2D>().isKinematic = false;
-                rb2d.GetComponent<Rigidbody2D>().isKinematic = false;
-                affectedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, affectedObject.transform.position.y);
-                lockJump = false;
+            else
+            {
+                canMoveObject = true;
+            }
         }
     }
 
@@ -314,6 +327,10 @@ public class Dog : MonoBehaviour
         if (other.gameObject.tag == "Finish")
         {
             dogLevelComplete = false;
+        }
+        if (other.gameObject.tag == "MovableObject")
+        {
+            canMoveObject = false;
         }
     }
 }
