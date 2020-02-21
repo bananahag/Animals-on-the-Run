@@ -520,6 +520,9 @@ MonoBehaviour:
   carryingBucket: 0
   active: 0
   jumpBuffer: 0
+  movingObject: 0
+  canMoveObject: 0
+  affectedObject: {fileID: 0}
   groundedState:
     dog: {fileID: 712267012}
     stepSFX: {fileID: 0}
@@ -528,10 +531,11 @@ MonoBehaviour:
     dog: {fileID: 712267012}
     jumpBufferDuration: 0.25
     airSpeed: 4
+    landingSFX: {fileID: 0}
+    jumpSFX: {fileID: 0}
   pushingState:
     dog: {fileID: 712267012}
-    leftInteractPos: -1
-    rightInteractPos: 1
+    pushingSpeed: 3
     yInteractOffsetAbove: 0.9
     yInteractOffsetBelow: -0.9
   charmingState:
@@ -912,7 +916,8 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 88154ac503dcbf044be3ea5abb428cc7, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8443743008357493127, guid: 81d494fd4a448974f94aaf1d5de7e2a4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 81d494fd4a448974f94aaf1d5de7e2a4, type: 3}
 --- !u!1 &8443743006458471504 stripped
 GameObject:

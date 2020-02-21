@@ -10,6 +10,9 @@ public class DogInAirState : DogState
     public float jumpBufferDuration = 0.25f;
     public float airSpeed = 4.0f;
 
+    public AudioClip landingSFX;
+    public AudioClip jumpSFX;
+
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;
@@ -20,11 +23,12 @@ public class DogInAirState : DogState
         timePassed = 0.0f;
         dog.jumpBuffer = false;
         Debug.Log("Dog In Air State");
+        dog.audioSource.PlayOneShot(jumpSFX);
     }
 
     public override void Exit()
     {
-
+        dog.audioSource.PlayOneShot(landingSFX);
     }
 
     public override void Update()
@@ -50,7 +54,7 @@ public class DogInAirState : DogState
 
         dog.movement = new Vector2(dog.x * airSpeed, dog.rb2d.velocity.y);
 
-        if (dog.grounded && !dog.jumping)
+        if (dog.grounded && !dog.jumping && !dog.movingObject)
         {
             dog.ChangeState(dog.groundedState);
         }

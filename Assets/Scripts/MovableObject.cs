@@ -68,11 +68,11 @@ public class MovableObject : MonoBehaviour
         {
             if(rightSide == true)
             {
-                transform.position = carry.GetComponent<Transform>().position + new Vector3(carry.GetComponent<Dog>().radius, 0, 0);
+                transform.position = carry.GetComponent<Transform>().position + new Vector3(carry.GetComponent<DogBehaviour>().radius, 0, 0);
             }
             else if(rightSide == false)
             {
-                transform.position = carry.GetComponent<Transform>().position - new Vector3(carry.GetComponent<Dog>().radius, 0, 0);
+                transform.position = carry.GetComponent<Transform>().position - new Vector3(carry.GetComponent<DogBehaviour>().radius, 0, 0);
             }
         }
 

@@ -27,6 +27,9 @@ public class DogBehaviour : MonoBehaviour
     [HideInInspector]
     public float x;
     [HideInInspector]
+    public float radius;
+
+    [HideInInspector]
     public Vector2 movement;
     [HideInInspector]
     public bool facingRight;
@@ -38,6 +41,8 @@ public class DogBehaviour : MonoBehaviour
     public bool jumpBuffer;
     [HideInInspector]
     public bool movingObject = false;
+    [HideInInspector]
+    public bool canMoveObject;
 
     public GameObject affectedObject;
 
@@ -74,6 +79,7 @@ public class DogBehaviour : MonoBehaviour
         currentState = groundedState;
         currentState.Enter();
         startGravityScale = rb2d.gravityScale;
+        radius = GetComponent<SpriteRenderer>().size.x;
     }
 
     void Update()
