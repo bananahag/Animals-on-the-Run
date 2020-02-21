@@ -36,6 +36,10 @@ public class DogBehaviour : MonoBehaviour
     public bool active;
     [HideInInspector]
     public bool jumpBuffer;
+    [HideInInspector]
+    public bool movingObject = false;
+
+    public GameObject affectedObject;
 
     public DogGroundedState groundedState = new DogGroundedState();
     public DogInAirState inAirState = new DogInAirState();
@@ -69,6 +73,7 @@ public class DogBehaviour : MonoBehaviour
         active = true;
         currentState = groundedState;
         currentState.Enter();
+        startGravityScale = rb2d.gravityScale;
     }
 
     void Update()

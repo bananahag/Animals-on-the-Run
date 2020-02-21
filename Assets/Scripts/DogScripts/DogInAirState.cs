@@ -19,6 +19,7 @@ public class DogInAirState : DogState
     {
         timePassed = 0.0f;
         dog.jumpBuffer = false;
+        Debug.Log("Dog In Air State");
     }
 
     public override void Exit()
@@ -64,7 +65,7 @@ public class DogInAirState : DogState
         if (dog.jumpBuffer) 
         {
             JumpBufferTimer();
-        }
+        }       
         else
         {
             timePassed = 0.0f;
@@ -88,7 +89,7 @@ public class DogInAirState : DogState
     {
         if (!Input.GetButton("Jump") && dog.rb2d.velocity.y >= 0.0f || !dog.active)
         {
-            dog.movement = new Vector2(dog.rb2d.velocity.x, dog.rb2d.velocity.y / 2.0f);
+            dog.movement = new Vector2(dog.rb2d.velocity.x, dog.rb2d.velocity.y / 6.0f);
             dog.jumping = false;
         }
 

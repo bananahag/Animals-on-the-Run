@@ -16,6 +16,7 @@ public class DogGroundedState : DogState
     public override void Enter()
     {
         dog.animator.Play("DogIdle");
+        Debug.Log("Dog In Grounded State");
     }
 
     public override void Exit()
@@ -59,9 +60,10 @@ public class DogGroundedState : DogState
 
     public override void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("MovableObject") && Input.GetKeyDown("Input"))
+        if (other.gameObject.CompareTag("MovableObject") && Input.GetButtonDown("Interact"))
         {
             dog.ChangeState(dog.pushingState);
+            dog.affectedObject = other.gameObject;
         }
     }
 
