@@ -503,6 +503,8 @@ MonoBehaviour:
   incactiveAnimationName: 
   activeAnimationName: 
   cannotBeTurnedOffAgain: 0
+  activateSFX: {fileID: 8300000, guid: 36849857942e4f943944b5993e719bb7, type: 3}
+  elevator: {fileID: 1881437799}
   activated: 0
 --- !u!212 &503952313
 SpriteRenderer:
@@ -1762,11 +1764,11 @@ MonoBehaviour:
   growSFX: {fileID: 8300000, guid: 444df984aed2982438f5ea8f7915d6f4, type: 3}
   startPosition: {fileID: 736573403}
   targetPosition: {fileID: 1850484770}
-  travelTime: 2
+  travelTime: 1
   returns: 1
   looping: 1
-  stayTime: 1
-  active: 1
+  stayTime: 0
+  active: 0
 --- !u!82 &1881437805
 AudioSource:
   m_ObjectHideFlags: 0
