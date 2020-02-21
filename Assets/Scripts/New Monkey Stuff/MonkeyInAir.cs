@@ -104,9 +104,14 @@ public class MonkeyInAir : MonkeyState
 
     void AirAnimations()
     {
-        if (monkey.rb2d.velocity.y > 0.0f)
-            monkey.animator.Play("Placeholder Monkey Jump");
-        else if (monkey.rb2d.velocity.y < 0.0f)
-            monkey.animator.Play("Placeholder Monkey Fall");
+        if (!monkey.carryingBucket)
+        {
+            if (monkey.rb2d.velocity.y > 0.0f)
+                monkey.animator.Play("Placeholder Monkey Jump");
+            else if (monkey.rb2d.velocity.y < 0.0f)
+                monkey.animator.Play("Placeholder Monkey Fall");
+        }
+        else
+            monkey.animator.Play("Placeholder Monkey Fall Bucket");
     }
 }

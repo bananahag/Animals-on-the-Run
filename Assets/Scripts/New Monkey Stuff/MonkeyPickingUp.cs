@@ -34,6 +34,7 @@ public class MonkeyPickingUp : MonkeyState
 
     public override void Update()
     {
+        monkey.animator.Play("Placeholder Monkey Pickup");
         timePassed += Time.deltaTime;
         if (pickUpTime < timePassed)
         {

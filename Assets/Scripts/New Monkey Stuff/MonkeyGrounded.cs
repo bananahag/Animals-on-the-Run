@@ -47,7 +47,7 @@ public class MonkeyGrounded : MonkeyState
 
     void CheckInput()
     {
-        if (Input.GetButtonDown("Jump") || monkey.jumpBuffer)
+        if (Input.GetButtonDown("Jump") && !monkey.carryingBucket || monkey.jumpBuffer && !monkey.carryingBucket)
             monkey.ChangeState(monkey.jumpsquatState);
 
         if (Input.GetButtonDown("Interact"))
