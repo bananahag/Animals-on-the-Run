@@ -125,6 +125,11 @@ public class Elevator : MonoBehaviour
             UnflattenMonkey();
     }
 
+    void Activate()
+    {
+
+    }
+
     void FlattenMonkey()
     {
 
