@@ -28,6 +28,7 @@ public class MonkeyInteract : MonkeyState
 
     public override void Update()
     {
+        monkey.animator.Play("Placeholder Monkey Interact");
         timePassed += Time.deltaTime;
         if (interactTime < timePassed)
         {

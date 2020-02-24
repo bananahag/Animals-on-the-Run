@@ -27,6 +27,9 @@ public class MonkeyLanding : MonkeyState
         monkey.animator.Play("Placeholder Monkey Land");
         monkey.audioSource.PlayOneShot(landingSFX);
 
+        if (monkey.carryingBucket)
+            monkey.jumpBuffer = false;
+
         landingTime = landingTimeMultiplier * monkey.landingVelocity;
 
         if (landingTime > maxLandingTime)
@@ -45,7 +48,7 @@ public class MonkeyLanding : MonkeyState
         {
             if (monkey.scaredCheck)
                 monkey.ChangeState(monkey.scaredState);
-            else if (monkey.jumpBuffer)
+            else if (monkey.jumpBuffer && !monkey.carryingBucket)
                 monkey.ChangeState(monkey.jumpsquatState);
             else
                 monkey.ChangeState(monkey.groundedState);
@@ -64,7 +67,7 @@ public class MonkeyLanding : MonkeyState
 
     void CheckInput()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && !monkey.carryingBucket)
             monkey.jumpBuffer = true;
     }
 }

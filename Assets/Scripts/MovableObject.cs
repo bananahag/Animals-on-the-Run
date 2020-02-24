@@ -6,6 +6,9 @@ public class MovableObject : MonoBehaviour
 {
     Collider2D objectCollider;
     private Transform ColliderTransform;
+    private bool carried;
+    private bool rightSide; //right = true, left = false
+    private GameObject carry;
 
     void Start()
     {
@@ -18,6 +21,45 @@ public class MovableObject : MonoBehaviour
         if (other.gameObject.layer != LayerMask.NameToLayer("Ground"))
         {
             Physics2D.IgnoreCollision(other.transform.GetComponent<Collider2D>(), objectCollider);
+        }
+    }
+
+    public bool IsCarried()
+    {
+        return carried;
+    }
+
+    public void Pickup(GameObject carrier)
+    {
+        carried = true;
+        carry = carrier;
+        if(this.GetComponent<Transform>().position.x  > carry.transform.position.x)
+        {
+            rightSide = true;
+        } else
+        {
+            rightSide = false;
+        }
+
+    }
+
+    public void Drop() {
+        carry = null;
+        carried = false;
+    }
+
+    void Update()
+    {
+        if (carried)
+        {
+            if(rightSide == true)
+            {
+                transform.position = carry.GetComponent<Transform>().position + new Vector3(carry.GetComponent<Dog>().radius, 0, 0);
+            }
+            else if(rightSide == false)
+            {
+                transform.position = carry.GetComponent<Transform>().position - new Vector3(carry.GetComponent<Dog>().radius, 0, 0);
+            }
         }
     }
 }
