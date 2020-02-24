@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class DogPushingState : DogState
 {
-    
+    public AudioSource pushSource;
     bool dropBox;
 
 
@@ -48,6 +48,10 @@ public class DogPushingState : DogState
     public override void FixedUpdate()
     {
         dog.movement = new Vector2(dog.x * pushingSpeed, dog.rb2d.velocity.y);
+        if(dog.x != 0)
+        {
+            pushSource.Play();
+        }
 
         if(dropBox && dog.grounded)
         {

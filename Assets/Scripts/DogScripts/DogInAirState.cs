@@ -5,6 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class DogInAirState : DogState
 {
+    [Tooltip("Audio source that plays when the dog lands.")]
+    public AudioSource landingSource;
+
     float timePassed = 0.0f;
     [Tooltip("The time (in seconds) you can press jump before landing to still jump when you land. Basically when you press jump a little bit too early the dog still jumps. Please ask Albin if you're confused about what this means.")]
     public float jumpBufferDuration = 0.25f;
@@ -27,7 +30,7 @@ public class DogInAirState : DogState
 
     public override void Exit()
     {
-        dog.audioSource.PlayOneShot(landingSFX);
+        landingSource.Play();
     }
 
     public override void Update()
