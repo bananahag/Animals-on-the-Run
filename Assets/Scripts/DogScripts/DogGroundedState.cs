@@ -22,7 +22,6 @@ public class DogGroundedState : DogState
     public override void Enter()
     {
         dog.animator.Play("DogIdle");
-        Debug.Log("Dog In Grounded State");
     }
 
     public override void Exit()
@@ -94,6 +93,14 @@ public class DogGroundedState : DogState
             }
             else
             {
+                if (dir.x <= 0)
+                {
+                    dog.pushSideIsLeft = true;
+                }
+                else if (dir.x > 0)
+                {
+                    dog.pushSideIsLeft = false;
+                }
                 dog.canMoveObject = true;
             }
         }

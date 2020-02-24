@@ -17,7 +17,6 @@ public class DogSwimmingState : DogState
 
     public override void Enter()
     {
-        Debug.Log("In Swimming State");
         dog.swimming = true;
         dog.animator.Play("DogSwimming");
         dog.wet = true;

@@ -52,6 +52,8 @@ public class DogBehaviour : MonoBehaviour
     public bool wet = false;
     [HideInInspector]
     public bool swimming = false;
+    [HideInInspector]
+    public bool pushSideIsLeft;
 
     [HideInInspector]
     public GameObject affectedObject;
