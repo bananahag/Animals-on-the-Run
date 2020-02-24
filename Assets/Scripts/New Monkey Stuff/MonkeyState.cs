@@ -21,8 +21,4 @@ public class MonkeyState
     public virtual void Update() { }
 
     public virtual void FixedUpdate() { }
-
-    public virtual void OnTriggerEnter2D(Collider2D other) { }
-
-    public virtual void OnTriggerExit2D(Collider2D other) { }
 }
