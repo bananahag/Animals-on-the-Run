@@ -103,8 +103,8 @@ GameObject:
   - component: {fileID: 8443743008357493124}
   - component: {fileID: 8443743008357493125}
   - component: {fileID: 8443743008357493126}
-  - component: {fileID: 8443743008357493127}
   - component: {fileID: 8443743008357493121}
+  - component: {fileID: 712267012}
   m_Layer: 12
   m_Name: Dog Placeholder
   m_TagString: Untagged
@@ -188,7 +188,7 @@ Animator:
   m_GameObject: {fileID: 8443743008357493128}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7582e00cb6b53ca479e960b6c479be90, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -235,38 +235,15 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 20
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 2
   m_Material: {fileID: 6200000, guid: b941514d220774f42bdeab84d77cef49, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &8443743008357493127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8443743008357493128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83975b7b073d82a41989673ea2347bed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundCheckLeft: {fileID: 8443743006692847185}
-  groundCheckRight: {fileID: 8443743006821892592}
-  jumpSFX: {fileID: 0}
-  noFrictionMaterial: {fileID: 0}
-  walkingSpeed: 5
-  jumpVelocity: 10
-  jumpBufferTime: 0.25
-  wetDuration: 10
-  dogLevelComplete: 0
-  lockMovement: 0
-  notActive: 0
 --- !u!82 &8443743008357493121
 AudioSource:
   m_ObjectHideFlags: 0
@@ -363,3 +340,68 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &712267012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8443743008357493128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1522d9d8505454b858293982980307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundCheckLeft: {fileID: 8443743006692847185}
+  groundCheckRight: {fileID: 8443743006821892592}
+  grounded: 0
+  jumping: 0
+  landingVelocity: 0
+  startGravityScale: 0
+  audioSource: {fileID: 0}
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  rb2d: {fileID: 0}
+  x: 0
+  radius: 0
+  timePassed2: 0
+  wetDuration: 8
+  movement: {x: 0, y: 0}
+  facingRight: 0
+  active: 0
+  jumpBuffer: 0
+  movingObject: 0
+  canMoveObject: 0
+  closeToHuman: 0
+  charmingHuman: 0
+  wet: 0
+  swimming: 0
+  affectedObject: {fileID: 0}
+  human: {fileID: 0}
+  groundedState:
+    dog: {fileID: 712267012}
+    stepSFX: {fileID: 0}
+    walkingSpeed: 4
+    yInteractOffsetAbove: 0.9
+    yInteractOffsetBelow: -0.9
+  inAirState:
+    dog: {fileID: 712267012}
+    jumpBufferDuration: 0.25
+    airSpeed: 4
+    landingSFX: {fileID: 0}
+    jumpSFX: {fileID: 0}
+  pushingState:
+    dog: {fileID: 712267012}
+    pushingSpeed: 3
+  charmingState:
+    dog: {fileID: 712267012}
+  jumpsquatState:
+    dog: {fileID: 712267012}
+    jumpSFX: {fileID: 0}
+    jumpSquatTime: 0.125
+    jumpVelocity: 10
+  swimmingState:
+    dog: {fileID: 712267012}
+    swimmingSpeed: 3
+    swimJumpVelocity: 4
+    swimJumpCoolDown: 0.25
