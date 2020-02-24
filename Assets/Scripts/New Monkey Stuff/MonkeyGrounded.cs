@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class MonkeyGrounded : MonkeyState
 {
-    [Tooltip("Sound effect that plays when the monkey takes a step on the ground.")]
-    public AudioClip stepSFX;
+    [Tooltip("Audio source that plays when the monkey takes a step on the ground.")]
+    public AudioSource stepSource;
 
     [Tooltip("The walking speed of the monkey when she IS NOT carrying the bucket.")]
     public float walkingSpeed = 4.0f;
@@ -98,6 +98,6 @@ public class MonkeyGrounded : MonkeyState
 
     public void PlayStepSound()
     {
-        monkey.audioSource.PlayOneShot(stepSFX);
+        stepSource.Play();
     }
 }

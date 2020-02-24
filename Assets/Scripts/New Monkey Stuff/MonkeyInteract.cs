@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class MonkeyInteract : MonkeyState
 {
-    [Tooltip("The sound effect that plays when interacting with an object.")]
-    public AudioClip interactSFX;
+    [Tooltip("Audio source that plays when interacting with an object.")]
+    public AudioSource interactSource;
 
     [Tooltip("The time (in seconds) the monkey stops when interacting with an object.")]
     public float interactTime = 1.0f;
@@ -22,7 +22,7 @@ public class MonkeyInteract : MonkeyState
     public override void Enter()
     {
         timePassed = 0.0f;
-        monkey.audioSource.PlayOneShot(interactSFX);
+        interactSource.Play();
         monkey.animator.Play("Placeholder Monkey Interact");
     }
 
