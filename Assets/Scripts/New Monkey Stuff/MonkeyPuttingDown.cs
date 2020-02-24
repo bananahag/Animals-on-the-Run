@@ -29,6 +29,8 @@ public class MonkeyPuttingDown : MonkeyState
     public override void Exit()
     {
         monkey.carryingBucket = false;
+        if (monkey.eel.GetComponent<Eel>() != null)
+            monkey.eel.GetComponent<Eel>().MonkeyInteraction(false);
     }
 
     public override void Update()

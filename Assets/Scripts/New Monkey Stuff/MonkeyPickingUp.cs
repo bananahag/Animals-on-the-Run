@@ -24,6 +24,11 @@ public class MonkeyPickingUp : MonkeyState
         timePassed = 0.0f;
         pickingUpSource.Play();
         monkey.animator.Play("Placeholder Monkey Pickup");
+        if (monkey.eel.GetComponent<Eel>() != null)
+        {
+            monkey.eel.GetComponent<Eel>().monkey = monkey.gameObject;
+            monkey.eel.GetComponent<Eel>().MonkeyInteraction(true);
+        }
         
     }
 
