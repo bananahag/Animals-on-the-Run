@@ -22,7 +22,6 @@ public class DogInAirState : DogState
     {
         timePassed = 0.0f;
         dog.jumpBuffer = false;
-        Debug.Log("Dog In Air State");
         dog.audioSource.PlayOneShot(jumpSFX);
     }
 

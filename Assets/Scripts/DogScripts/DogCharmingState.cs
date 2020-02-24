@@ -41,10 +41,11 @@ public class DogCharmingState : DogState
         if(dog.transform.position.x <= dog.human.transform.position.x) {
             dog.facingRight = true;
         }
-        else if(dog.transform.position.x < dog.human.transform.position.x)
+        else if(dog.transform.position.x > dog.human.transform.position.x)
         {
             dog.facingRight = false;
         }
+
     }
 
     public override void FixedUpdate()
@@ -53,11 +54,6 @@ public class DogCharmingState : DogState
         {
             dog.ChangeState(dog.groundedState);
         }
-    }
-
-    public override void OnTriggerEnter2D(Collider2D other)
-    {
-
     }
 
     public override void OnTriggerExit2D(Collider2D other)
