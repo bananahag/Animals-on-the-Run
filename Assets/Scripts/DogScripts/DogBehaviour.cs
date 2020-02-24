@@ -28,13 +28,14 @@ public class DogBehaviour : MonoBehaviour
     public float x;
     [HideInInspector]
     public float radius;
+    [HideInInspector]
+    public float timePassed2 = 0.0f;
+    public float wetDuration = 8.0f;
 
     [HideInInspector]
     public Vector2 movement;
     [HideInInspector]
     public bool facingRight;
-    [HideInInspector]
-    public bool carryingBucket;
     [HideInInspector]
     public bool active;
     [HideInInspector]
@@ -43,8 +44,19 @@ public class DogBehaviour : MonoBehaviour
     public bool movingObject = false;
     [HideInInspector]
     public bool canMoveObject;
+    [HideInInspector]
+    public bool closeToHuman = false;
+    [HideInInspector]
+    public bool charmingHuman = false;
+    [HideInInspector]
+    public bool wet = false;
+    [HideInInspector]
+    public bool swimming = false;
 
+    [HideInInspector]
     public GameObject affectedObject;
+    [HideInInspector]
+    public GameObject human;
 
     public DogGroundedState groundedState = new DogGroundedState();
     public DogInAirState inAirState = new DogInAirState();
@@ -65,7 +77,9 @@ public class DogBehaviour : MonoBehaviour
         swimmingState.OnValidate(this);
 
         if (groundCheckLeft == null || groundCheckRight == null)
+        {
             Debug.LogWarning("At least one player ground check is not assigned!");
+        }
     }
 
     void Awake()
@@ -92,12 +106,15 @@ public class DogBehaviour : MonoBehaviour
         x = Input.GetAxisRaw("Horizontal");
 
         if (facingRight)
+        {
             spriteRenderer.flipX = false;
+        }
         else
+        {
             spriteRenderer.flipX = true;
+        }
 
         GroundCheck();
-        //CheckIfInAir();
 
         currentState.FixedUpdate();
 
@@ -112,9 +129,22 @@ public class DogBehaviour : MonoBehaviour
     {
         if (Physics2D.Linecast(transform.position, groundCheckLeft.position, 1 << LayerMask.NameToLayer("Ground"))
             || Physics2D.Linecast(transform.position, groundCheckRight.position, 1 << LayerMask.NameToLayer("Ground")))
+        {
             grounded = true;
+        }
         else
+        {
             grounded = false;
+        }
+    }
+    public void WetTimer()
+    {
+        wet = true;
+        timePassed2 += Time.deltaTime;
+        if (wetDuration < timePassed2)
+        {
+            wet = false;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)

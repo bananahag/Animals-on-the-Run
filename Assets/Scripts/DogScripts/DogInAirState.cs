@@ -49,6 +49,14 @@ public class DogInAirState : DogState
         }
     }
 
+    public override void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Water"))
+        {
+            dog.ChangeState(dog.swimmingState);
+        }
+    }
+
     public override void FixedUpdate()
     {
 

@@ -38,9 +38,13 @@ public class DogGroundedState : DogState
         }
 
         if (dog.x > 0)
+        {
             dog.facingRight = true;
+        }
         else if (dog.x < 0)
+        {
             dog.facingRight = false;
+        }
 
         GroundedAnimations();
 
@@ -67,26 +71,21 @@ public class DogGroundedState : DogState
         {
             dog.ChangeState(dog.jumpsquatState);
         }
-
         if(Input.GetButtonDown("Interact") && dog.canMoveObject)
         {
             dog.ChangeState(dog.pushingState);
-            dog.movingObject = true;
         }
-        //Interacts, Charm & movable objects.
+        if (Input.GetButtonDown("Interact") && dog.closeToHuman && !dog.canMoveObject) //Om både människa och låda går att interagera med prioriteras lådan
+        {
+            dog.ChangeState(dog.charmingState);
+        }
     }
 
     public override void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("MovableObject"))
         {
-            dog.canMoveObject = true;
             dog.affectedObject = other.gameObject;
-        }
-        if (other.gameObject.CompareTag("MovableObject"))
-        {
-            dog.affectedObject = other.gameObject;
-            //Flytta ut någon annanstans funkar inte att ha här
             Vector3 dir = dog.affectedObject.transform.position - dog.transform.position;
             Debug.Log(dir);
             if (dir.y >= yInteractOffsetAbove || dir.y <= yInteractOffsetBelow)
@@ -98,11 +97,31 @@ public class DogGroundedState : DogState
                 dog.canMoveObject = true;
             }
         }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
+        {
+            dog.human = other.gameObject;
+            dog.closeToHuman = true;
+        }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Water"))
+        {
+            dog.swimming = true;
+        }
     }
 
     public override void OnTriggerExit2D(Collider2D other)
     {
-
+        if (other.gameObject.CompareTag("MovableObject"))
+        {
+            dog.canMoveObject = false;
+            dog.affectedObject = null;
+        }
+        if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
+        {
+            dog.human = null;
+            dog.closeToHuman = false;
+        }
     }
 
     public void GroundedAnimations()
@@ -119,8 +138,10 @@ public class DogGroundedState : DogState
 
     void CheckIfFalling()
     {
-        if (!dog.grounded)
+        if (!dog.grounded && !dog.swimming)
+        {
             dog.ChangeState(dog.inAirState);
+        }
     }
     public void PlayStepSound()
     {

@@ -13,12 +13,6 @@ public class DogPushingState : DogState
     [Tooltip("The walking speed of the dog while pushing or pulling a movable object.")]
     public float pushingSpeed = 3.0f;
 
-/*    [Tooltip("A offset for the box for what is considered above the box for the dog. Is used to limit the dog to pushing and pulling from the sides of the box")]
-    public float yInteractOffsetAbove = 0.9f; //Ge förklaring för båda.
-    [Tooltip("A offset for the box for what is considered below the box for the dog. Is used to limit the dog to pushing and pulling from the sides of the box")]
-    public float yInteractOffsetBelow = -0.9f;
-*/
-
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;
