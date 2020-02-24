@@ -5,7 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class DogGroundedState : DogState
 {
-    public AudioClip stepSFX;
+    [Tooltip("Audio source that plays when the dog takes a step on the ground.")]
+    public AudioSource stepSource;
 
     public float walkingSpeed = 4.0f;
 
@@ -152,7 +153,7 @@ public class DogGroundedState : DogState
     }
     public void PlayStepSound()
     {
-        dog.audioSource.PlayOneShot(stepSFX);
+        stepSource.Play();
     }
 
 
