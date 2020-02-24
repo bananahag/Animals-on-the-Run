@@ -54,7 +54,6 @@ public class MovableObject : MonoBehaviour
         {
             rightSide = false;
         }
-
     }
 
     public void Drop() {

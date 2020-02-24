@@ -24,8 +24,6 @@ public class DogJumpsquatState : DogState
         timePassed = 0.0f;
         dog.rb2d.gravityScale = 0.0f;
         dog.animator.Play("Jumpsquat");
-
-        Debug.Log("Dog In Jump Squat State");
     }
 
     public override void Exit()

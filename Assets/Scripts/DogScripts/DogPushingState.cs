@@ -7,8 +7,7 @@ public class DogPushingState : DogState
 {
     
     bool dropBox;
-    bool rightSide;
-    bool leftSide;
+
 
     [Tooltip("The walking speed of the dog while pushing or pulling a movable object.")]
     public float pushingSpeed = 3.0f;
@@ -20,7 +19,6 @@ public class DogPushingState : DogState
 
     public override void Enter()
     {
-        Debug.Log("Dog In Pushing State");
         dog.affectedObject.GetComponent<MovableObject>().Pickup(dog.gameObject);
         dog.movingObject = true;
     }
@@ -57,11 +55,6 @@ public class DogPushingState : DogState
         }
     }
 
-    public override void OnTriggerEnter2D(Collider2D other)
-    {
-
-    }
-
     public override void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("MovableObject"))
@@ -72,31 +65,26 @@ public class DogPushingState : DogState
     }
     public void PlayAnimations()
     {
-        if (leftSide)
+        if (!dog.pushSideIsLeft)
         {
-            if(dog.transform.position.x < dog.affectedObject.transform.position.x)
+            if(dog.movement.x < 0)
             {
                 dog.animator.Play("Pulling");
-                Debug.Log("PULL");
             }
             else
             {
                 dog.animator.Play("Pushing");
-                Debug.Log("PUSH");
             }
         }
-        if (rightSide)
+        if (dog.pushSideIsLeft)
         {
-            if(dog.transform.position.x < dog.affectedObject.transform.position.x)
+            if(dog.movement.x >= 0)
             {
                 dog.animator.Play("Pushing");
-                Debug.Log("PUSH");
             }
             else
             {
                 dog.animator.Play("Pulling");
-                Debug.Log("PULL");
-
             }
         }
     }

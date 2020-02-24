@@ -10,14 +10,12 @@ public class Human : MonoBehaviour
     private Rigidbody2D rb;
     public BoxCollider2D box;
 
-
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         box = GameObject.Find("HumanCollider").GetComponent<BoxCollider2D>();
         charmed = false;
     }
-
 
     void Update()
     {
