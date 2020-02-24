@@ -88,13 +88,17 @@ public class DogInAirState : DogState
     {
         timePassed += Time.deltaTime;
         if (jumpBufferDuration < timePassed)
+        {
             dog.jumpBuffer = false;
+        }
     }
 
     public void CheckInput()
     {
         if (Input.GetButtonDown("Jump"))
+        {
             dog.jumpBuffer = true;
+        }
     }
 
     void CheckIfJumping()
@@ -106,7 +110,9 @@ public class DogInAirState : DogState
         }
 
         if (dog.rb2d.velocity.y < 0.0f)
+        {
             dog.jumping = false;
+        }
     }
 
     public void AirAnimations()
