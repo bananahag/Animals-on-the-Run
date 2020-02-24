@@ -9,6 +9,11 @@ public class DogGroundedState : DogState
 
     public float walkingSpeed = 4.0f;
 
+    [Tooltip("A offset for the movable box for what is considered above the box for the dog. Is used to limit the dog to pushing and pulling from the sides of the box")]
+    public float yInteractOffsetAbove = 0.9f; //Ge förklaring för båda.
+    [Tooltip("A offset for the movable box for what is considered below the box for the dog. Is used to limit the dog to pushing and pulling from the sides of the box")]
+    public float yInteractOffsetBelow = -0.9f;
+
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;
@@ -77,6 +82,21 @@ public class DogGroundedState : DogState
         {
             dog.canMoveObject = true;
             dog.affectedObject = other.gameObject;
+        }
+        if (other.gameObject.CompareTag("MovableObject"))
+        {
+            dog.affectedObject = other.gameObject;
+            //Flytta ut någon annanstans funkar inte att ha här
+            Vector3 dir = dog.affectedObject.transform.position - dog.transform.position;
+            Debug.Log(dir);
+            if (dir.y >= yInteractOffsetAbove || dir.y <= yInteractOffsetBelow)
+            {
+                dog.canMoveObject = false;
+            }
+            else
+            {
+                dog.canMoveObject = true;
+            }
         }
     }
 
