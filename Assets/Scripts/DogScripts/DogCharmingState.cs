@@ -37,6 +37,14 @@ public class DogCharmingState : DogState
         {
             dog.charmingHuman = false;
         }
+
+        if(dog.transform.position.x <= dog.human.transform.position.x) {
+            dog.facingRight = true;
+        }
+        else if(dog.transform.position.x < dog.human.transform.position.x)
+        {
+            dog.facingRight = false;
+        }
     }
 
     public override void FixedUpdate()
