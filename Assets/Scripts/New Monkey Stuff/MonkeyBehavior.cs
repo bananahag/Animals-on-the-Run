@@ -12,8 +12,6 @@ public class MonkeyBehavior : MonoBehaviour
     public float landingVelocity, startGravityScale;
 
     [HideInInspector]
-    public AudioSource audioSource = null;
-    [HideInInspector]
     public Animator animator = null;
     [HideInInspector]
     public SpriteRenderer spriteRenderer = null;
@@ -29,7 +27,7 @@ public class MonkeyBehavior : MonoBehaviour
     [HideInInspector]
     public Vector2 movement;
     [HideInInspector]
-    public GameObject lever, cage, scaryObject;
+    public GameObject eel, lever, cage, scaryObject;
 
     [HideInInspector]
     public bool active;
@@ -64,7 +62,6 @@ public class MonkeyBehavior : MonoBehaviour
 
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb2d = GetComponent<Rigidbody2D>();
@@ -146,7 +143,10 @@ public class MonkeyBehavior : MonoBehaviour
         }
 
         if (other.gameObject.tag == "Eel")
+        {
+            eel = other.gameObject;
             canPickUpEel = true;
+        }
 
         if (other.gameObject.tag == "Lever")
         {

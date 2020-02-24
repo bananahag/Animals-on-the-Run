@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class MonkeyClimbing : MonkeyState
 {
-    [Tooltip("The sound effect that plays when the monkey is climbing.")]
-    public AudioClip ladderClimbSFX;
+    [Tooltip("Audio source that plays when the monkey is climbing.")]
+    public AudioSource ladderClimbSource;
 
     [Tooltip("The distance between the center of the monkey and the center of the ladder when climbing.")]
     public float ladderCenterOffsetDistance = 0.25f;
@@ -103,7 +103,7 @@ public class MonkeyClimbing : MonkeyState
     {
         if (Input.GetButtonDown("Jump"))
         {
-            monkey.audioSource.PlayOneShot(ladderClimbSFX);
+            ladderClimbSource.Play();
             monkey.ChangeState(monkey.jumpsquatState);
             monkey.rb2d.velocity = new Vector2(0.0f, 0.0f);
         }
@@ -151,7 +151,7 @@ public class MonkeyClimbing : MonkeyState
 
         if (monkey.y != 0.0f && canPlayClimbingSoundAgain && !onTopOfTheLadder || monkey.y < 0.0f && canPlayClimbingSoundAgain && onTopOfTheLadder)
         {
-            monkey.audioSource.PlayOneShot(ladderClimbSFX);
+            ladderClimbSource.Play();
             timePassed3 = 0.0f;
             canPlayClimbingSoundAgain = false;
         }
@@ -195,7 +195,7 @@ public class MonkeyClimbing : MonkeyState
             {
                 if (monkey.y != 0.0f && !onTopOfTheLadder || onTopOfTheLadder && monkey.y < 0.0f)
                 {
-                    monkey.audioSource.PlayOneShot(ladderClimbSFX);
+                    ladderClimbSource.Play();
                     timePassed3 = 0.0f;
                 }
                 else
