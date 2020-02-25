@@ -19,15 +19,20 @@ public class Eel : MonoBehaviour
     public float electricityTime = 1.0f;
     [Tooltip("The time (in seconds) the eel is stopped when landing.")]
     public float landingTime = 0.5f;
+    [Tooltip("The offset position of the eel when it gets picked up by the monkey.")]
+    public Vector3 monkeyCarryOffset = new Vector3(0.0f, 0.5f, 0.0f);
 
     public GameObject LightObj;
     public GameObject Electricity;
+    [HideInInspector]
+    public GameObject monkey;
 
     [HideInInspector]
     public bool grounded;
     bool lightIsActive;
     bool canAct;
     float flashTime = 0.05f;
+    bool pickedUp;
 
     float targetLightScaleX, targetLightScaleY;
     float currentScaleX, currentScaleY;
@@ -55,8 +60,10 @@ public class Eel : MonoBehaviour
         EelElectricity();
         if (canAct)
             EelAnimations();
-        GroundCheck();
-
+        if (pickedUp)
+            PickedUp();
+        else
+            GroundCheck();
     }
 
     private void FixedUpdate()
@@ -161,6 +168,18 @@ public class Eel : MonoBehaviour
         }
         
         LightObj.transform.localScale = new Vector2(currentScaleX, currentScaleY);
+    }
+
+    public void MonkeyInteraction(bool pickedUp)
+    {
+        this.pickedUp = pickedUp;
+        GetComponent<SpriteRenderer>().enabled = !pickedUp;
+    }
+
+    void PickedUp()
+    {
+        if (monkey != null)
+            transform.position = monkey.transform.position + monkeyCarryOffset;
     }
 
     IEnumerator ElectricityTimer()

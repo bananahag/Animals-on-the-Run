@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class MonkeyScared : MonkeyState
 {
-    [Tooltip("The sound effect that plays when the monkey is scared.")]
-    public AudioClip scaredSFX;
+    [Tooltip("Audio source that plays when the monkey is scared.")]
+    public AudioSource scaredSource;
 
     [Tooltip("The time (in seconds) the monkey stops before either curling up into a ball (if scared by a human) or runs away (if scared by water).")]
     public float scared = 0.5f;
@@ -32,7 +32,7 @@ public class MonkeyScared : MonkeyState
             secondPhase = false;
             monkey.rb2d.velocity = new Vector2(0.0f, 0.0f);
             monkey.rb2d.gravityScale = 0.0f;
-            monkey.audioSource.PlayOneShot(scaredSFX);
+            scaredSource.Play();
             monkey.animator.Play("Placeholder Monkey Scared");
         }
         else

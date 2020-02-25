@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class MonkeyPickingUp : MonkeyState
 {
-    [Tooltip("The sound effect that plays when picking up the eel.")]
-    public AudioClip pickingUpSFX;
+    [Tooltip("Audio source that plays when picking up the eel.")]
+    public AudioSource pickingUpSource;
 
     [Tooltip("The time (in seconds) the monkey stops when picking up the eel.")]
     public float pickUpTime = 1.0f;
@@ -22,8 +22,13 @@ public class MonkeyPickingUp : MonkeyState
     public override void Enter()
     {
         timePassed = 0.0f;
-        monkey.audioSource.PlayOneShot(pickingUpSFX);
+        pickingUpSource.Play();
         monkey.animator.Play("Placeholder Monkey Pickup");
+        if (monkey.eel.GetComponent<Eel>() != null)
+        {
+            monkey.eel.GetComponent<Eel>().monkey = monkey.gameObject;
+            monkey.eel.GetComponent<Eel>().MonkeyInteraction(true);
+        }
         
     }
 

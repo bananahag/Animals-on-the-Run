@@ -9,6 +9,7 @@ public class MovableObject : MonoBehaviour
     private bool carried;
     private bool rightSide; //right = true, left = false
     private GameObject carry;
+    private bool grounded;
 
     void Start()
     {
@@ -21,6 +22,19 @@ public class MovableObject : MonoBehaviour
         if (other.gameObject.layer != LayerMask.NameToLayer("Ground"))
         {
             Physics2D.IgnoreCollision(other.transform.GetComponent<Collider2D>(), objectCollider);
+        }
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            grounded = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            grounded = false;
         }
     }
 
@@ -40,7 +54,6 @@ public class MovableObject : MonoBehaviour
         {
             rightSide = false;
         }
-
     }
 
     public void Drop() {
@@ -54,12 +67,17 @@ public class MovableObject : MonoBehaviour
         {
             if(rightSide == true)
             {
-                transform.position = carry.GetComponent<Transform>().position + new Vector3(carry.GetComponent<Dog>().radius, 0, 0);
+                transform.position = carry.GetComponent<Transform>().position + new Vector3(carry.GetComponent<DogBehaviour>().radius, 0, 0);
             }
             else if(rightSide == false)
             {
-                transform.position = carry.GetComponent<Transform>().position - new Vector3(carry.GetComponent<Dog>().radius, 0, 0);
+                transform.position = carry.GetComponent<Transform>().position - new Vector3(carry.GetComponent<DogBehaviour>().radius, 0, 0);
             }
+        }
+
+        if (!grounded)
+        {
+            Drop();
         }
     }
 }

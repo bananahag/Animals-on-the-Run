@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class MonkeyPuttingDown : MonkeyState
 {
-    [Tooltip("The sound effect that plays when putting down the eel.")]
-    public AudioClip putDownSFX;
+    [Tooltip("Audio source that plays when putting down the eel.")]
+    public AudioSource putDownSource;
 
     [Tooltip("The time (in seconds) the monkey stops when putting down the eel.")]
     public float putDownTime = 1.0f;
@@ -22,13 +22,15 @@ public class MonkeyPuttingDown : MonkeyState
     public override void Enter()
     {
         timePassed = 0.0f;
-        monkey.audioSource.PlayOneShot(putDownSFX);
+        putDownSource.Play();
         monkey.animator.Play("Placeholder Monkey Pickdown");
     }
 
     public override void Exit()
     {
         monkey.carryingBucket = false;
+        if (monkey.eel.GetComponent<Eel>() != null)
+            monkey.eel.GetComponent<Eel>().MonkeyInteraction(false);
     }
 
     public override void Update()
