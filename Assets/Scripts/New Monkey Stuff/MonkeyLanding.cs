@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class MonkeyLanding : MonkeyState
 {
-    [Tooltip("Sound effect that plays when the monkey lands.")]
-    public AudioClip landingSFX;
+    [Tooltip("Audio source that plays when the monkey lands.")]
+    public AudioSource landingSource;
     [Tooltip("Maximum amount of time (in seconds) that the monkey will be stopped when landing after a great fall.")]
     public float maxLandingTime = 0.2f;
     [Tooltip("Number that gets multiplied with the falling velocity of the monkey to calculate the time spent waiting when landing.")]
@@ -25,7 +25,7 @@ public class MonkeyLanding : MonkeyState
     {
         timePassed = 0.0f;
         monkey.animator.Play("Placeholder Monkey Land");
-        monkey.audioSource.PlayOneShot(landingSFX);
+        landingSource.Play();
 
         if (monkey.carryingBucket)
             monkey.jumpBuffer = false;

@@ -6,6 +6,10 @@ public class ButtonOrLever : MonoBehaviour
 {
     public string incactiveAnimationName, activeAnimationName;
     public bool cannotBeTurnedOffAgain;
+    [Tooltip("The sound effect that plays when the object is activated.")]
+    public AudioClip activateSFX;
+    [Tooltip("The elevator object that gets activated. Can be left null.")]
+    public GameObject elevator = null;
 
     [HideInInspector]
     public bool activated;
@@ -40,16 +44,19 @@ public class ButtonOrLever : MonoBehaviour
             if (activated)
             {
                 activated = false;
+                if (elevator != null)
+                    elevator.GetComponent<Elevator>().Activate(false, gameObject);
                 GetComponent<SpriteRenderer>().color = startColor;//animator.Play(incactiveAnimationName);
-                //Play sound
 
             }
             else
             {
                 activated = true;
+                if(elevator != null)
+                    elevator.GetComponent<Elevator>().Activate(true, gameObject);
                 GetComponent<SpriteRenderer>().color = Color.yellow;//animator.Play(activeAnimationName);
-                //Play sound
             }
+            audioSource.PlayOneShot(activateSFX);
         }
 
     }
