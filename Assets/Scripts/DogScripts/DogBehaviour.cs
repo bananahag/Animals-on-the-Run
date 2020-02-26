@@ -59,6 +59,8 @@ public class DogBehaviour : MonoBehaviour
     public GameObject affectedObject;
     [HideInInspector]
     public GameObject human;
+    [HideInInspector]
+    public bool levelCompleted = false;
 
     public DogGroundedState groundedState = new DogGroundedState();
     public DogInAirState inAirState = new DogInAirState();

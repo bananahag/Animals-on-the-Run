@@ -4,17 +4,33 @@ using UnityEngine;
 
 public class MovableObject : MonoBehaviour
 {
+    [Tooltip("If either of these transforms touches an object with the ''Ground'' layer the monkey will be grounded.")]
+    public Transform groundCheckLeft = null, groundCheckRight = null;
     Collider2D objectCollider;
     private Transform ColliderTransform;
-    private bool carried;
-    private bool rightSide; //right = true, left = false
-    private GameObject carry;
-    private bool grounded;
+    public bool carried;
+    public bool rightSide; //right = true, left = false
+    public GameObject carry;
+    public bool grounded;
+    public bool canMoveObject;
 
     void Start()
     {
         ColliderTransform = GetComponent<Transform>();
         objectCollider = ColliderTransform.GetChild(0).GetComponent<Collider2D>();
+        canMoveObject = false;
+    }
+    void GroundCheck()
+    {
+        if (Physics2D.Linecast(transform.position, groundCheckLeft.position, 1 << LayerMask.NameToLayer("Ground"))
+            || Physics2D.Linecast(transform.position, groundCheckRight.position, 1 << LayerMask.NameToLayer("Ground")))
+        {
+            grounded = true;
+        }
+        else
+        {
+            grounded = false;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -24,17 +40,20 @@ public class MovableObject : MonoBehaviour
             Physics2D.IgnoreCollision(other.transform.GetComponent<Collider2D>(), objectCollider);
         }
 
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        //canmoveobject
+
+        if (canMoveObject && other.gameObject.CompareTag("MovableObject"))
         {
-            grounded = true;
+            Physics2D.IgnoreCollision(other.gameObject.transform.GetComponent<Transform>().GetChild(0).GetComponent<Collider2D>(), objectCollider);
         }
     }
 
-    void OnCollisionExit2D(Collision2D other)
+    void OnCollisionExit2D(Collision2D other) //Kan behövas tas bort pga buggar och att GroundCheck finns 
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             grounded = false;
+
         }
     }
 
@@ -45,14 +64,18 @@ public class MovableObject : MonoBehaviour
 
     public void Pickup(GameObject carrier)
     {
-        carried = true;
-        carry = carrier;
-        if(this.GetComponent<Transform>().position.x  > carry.transform.position.x)
+        if (canMoveObject)
         {
-            rightSide = true;
-        } else
-        {
-            rightSide = false;
+            carried = true;
+            carry = carrier;
+            if(this.GetComponent<Transform>().position.x  > carry.transform.position.x)
+            {
+                rightSide = true;
+            } else
+            {
+                rightSide = false;
+            }
+
         }
     }
 
@@ -63,6 +86,7 @@ public class MovableObject : MonoBehaviour
 
     void Update()
     {
+        GroundCheck();
         if (carried)
         {
             if(rightSide == true)

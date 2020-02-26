@@ -5,8 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class DogJumpsquatState : DogState
 {
-    [Tooltip("Sound effect that plays when the dog jumps.")]
-    public AudioClip jumpSFX;
+    [Tooltip("Audio source that plays when the dog jumps.")]
+    public AudioSource jumpSource;
     [Tooltip("Time (in seconds) spend crouching before the actual jumping part of the jump starts.")]
     public float jumpSquatTime = 0.125f;
     [Tooltip("The y velocity of the dog when the jump starts. Basically just means ''jump height.''")]
@@ -31,7 +31,7 @@ public class DogJumpsquatState : DogState
         dog.jumping = true;
         dog.rb2d.gravityScale = dog.startGravityScale;
         dog.rb2d.velocity = new Vector2(dog.rb2d.velocity.x, jumpVelocity);
-        dog.audioSource.PlayOneShot(jumpSFX);
+        jumpSource.Play();
         dog.animator.Play("Jump");
     }
 
