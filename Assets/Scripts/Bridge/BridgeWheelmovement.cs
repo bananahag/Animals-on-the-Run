@@ -71,7 +71,7 @@ public class BridgeWheelmovement : MonoBehaviour
     }
     void Update()
     {
-        Debug.Log(timer);
+       
     }
 
     private void FixedUpdate()
