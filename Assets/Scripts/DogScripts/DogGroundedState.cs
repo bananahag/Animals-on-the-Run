@@ -131,6 +131,10 @@ public class DogGroundedState : DogState
                 dog.canMoveObject = true;
             }
         }
+        if (other.gameObject.tag == "Finish")
+        {
+            dog.levelCompleted = true;
+        }
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
         {
