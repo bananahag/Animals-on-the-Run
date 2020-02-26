@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2066934021513316700}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ground Check Left
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
@@ -45,9 +45,9 @@ GameObject:
   - component: {fileID: 2066934021644001344}
   - component: {fileID: 2066934021644001345}
   - component: {fileID: 2066934021644001407}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Monkey Placeholder 1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -200,9 +200,14 @@ MonoBehaviour:
   groundCheckRight: {fileID: 2066934021851626393}
   jumpSFX: {fileID: 8300000, guid: a3619e473dee5f74797d888e8dd30d9c, type: 3}
   scaredSFX: {fileID: 8300000, guid: a3619e473dee5f74797d888e8dd30d9c, type: 3}
+  interactSFX: {fileID: 0}
+  stepSFX: {fileID: 0}
+  ladderClimbSFX: {fileID: 0}
+  topOfLadderSFX: {fileID: 0}
+  liftEel: {fileID: 0}
+  dropEel: {fileID: 0}
   walkingSpeed: 5
   walkingSpeedWhenCarryingBucket: 3.5
-  timeBetweenStepSounds: 0.5
   stopWhileScaredTime: 0.5
   walkAwayScaredTime: 0.5
   climbingSpeed: 4
@@ -212,7 +217,9 @@ MonoBehaviour:
   canClimbAgainAfterJumpingTime: 0.25
   canChangeClimbingDirectionTime: 0.5
   jumpVelocity: 10
+  jumpSquatTime: 0.125
   jumpBufferTime: 0.25
+  maxLandingTime: 0.2
   CurrentChar: 0
   timeStoppedWhenPickingUpEel: 1
   timeStoppedWhenActivating: 0.5
@@ -324,7 +331,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2066934021851626393}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ground Check Right
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
