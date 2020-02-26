@@ -90,16 +90,37 @@ public class DogGroundedState : DogState
             Debug.Log(dir);
             if (dir.y >= yInteractOffsetAbove || dir.y <= yInteractOffsetBelow)
             {
-                dog.canMoveObject = false;
+                if (dog.pushingState.type1)
+                {
+                    dog.affectedObject.GetComponent<MovableObject>().canMoveObject = false;
+                }
+                else if (dog.pushingState.type2)
+                {
+                    dog.canMoveObject = false; ;
+                }
             }
             else
             {
                 if (dir.x <= 0)
                 {
+                    if (dog.pushingState.type1)
+                    {
+                        dog.affectedObject.GetComponent<MovableObject>().canMoveObject = true;
+                    } else if (dog.pushingState.type2)
+                    {
+                        dog.canMoveObject = true;
+                    }
                     dog.pushSideIsLeft = true;
                 }
                 else if (dir.x > 0)
                 {
+                    if (dog.pushingState.type1)
+                    {
+                        dog.affectedObject.GetComponent<MovableObject>().canMoveObject = true;
+                    } else if (dog.pushingState.type2)
+                    {
+                        dog.canMoveObject = true;
+                    }
                     dog.pushSideIsLeft = false;
                 }
                 dog.canMoveObject = true;
@@ -120,9 +141,15 @@ public class DogGroundedState : DogState
 
     public override void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("MovableObject"))
+        if (other.gameObject.CompareTag("MovableObject") && dog.affectedObject == null)
         {
-            dog.canMoveObject = false;
+            if (dog.pushingState.type1)
+            {
+                dog.affectedObject.GetComponent<MovableObject>().canMoveObject = false;
+            } else if (dog.pushingState.type2)
+            {
+                dog.canMoveObject = false;
+            }
             dog.affectedObject = null;
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
@@ -136,11 +163,11 @@ public class DogGroundedState : DogState
     {
         if (dog.movement.x != 0)
         {
-            dog.animator.Play("Walking");
+            dog.animator.Play("DogWalking");
         }
         if (dog.movement.x == 0)
         {
-            dog.animator.Play("Idle");
+            dog.animator.Play("idle");
         }
     }
 

@@ -7,6 +7,9 @@ public class DogPushingState : DogState
 {
     public AudioSource pushSource;
     bool dropBox;
+    public bool type1;
+    public bool type2;
+
 
 
     [Tooltip("The walking speed of the dog while pushing or pulling a movable object.")]
@@ -15,12 +18,27 @@ public class DogPushingState : DogState
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;
-    }
+
+        if(!type1 && !type2)
+        {
+            Debug.LogWarning("Select pushing type in DogPushingState. Either Type1 or Type2 must be selected.");
+            type1 = true;
+        }
+        if (type1 && type2)
+        {
+            type1 = !type2;
+            type2 = !type1;
+        }
+   }
 
     public override void Enter()
     {
-        dog.affectedObject.GetComponent<MovableObject>().Pickup(dog.gameObject);
-        dog.movingObject = true;
+
+        if (type1)
+        {
+            dog.affectedObject.GetComponent<MovableObject>().Pickup(dog.gameObject);
+            dog.movingObject = true;
+        }
     }
     public override void Update()
     {
@@ -33,7 +51,10 @@ public class DogPushingState : DogState
         dog.movingObject = false;
         dog.canMoveObject = false;
         dropBox = false;
-        dog.affectedObject.GetComponent<MovableObject>().Drop();
+        if (type1)
+        {
+            dog.affectedObject.GetComponent<MovableObject>().Drop();
+        }
 
     }
 
@@ -67,28 +88,29 @@ public class DogPushingState : DogState
             dog.affectedObject.GetComponent<MovableObject>().Drop();
         }
     }
+
     public void PlayAnimations()
     {
         if (!dog.pushSideIsLeft)
         {
             if(dog.movement.x < 0)
             {
-                dog.animator.Play("Pulling");
+                dog.animator.Play("DogPulling");
             }
             else
             {
-                dog.animator.Play("Pushing");
+                dog.animator.Play("DogPushing");
             }
         }
         if (dog.pushSideIsLeft)
         {
             if(dog.movement.x >= 0)
             {
-                dog.animator.Play("Pushing");
+                dog.animator.Play("DogPushing");
             }
             else
             {
-                dog.animator.Play("Pulling");
+                dog.animator.Play("DogPulling");
             }
         }
     }
