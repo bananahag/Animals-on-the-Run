@@ -8,6 +8,10 @@ public class MonkeyGrounded : MonkeyState
 {
     [Tooltip("Audio source that plays when the monkey takes a step on the ground.")]
     public AudioSource stepSource;
+    [Tooltip("The minimum and the maximum volume of the footstep sounds.")]
+    public float minVolume = 0.9f, maxVolume = 1.1f;
+    [Tooltip("The minimum and the maximum pitch of the footstep sounds.")]
+    public float minPitch = 0.9f, maxPitch = 1.1f;
 
     [Tooltip("The walking speed of the monkey when she IS NOT carrying the bucket.")]
     public float walkingSpeed = 4.0f;
@@ -98,6 +102,8 @@ public class MonkeyGrounded : MonkeyState
 
     public void PlayStepSound()
     {
+        stepSource.volume = Random.Range(minVolume, maxVolume);
+        stepSource.pitch = Random.Range(minPitch, maxPitch);
         stepSource.Play();
     }
 }
