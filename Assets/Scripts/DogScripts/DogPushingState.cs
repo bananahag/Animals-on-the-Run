@@ -79,6 +79,8 @@ public class DogPushingState : DogState
         //{
             dog.affectedObject.GetComponent<MovableObject>().Drop();
         //}
+        Debug.Log("Exit pushing");
+        dog.affectedObject = null;
 
     }
 
@@ -105,6 +107,13 @@ public class DogPushingState : DogState
             dog.ChangeState(dog.groundedState);
         }
 
+        if(dog.affectedObject != null)
+        {
+            if (dog.affectedObject.GetComponent<MovableObject>().grounded == false)
+            {
+                dropBox = true;
+            }
+        }
     }
 
     public override void OnTriggerExit2D(Collider2D other)
