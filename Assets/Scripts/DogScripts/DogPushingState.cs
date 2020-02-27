@@ -79,6 +79,8 @@ public class DogPushingState : DogState
         //{
             dog.affectedObject.GetComponent<MovableObject>().Drop();
         //}
+        Debug.Log("Exit pushing");
+        dog.affectedObject = null;
 
     }
 
@@ -103,6 +105,15 @@ public class DogPushingState : DogState
         if (dropBox && dog.grounded)
         {
             dog.ChangeState(dog.groundedState);
+        }
+
+        if (dog.affectedObject != null)
+
+        {
+            if (dog.affectedObject.GetComponent<MovableObject>().grounded == false)
+            {
+                dropBox = true;
+            }
         }
 
     }
