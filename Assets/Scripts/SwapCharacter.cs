@@ -6,8 +6,8 @@ public class SwapCharacter : MonoBehaviour
 {
     MenyUI mMeny;
     public List<GameObject> characters;
-    private Monkey mMonkey;
-    private Dog mDog;
+    private MonkeyBehavior mMonkey;
+    private DogBehaviour mDog;
     public int SelectedChar;
     private Camera cam;
     
@@ -20,8 +20,8 @@ public class SwapCharacter : MonoBehaviour
     private void Awake()
     {
 
-        mMonkey = characters[0].GetComponent<Monkey>();
-        mDog = characters[1].GetComponent<Dog>();
+        mMonkey = characters[0].GetComponent<MonkeyBehavior>();
+        mDog = characters[1].GetComponent<DogBehaviour>();
     }
     void Start()
     {
@@ -58,20 +58,20 @@ public class SwapCharacter : MonoBehaviour
         if (SelectedChar == (int)activeCharacter.Dog)
         {
            
-            mMonkey.notActive = true;
-            mDog.notActive = false;
+            mMonkey.active = false;
+            mDog.active = true;
             cam.transform.position = new Vector3(characters[1].transform.position.x, characters[1].transform.position.y, -10);
         }
 
         else if (SelectedChar == (int)activeCharacter.Monkey)
         {
             
-            mDog.notActive = true;
-            mMonkey.notActive = false;
+            mDog.active = false;
+            mMonkey.active = true;
             cam.transform.position = new Vector3(characters[0].transform.position.x, characters[0].transform.position.y, -10);
         }
 
-        if (mMonkey.monkeyLevelComplete && mDog.dogLevelComplete)
+        if (mMonkey.monkeyLevelComplete && mDog.levelCompleted)
         {
             mMeny.NextLevel();
         }

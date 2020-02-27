@@ -6,6 +6,8 @@ public class Elevator : MonoBehaviour
 {
     [Tooltip("The sound effect that plays when a player character gets squished.")]
     public AudioClip squishedSFX;
+    [Tooltip("What is this sound effect? I don't know. Don't ask Albin about this because he won't be able to help you.")]
+    public AudioClip mysterySFX;
     [Tooltip("The sound effect that plays when a player grows agter being squished.")]
     public AudioClip growSFX;
 
@@ -32,6 +34,7 @@ public class Elevator : MonoBehaviour
     bool isFlat;
     bool touchingPlayer;
     GameObject monkey, dog, eel;
+    GameObject lever = null;
 
     Rigidbody2D rb2d;
     AudioSource audioSource;
@@ -51,7 +54,6 @@ public class Elevator : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
         if (fraction < 1.0f && !goingBack && active)
         {
             timePassed = 0.0f;
@@ -75,6 +77,8 @@ public class Elevator : MonoBehaviour
             goingBack = true;
             timePassed = 0.0f;
             fraction -= Time.deltaTime / travelTime;
+            if (fraction <= 0.0f)
+                fraction = 0.0f;
             if (startPosition.position.y > targetPosition.position.y)
             {
                 if (!active)
@@ -101,10 +105,12 @@ public class Elevator : MonoBehaviour
                 goingBack = false;
             else
                 goingBack = true;
-            if (looping)
-                returns = true;
-            else
-                returns = false;
+
+            if (!looping)
+            {
+                if (lever != null)
+                    lever.GetComponent<ButtonOrLever>().Activate();
+            }
         }
         
         if (touchingPlayer && !goingUp && monkey.transform.position.y > transform.position.y)
@@ -118,20 +124,39 @@ public class Elevator : MonoBehaviour
             if (touchingPlayer && monkey.transform.position.y < transform.position.y && !goingUp && monkey.GetComponent<MonkeyBehavior>().grounded)
                 FlattenMonkey();
         }
-        if (!touchingPlayer && isFlat)
+        if (!touchingPlayer && isFlat || monkey != null && monkey.transform.position.y > transform.position.y && isFlat)
             UnflattenMonkey();
+    }
+
+    public void Activate(bool activated, GameObject other)
+    {
+        lever = other;
+        if (activated)
+        {
+            active = true;
+            goingBack = false;
+        }
+        else
+        {
+            active = false;
+        }
     }
 
     void FlattenMonkey()
     {
-
         if (!isFlat)
+        {
+            int whatDoesThisDo = Random.Range(1, 11);
+            if (whatDoesThisDo == 10)
+                audioSource.PlayOneShot(mysterySFX);
             audioSource.PlayOneShot(squishedSFX);
+
+        }
         timePassed2 = 0.0f;
         isFlat = true;
         flattenAmount -= 0.1f / travelTime;
         widenAmount += 0.1f / travelTime;
-        if (flattenAmount < 0.2f)
+        if (flattenAmount < 0.2f && active)
             monkey.GetComponent<MonkeyBehavior>().active = false;
         if (flattenAmount <= 0.05f)
         {
@@ -159,7 +184,10 @@ public class Elevator : MonoBehaviour
                 widenAmount = 1.0f;
                 isFlat = false;
             }
-            monkey.transform.localScale = new Vector2(widenAmount, flattenAmount);
+            if (touchingPlayer)
+                monkey.transform.localScale = new Vector2(widenAmount / transform.localScale.x, flattenAmount / transform.localScale.y);
+            else
+                monkey.transform.localScale = new Vector2(widenAmount, flattenAmount);
         }
         else
         {
@@ -171,7 +199,10 @@ public class Elevator : MonoBehaviour
                 widenAmount = 1.8f;
                 monkey.GetComponent<MonkeyBehavior>().active = true;
             }
-            monkey.transform.localScale = new Vector2(widenAmount, flattenAmount);
+            if (touchingPlayer)
+                monkey.transform.localScale = new Vector2(widenAmount / transform.localScale.x, flattenAmount / transform.localScale.y);
+            else
+                monkey.transform.localScale = new Vector2(widenAmount, flattenAmount);
         }
     }
 

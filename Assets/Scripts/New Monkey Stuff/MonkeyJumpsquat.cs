@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class MonkeyJumpsquat : MonkeyState
 {
-    [Tooltip("Sound effect that plays when the monkey jumps.")]
-    public AudioClip jumpSFX;
+    [Tooltip("Audio source that plays when the monkey jumps.")]
+    public AudioSource jumpSource;
     [Tooltip("Time (in seconds) spend crouching before the actual jumping part of the jump starts.")]
     public float jumpSquatTime = 0.125f;
     [Tooltip("The y velocity the monkey when the jump starts. Basically just means ''jump height.''")]
@@ -32,7 +32,7 @@ public class MonkeyJumpsquat : MonkeyState
         monkey.jumping = true;
         monkey.rb2d.gravityScale = monkey.startGravityScale;
         monkey.rb2d.velocity = new Vector2(monkey.rb2d.velocity.x, jumpVelocity);
-        monkey.audioSource.PlayOneShot(jumpSFX);
+        jumpSource.Play();
         monkey.animator.Play("Placeholder Monkey Jump");
     }
 
