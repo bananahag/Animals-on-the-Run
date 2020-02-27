@@ -14,7 +14,7 @@ public class DogGroundedState : DogState
     public float yInteractOffsetAbove = 0.9f; //Ge förklaring för båda.
     [Tooltip("A offset for the movable box for what is considered below the box for the dog. Is used to limit the dog to pushing and pulling from the sides of the box")]
     public float yInteractOffsetBelow = -0.9f;
-
+    
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;
@@ -35,8 +35,7 @@ public class DogGroundedState : DogState
         if (dog.active)
         {
             CheckInput();
-        }
-
+        
         if (dog.x > 0)
         {
             dog.facingRight = true;
@@ -44,6 +43,7 @@ public class DogGroundedState : DogState
         else if (dog.x < 0)
         {
             dog.facingRight = false;
+        }
         }
 
         GroundedAnimations();
@@ -56,8 +56,12 @@ public class DogGroundedState : DogState
 
     public override void FixedUpdate()
     {
+        if (dog.active)
+        {
+
         dog.movement = new Vector2(dog.x * walkingSpeed, dog.rb2d.velocity.y);
 
+        }
         if (dog.movingObject)
         {
             dog.ChangeState(dog.pushingState);
