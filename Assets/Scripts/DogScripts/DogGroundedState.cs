@@ -62,6 +62,11 @@ public class DogGroundedState : DogState
         {
             dog.ChangeState(dog.pushingState);
         }
+
+        if (dog.swimming)
+        {
+            dog.ChangeState(dog.swimmingState);
+        }
         CheckIfFalling();
     }
 

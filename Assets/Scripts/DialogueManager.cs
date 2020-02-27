@@ -8,14 +8,20 @@ public class DialogueManager : MonoBehaviour
     Queue<Dialogue.Animal> animals;
     Queue<string> sentences;
     static public bool isOpen, canContinue;
+    [Tooltip("The audio sources that plays the different animal talking sound effects.")]
+    public AudioSource monkeySource, dogSource, eelSource;
     [Tooltip("The text object that displays the dialogue text.")]
     public Text dialogueText;
     [Tooltip("The textbox object, basically.")]
     public Animator animator;
-    [Tooltip("Time (in seconds) before the text shows up when the dialogue box pops up. If that doesn't make any sense, ask Albin.")]
-    public float timeBeforeTextStarts = 0.175f;
     [Tooltip("The images used for character portraits.")]
     public Image monkeyPortrait, dogPortrait, eelPortrait;
+    [Tooltip("Time (in seconds) before the text shows up when the dialogue box pops up. If that doesn't make any sense, ask Albin.")]
+    public float timeBeforeTextStarts = 0.1f;
+    public enum DisplayType {TypeWriterStyle, AllTextAppearsAtOnce};
+    public DisplayType displayType;
+
+    bool firstTextBox; //This is some real dumbo shit right here
 
     // Start is called before the first frame update
     void Start()
@@ -28,13 +34,14 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogue(Dialogue dialogue)
     {
         canContinue = false;
+        firstTextBox = true;
         animals.Clear();
         monkeyPortrait.enabled = false;
         dogPortrait.enabled = false;
         eelPortrait.enabled = false;
         sentences.Clear();
         dialogueText.text = "";
-        foreach (Dialogue.Animal animal in System.Enum.GetValues(typeof(Dialogue.Animal)))
+        foreach (Dialogue.Animal animal in dialogue.animals)
         {
             animals.Enqueue(animal);
         }
@@ -48,7 +55,10 @@ public class DialogueManager : MonoBehaviour
             DisplayNextSentence();
         }
         else
+        {
+            DisplayNextPortrait();
             StartCoroutine(StartUp());
+        }
         animator.SetBool("isOpen", true);
         isOpen = true;
     }
@@ -62,19 +72,10 @@ public class DialogueManager : MonoBehaviour
                 EndDialogue();
                 return;
             }
-            Dialogue.Animal animal = animals.Dequeue();
-            if (animal == Dialogue.Animal.Monkey)
-                monkeyPortrait.enabled = true;
-            else { monkeyPortrait.enabled = false; }
-
-            if (animal == Dialogue.Animal.Dog)
-                dogPortrait.enabled = true;
-            else { dogPortrait.enabled = false; }
-
-            if (animal == Dialogue.Animal.Eel)
-                eelPortrait.enabled = true;
-            else { eelPortrait.enabled = false; }
-
+            if (firstTextBox)
+                firstTextBox = false;
+            else
+                DisplayNextPortrait();
             string sentence = sentences.Dequeue();
             StopAllCoroutines();
             StartCoroutine(TypeSentence(sentence));
@@ -83,7 +84,27 @@ public class DialogueManager : MonoBehaviour
 
     void DisplayNextPortrait()
     {
+        Dialogue.Animal animal = animals.Dequeue();
+        if (animal == Dialogue.Animal.Monkey)
+        {
+            monkeySource.Play();
+            monkeyPortrait.enabled = true;
+        }
+        else { monkeyPortrait.enabled = false; }
 
+        if (animal == Dialogue.Animal.Dog)
+        {
+            dogSource.Play();
+            dogPortrait.enabled = true;
+        }
+        else { dogPortrait.enabled = false; }
+
+        if (animal == Dialogue.Animal.Eel)
+        {
+            eelSource.Play();
+            eelPortrait.enabled = true;
+        }
+        else { eelPortrait.enabled = false; }
     }
 
     void EndDialogue()
@@ -101,19 +122,36 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator TypeSentence(string sentence)
     {
-        dialogueText.text = "";
-        foreach (char letter in sentence.ToCharArray())
+        if (displayType == DisplayType.TypeWriterStyle)
         {
-            canContinue = false;
-            dialogueText.text += letter;
-            yield return new WaitForFixedUpdate();
+            int fastText = 0;
+            dialogueText.text = "";
+            foreach (char letter in sentence.ToCharArray())
+            {
+                canContinue = false;
+                dialogueText.text += letter;
+                fastText++;
+                if (fastText > 1)
+                {
+                    yield return new WaitForFixedUpdate();
+                    fastText = 0;
+                }
+            }
+        }
+        else if (displayType == DisplayType.AllTextAppearsAtOnce)
+        {
+            float changeTextColor = 0.0f;
+            dialogueText.text = sentence;
+            for (int i = 0; i < 5; i++)
+            {
+                canContinue = false;
+                dialogueText.color = new Color(changeTextColor, changeTextColor, changeTextColor, 1.0f);
+                yield return new WaitForFixedUpdate();
+                changeTextColor += 0.25f;
+                if (changeTextColor > 1.0f)
+                    changeTextColor = 1.0f;
+            }
         }
         canContinue = true;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
