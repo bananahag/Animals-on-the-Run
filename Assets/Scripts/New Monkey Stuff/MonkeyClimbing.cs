@@ -8,6 +8,10 @@ public class MonkeyClimbing : MonkeyState
 {
     [Tooltip("Audio source that plays when the monkey is climbing.")]
     public AudioSource ladderClimbSource;
+    [Tooltip("The minimum and the maximum volume of the climbing sounds.")]
+    public float minVolume = 0.9f, maxVolume = 1.1f;
+    [Tooltip("The minimum and the maximum pitch of the climbing sounds.")]
+    public float minPitch = 0.9f, maxPitch = 1.1f;
 
     [Tooltip("The distance between the center of the monkey and the center of the ladder when climbing.")]
     public float ladderCenterOffsetDistance = 0.25f;
@@ -103,6 +107,8 @@ public class MonkeyClimbing : MonkeyState
     {
         if (Input.GetButtonDown("Jump"))
         {
+            ladderClimbSource.volume = Random.Range(minVolume, maxVolume);
+            ladderClimbSource.pitch = Random.Range(minPitch, maxPitch);
             ladderClimbSource.Play();
             monkey.ChangeState(monkey.jumpsquatState);
             monkey.rb2d.velocity = new Vector2(0.0f, 0.0f);
@@ -151,6 +157,8 @@ public class MonkeyClimbing : MonkeyState
 
         if (monkey.y != 0.0f && canPlayClimbingSoundAgain && !onTopOfTheLadder || monkey.y < 0.0f && canPlayClimbingSoundAgain && onTopOfTheLadder)
         {
+            ladderClimbSource.volume = Random.Range(minVolume, maxVolume);
+            ladderClimbSource.pitch = Random.Range(minPitch, maxPitch);
             ladderClimbSource.Play();
             timePassed3 = 0.0f;
             canPlayClimbingSoundAgain = false;
@@ -195,6 +203,8 @@ public class MonkeyClimbing : MonkeyState
             {
                 if (monkey.y != 0.0f && !onTopOfTheLadder || onTopOfTheLadder && monkey.y < 0.0f)
                 {
+                    ladderClimbSource.volume = Random.Range(minVolume, maxVolume);
+                    ladderClimbSource.pitch = Random.Range(minPitch, maxPitch);
                     ladderClimbSource.Play();
                     timePassed3 = 0.0f;
                 }
