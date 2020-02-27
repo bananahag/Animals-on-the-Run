@@ -24,11 +24,14 @@ public class MovableObject : MonoBehaviour
     public bool collideWithPlayer;
     public float pickupOffset = 0.05f;
 
+    public Rigidbody2D boxRb;
+
     void Start()
     {
         ColliderTransform = GetComponent<Transform>();
         objectCollider = ColliderTransform.GetChild(0).GetComponent<Collider2D>();
         canMoveObject = false;
+        boxRb = GetComponent<Rigidbody2D>();
     }
     void GroundCheck()
     {
@@ -55,8 +58,9 @@ public class MovableObject : MonoBehaviour
 
         if (canMoveObject && other.gameObject.CompareTag("MovableObject"))
         {
-            Physics2D.IgnoreCollision(other.gameObject.transform.GetComponent<Transform>().GetChild(0).GetComponent<Collider2D>(), objectCollider);
+            //Physics2D.IgnoreCollision(other.gameObject.transform.GetComponent<Transform>().GetChild(0).GetComponent<Collider2D>(), objectCollider);
         }
+        
     }
 
     public bool IsCarried()
@@ -77,6 +81,7 @@ public class MovableObject : MonoBehaviour
             {
                 rightSide = false;
             }
+            boxRb.velocity = new Vector2(boxRb.velocity.x, 0);
 
         }
     }
@@ -98,6 +103,14 @@ public class MovableObject : MonoBehaviour
             else if(rightSide == false)
             {
                 transform.position = carry.GetComponent<Transform>().position - new Vector3(carry.GetComponent<DogBehaviour>().radius + pickupOffset, 0, 0);
+            }
+        }
+        if (!grounded)
+        {
+            canMoveObject = false;
+            if (carried)
+            {
+                Drop();
             }
         }
     }
