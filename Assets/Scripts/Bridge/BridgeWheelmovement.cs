@@ -77,9 +77,9 @@ public class BridgeWheelmovement : MonoBehaviour
     private void FixedUpdate()
     {
         accelerationtimer -= Time.deltaTime;
+        timer -= Time.deltaTime;
         if (active)
         {
-            timer -= Time.deltaTime;
             if (timer < 0)
             {
                 bridge.BridgeFold(angle, foldtime, clipAngle, active);
