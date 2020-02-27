@@ -55,7 +55,7 @@ public class MovableObject : MonoBehaviour
 
         if (canMoveObject && other.gameObject.CompareTag("MovableObject"))
         {
-            Physics2D.IgnoreCollision(other.gameObject.transform.GetComponent<Transform>().GetChild(0).GetComponent<Collider2D>(), objectCollider);
+            //Physics2D.IgnoreCollision(other.gameObject.transform.GetComponent<Transform>().GetChild(0).GetComponent<Collider2D>(), objectCollider);
         }
     }
 
