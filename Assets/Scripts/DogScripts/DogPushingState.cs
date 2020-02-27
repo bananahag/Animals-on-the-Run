@@ -6,8 +6,9 @@ using UnityEngine;
 public class DogPushingState : DogState
 {
     public AudioSource pushSource;
-    bool dropBox;
+    public bool dropBox;
     public bool type1;
+    [Tooltip("")]
     public bool type2;
 
 
@@ -39,11 +40,34 @@ public class DogPushingState : DogState
             dog.affectedObject.GetComponent<MovableObject>().Pickup(dog.gameObject);
             dog.movingObject = true;
         }
+
+        if (type2)
+        {
+            if(dog.affectedObject.transform.position.x > dog.transform.position.x)
+            {
+                dog.affectedObject.transform.position = dog.transform.position + new Vector3(dog.radius, 0, 0);
+            }
+            else if(dog.affectedObject.transform.position.x <= dog.transform.position.x)
+            {
+                dog.affectedObject.transform.position = dog.transform.position - new Vector3(dog.radius, 0, 0);
+            }
+        }
     }
     public override void Update()
     {
         CheckInput();
         PlayAnimations();
+        if (type2)
+        {
+            if (dog.affectedObject.transform.position.x > dog.transform.position.x)
+            {
+                dog.affectedObject.transform.position = dog.transform.position + new Vector3(dog.radius, 0, 0);
+            }
+            else if (dog.affectedObject.transform.position.x <= dog.transform.position.x)
+            {
+                dog.affectedObject.transform.position = dog.transform.position - new Vector3(dog.radius, 0, 0);
+            }
+        }
     }
 
     public override void Exit()
@@ -51,41 +75,55 @@ public class DogPushingState : DogState
         dog.movingObject = false;
         dog.canMoveObject = false;
         dropBox = false;
-        if (type1)
-        {
+        //if (type1)
+        //{
             dog.affectedObject.GetComponent<MovableObject>().Drop();
-        }
+        //}
+        Debug.Log("Exit pushing");
+        dog.affectedObject = null;
 
     }
 
     void CheckInput()
     {
+        
         if(Input.GetButtonDown("Interact") && dog.movingObject)
         {
             dropBox = true;
         }
+
     }
 
     public override void FixedUpdate()
     {
         dog.movement = new Vector2(dog.x * pushingSpeed, dog.rb2d.velocity.y);
-        if(dog.x != 0)
+        if (dog.x != 0)
         {
             pushSource.Play();
         }
 
-        if(dropBox && dog.grounded)
+        if (dropBox && dog.grounded)
         {
             dog.ChangeState(dog.groundedState);
         }
+
+        if (dog.affectedObject != null)
+
+        {
+            if (dog.affectedObject.GetComponent<MovableObject>().grounded == false)
+            {
+                dropBox = true;
+            }
+        }
+
     }
 
     public override void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("MovableObject"))
         {
-            dropBox = true;
-            dog.affectedObject.GetComponent<MovableObject>().Drop();
+            //dropBox = true;
+            //dog.affectedObject.GetComponent<MovableObject>().Drop();
         }
     }
 

@@ -6,13 +6,23 @@ public class MovableObject : MonoBehaviour
 {
     [Tooltip("If either of these transforms touches an object with the ''Ground'' layer the monkey will be grounded.")]
     public Transform groundCheckLeft = null, groundCheckRight = null;
-    Collider2D objectCollider;
+    [HideInInspector]
+    public Collider2D objectCollider;
+    [HideInInspector]
     private Transform ColliderTransform;
+    [HideInInspector]
     public bool carried;
+    [HideInInspector]
     public bool rightSide; //right = true, left = false
+    [HideInInspector]
     public GameObject carry;
+    [HideInInspector]
     public bool grounded;
+    //[HideInInspector]
     public bool canMoveObject;
+
+    public bool collideWithPlayer;
+    public float pickupOffset = 0.05f;
 
     void Start()
     {
@@ -37,23 +47,15 @@ public class MovableObject : MonoBehaviour
     {
         if (other.gameObject.layer != LayerMask.NameToLayer("Ground"))
         {
-            Physics2D.IgnoreCollision(other.transform.GetComponent<Collider2D>(), objectCollider);
+            if (!collideWithPlayer)
+            {
+                Physics2D.IgnoreCollision(other.transform.GetComponent<Collider2D>(), objectCollider);
+            }
         }
-
-        //canmoveobject
 
         if (canMoveObject && other.gameObject.CompareTag("MovableObject"))
         {
             Physics2D.IgnoreCollision(other.gameObject.transform.GetComponent<Transform>().GetChild(0).GetComponent<Collider2D>(), objectCollider);
-        }
-    }
-
-    void OnCollisionExit2D(Collision2D other) //Kan behövas tas bort pga buggar och att GroundCheck finns 
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            grounded = false;
-
         }
     }
 
@@ -91,17 +93,12 @@ public class MovableObject : MonoBehaviour
         {
             if(rightSide == true)
             {
-                transform.position = carry.GetComponent<Transform>().position + new Vector3(carry.GetComponent<DogBehaviour>().radius, 0, 0);
+                transform.position = carry.GetComponent<Transform>().position + new Vector3(carry.GetComponent<DogBehaviour>().radius + pickupOffset, 0, 0);
             }
             else if(rightSide == false)
             {
-                transform.position = carry.GetComponent<Transform>().position - new Vector3(carry.GetComponent<DogBehaviour>().radius, 0, 0);
+                transform.position = carry.GetComponent<Transform>().position - new Vector3(carry.GetComponent<DogBehaviour>().radius + pickupOffset, 0, 0);
             }
-        }
-
-        if (!grounded)
-        {
-            Drop();
         }
     }
 }

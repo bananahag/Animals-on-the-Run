@@ -14,7 +14,7 @@ public class DogGroundedState : DogState
     public float yInteractOffsetAbove = 0.9f; //Ge förklaring för båda.
     [Tooltip("A offset for the movable box for what is considered below the box for the dog. Is used to limit the dog to pushing and pulling from the sides of the box")]
     public float yInteractOffsetBelow = -0.9f;
-
+    
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;
@@ -35,8 +35,7 @@ public class DogGroundedState : DogState
         if (dog.active)
         {
             CheckInput();
-        }
-
+        
         if (dog.x > 0)
         {
             dog.facingRight = true;
@@ -44,6 +43,7 @@ public class DogGroundedState : DogState
         else if (dog.x < 0)
         {
             dog.facingRight = false;
+        }
         }
 
         GroundedAnimations();
@@ -56,11 +56,20 @@ public class DogGroundedState : DogState
 
     public override void FixedUpdate()
     {
+        if (dog.active)
+        {
+
         dog.movement = new Vector2(dog.x * walkingSpeed, dog.rb2d.velocity.y);
 
+        }
         if (dog.movingObject)
         {
             dog.ChangeState(dog.pushingState);
+        }
+
+        if (dog.swimming)
+        {
+            dog.ChangeState(dog.swimmingState);
         }
         CheckIfFalling();
     }
@@ -85,14 +94,14 @@ public class DogGroundedState : DogState
     {
         if (other.gameObject.CompareTag("MovableObject"))
         {
-            dog.affectedObject = other.gameObject;
-            Vector3 dir = dog.affectedObject.transform.position - dog.transform.position;
+            Vector3 dir = other.transform.position - dog.transform.position;
             Debug.Log(dir);
             if (dir.y >= yInteractOffsetAbove || dir.y <= yInteractOffsetBelow)
             {
+                Physics2D.IgnoreCollision(other.GetComponent<MovableObject>().objectCollider, dog.GetComponent<BoxCollider2D>());
                 if (dog.pushingState.type1)
                 {
-                    dog.affectedObject.GetComponent<MovableObject>().canMoveObject = false;
+                    other.GetComponent<MovableObject>().canMoveObject = false;
                 }
                 else if (dog.pushingState.type2)
                 {
@@ -103,6 +112,7 @@ public class DogGroundedState : DogState
             {
                 if (dir.x <= 0)
                 {
+                    dog.affectedObject = other.gameObject;
                     if (dog.pushingState.type1)
                     {
                         dog.affectedObject.GetComponent<MovableObject>().canMoveObject = true;
@@ -114,6 +124,7 @@ public class DogGroundedState : DogState
                 }
                 else if (dir.x > 0)
                 {
+                    dog.affectedObject = other.gameObject;
                     if (dog.pushingState.type1)
                     {
                         dog.affectedObject.GetComponent<MovableObject>().canMoveObject = true;
@@ -149,7 +160,10 @@ public class DogGroundedState : DogState
         {
             if (dog.pushingState.type1)
             {
-                dog.affectedObject.GetComponent<MovableObject>().canMoveObject = false;
+                if(dog.affectedObject != null)
+                {
+                    dog.affectedObject.GetComponent<MovableObject>().canMoveObject = false;
+                }
             } else if (dog.pushingState.type2)
             {
                 dog.canMoveObject = false;
