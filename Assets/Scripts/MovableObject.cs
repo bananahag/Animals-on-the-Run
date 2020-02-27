@@ -7,7 +7,7 @@ public class MovableObject : MonoBehaviour
     [Tooltip("If either of these transforms touches an object with the ''Ground'' layer the monkey will be grounded.")]
     public Transform groundCheckLeft = null, groundCheckRight = null;
     [HideInInspector]
-    Collider2D objectCollider;
+    public Collider2D objectCollider;
     [HideInInspector]
     private Transform ColliderTransform;
     [HideInInspector]
@@ -18,7 +18,7 @@ public class MovableObject : MonoBehaviour
     public GameObject carry;
     [HideInInspector]
     public bool grounded;
-    [HideInInspector]
+    //[HideInInspector]
     public bool canMoveObject;
 
     public bool collideWithPlayer;
@@ -99,12 +99,6 @@ public class MovableObject : MonoBehaviour
             {
                 transform.position = carry.GetComponent<Transform>().position - new Vector3(carry.GetComponent<DogBehaviour>().radius + pickupOffset, 0, 0);
             }
-        }
-        //Bugg där den inte droppar om den står vid ett stup förrän efter en lång delay!!
-        if (!grounded)
-        {
-            Debug.Log("Drops box");
-            Drop();
         }
     }
 }
