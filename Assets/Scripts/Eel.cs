@@ -33,6 +33,12 @@ public class Eel : MonoBehaviour
     bool canAct;
     float flashTime = 0.05f;
     bool pickedUp;
+    [HideInInspector]
+    public bool active = false;
+
+    [HideInInspector]
+    public bool levelComplete = false;
+
 
     float targetLightScaleX, targetLightScaleY;
     float currentScaleX, currentScaleY;
@@ -94,7 +100,7 @@ public class Eel : MonoBehaviour
 
     void EelLight()
     {
-        if (Input.GetButtonDown("Light") && canAct && grounded)
+        if (Input.GetButtonDown("Light") && canAct && grounded && active)
         {
             audioSource.PlayOneShot(lightSFX);
             if (lightIsActive)
@@ -127,7 +133,7 @@ public class Eel : MonoBehaviour
 
     void EelElectricity()
     {
-        if (Input.GetButtonDown("Interact") && canAct && grounded)
+        if (Input.GetButtonDown("Interact") && canAct && grounded && active)
         {
             audioSource.PlayOneShot(electricitySFX);
             canAct = false;

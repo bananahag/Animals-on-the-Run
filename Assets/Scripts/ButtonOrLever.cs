@@ -10,7 +10,8 @@ public class ButtonOrLever : MonoBehaviour
     public AudioClip activateSFX;
     [Tooltip("The elevator object that gets activated. Can be left null.")]
     public GameObject elevator = null;
-
+    [Tooltip("The bridge object that gets activated. Can be left null.")]
+    public GameObject bridge = null;
     [HideInInspector]
     public bool activated;
 
@@ -46,6 +47,8 @@ public class ButtonOrLever : MonoBehaviour
                 activated = false;
                 if (elevator != null)
                     elevator.GetComponent<Elevator>().Activate(false, gameObject);
+                if (bridge != null)
+                    bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
                 GetComponent<SpriteRenderer>().color = startColor;//animator.Play(incactiveAnimationName);
 
             }
@@ -54,6 +57,8 @@ public class ButtonOrLever : MonoBehaviour
                 activated = true;
                 if(elevator != null)
                     elevator.GetComponent<Elevator>().Activate(true, gameObject);
+                if (bridge != null)
+                    bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
                 GetComponent<SpriteRenderer>().color = Color.yellow;//animator.Play(activeAnimationName);
             }
             audioSource.PlayOneShot(activateSFX);
