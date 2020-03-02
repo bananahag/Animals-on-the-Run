@@ -21,6 +21,9 @@ public class DialogueManager : MonoBehaviour
     public enum DisplayType {TypeWriterStyle, AllTextAppearsAtOnce};
     public DisplayType displayType;
 
+    enum ActiveCharacter {Monkey, Dog, Eel}
+    ActiveCharacter activeCharacter;
+
     bool firstTextBox; //This is some real dumbo shit right here
 
     // Start is called before the first frame update
@@ -33,6 +36,25 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(Dialogue dialogue)
     {
+        if (FindObjectOfType<MonkeyBehavior>() != null)
+        {
+            if (FindObjectOfType<MonkeyBehavior>().active)
+                activeCharacter = ActiveCharacter.Monkey;
+            FindObjectOfType<MonkeyBehavior>().active = false;
+        }
+        if (FindObjectOfType<DogBehaviour>() != null)
+        {
+            if (FindObjectOfType<DogBehaviour>().active)
+                activeCharacter = ActiveCharacter.Dog;
+            FindObjectOfType<DogBehaviour>().active = false;
+        }
+        if (FindObjectOfType<Eel>() != null)
+        {
+            if (FindObjectOfType<Eel>().active)
+                activeCharacter = ActiveCharacter.Eel;
+            FindObjectOfType<Eel>().active = false;
+        }
+
         canContinue = false;
         firstTextBox = true;
         animals.Clear();
@@ -69,7 +91,7 @@ public class DialogueManager : MonoBehaviour
         {
             if(sentences.Count == 0)
             {
-                EndDialogue();
+                StartCoroutine(EndDialogue());
                 return;
             }
             if (firstTextBox)
@@ -107,10 +129,19 @@ public class DialogueManager : MonoBehaviour
         else { eelPortrait.enabled = false; }
     }
 
-    void EndDialogue()
+    IEnumerator EndDialogue()
     {
         isOpen = false;
         animator.SetBool("isOpen", false);
+
+        yield return null;
+
+        if (activeCharacter == ActiveCharacter.Monkey && FindObjectOfType<MonkeyBehavior>() != null)
+            FindObjectOfType<MonkeyBehavior>().active = true;
+        else if (activeCharacter == ActiveCharacter.Dog && FindObjectOfType<DogBehaviour>() != null)
+            FindObjectOfType<DogBehaviour>().active = true;
+        else if (activeCharacter == ActiveCharacter.Eel && FindObjectOfType<Eel>() != null)
+            FindObjectOfType<Eel>().active = true;
     }
 
     IEnumerator StartUp()

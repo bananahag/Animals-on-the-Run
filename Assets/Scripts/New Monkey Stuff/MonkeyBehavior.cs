@@ -27,7 +27,7 @@ public class MonkeyBehavior : MonoBehaviour
     [HideInInspector]
     public Vector2 movement;
     [HideInInspector]
-    public GameObject eel, lever, cage, scaryObject;
+    public GameObject eel = null, lever = null, cage = null, scaryObject = null;
 
     [HideInInspector]
     public bool active;
