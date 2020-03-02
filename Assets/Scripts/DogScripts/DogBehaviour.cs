@@ -153,6 +153,10 @@ public class DogBehaviour : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Water"))
+        {
+            swimming = true;
+        }
         currentState.OnTriggerEnter2D(other);
     }
 

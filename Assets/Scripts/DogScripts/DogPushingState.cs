@@ -52,6 +52,7 @@ public class DogPushingState : DogState
                 dog.affectedObject.transform.position = dog.transform.position - new Vector3(dog.radius, 0, 0);
             }
         }
+        dropBox = false;
     }
     public override void Update()
     {
@@ -74,7 +75,6 @@ public class DogPushingState : DogState
     {
         dog.movingObject = false;
         dog.canMoveObject = false;
-        dropBox = false;
         //if (type1)
         //{
             dog.affectedObject.GetComponent<MovableObject>().Drop();
@@ -114,6 +114,11 @@ public class DogPushingState : DogState
             {
                 dropBox = true;
             }
+        }
+
+        if(dropBox && dog.swimming)
+        {
+            dog.ChangeState(dog.swimmingState);
         }
 
     }
