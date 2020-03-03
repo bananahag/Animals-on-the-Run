@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 [System.Serializable]
 public class DogGroundedState : DogState
 {
+    public float boxInteractDistance = 0.5f;
+    public LayerMask boxMask;
+
     [Tooltip("Audio source that plays when the dog takes a step on the ground.")]
     public AudioSource stepSource;
 
@@ -32,6 +36,11 @@ public class DogGroundedState : DogState
 
     public override void Update()
     {
+        Physics2D.queriesStartInColliders = false;
+        RaycastHit2D hitBox = Physics2D.Raycast(dog.transform.position, Vector2.right * dog.transform.localScale.x, boxInteractDistance, boxMask);
+
+
+
         if (dog.active)
         {
             CheckInput();
@@ -52,6 +61,18 @@ public class DogGroundedState : DogState
         {
             dog.ChangeState(dog.inAirState);
         }
+    }
+
+    void OnDrawGizmos() {
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(dog.transform.position, (Vector2)dog.transform.position + Vector2.right * dog.transform.localScale.x * boxInteractDistance);
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(dog.transform.position, (Vector2)dog.transform.position + Vector2.right * dog.transform.localScale.x * boxInteractDistance);
     }
 
     public override void FixedUpdate()
@@ -92,6 +113,7 @@ public class DogGroundedState : DogState
 
     public override void OnTriggerEnter2D(Collider2D other)
     {
+        /*
         if (other.gameObject.CompareTag("MovableObject"))
         {
             Vector3 dir = other.transform.position - dog.transform.position;
@@ -118,6 +140,7 @@ public class DogGroundedState : DogState
                 dog.canMoveObject = true;
             }
         }
+        */
         if (other.gameObject.tag == "Finish")
         {
             dog.levelCompleted = true;
@@ -137,7 +160,7 @@ public class DogGroundedState : DogState
 
     public override void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("MovableObject") && dog.affectedObject == null)
+        /*if (other.gameObject.CompareTag("MovableObject") && dog.affectedObject == null)
         {
             if (dog.affectedObject != null)
             {
@@ -149,7 +172,7 @@ public class DogGroundedState : DogState
         {
             dog.human = null;
             dog.closeToHuman = false;
-        }
+        }*/
     }
 
     public void GroundedAnimations()

@@ -4,6 +4,41 @@ using UnityEngine;
 
 public class MovableObject : MonoBehaviour
 {
+    
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* //Vanliga movableObject
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class MovableObject : MonoBehaviour
+{
     [Tooltip("If either of these transforms touches an object with the ''Ground'' layer the monkey will be grounded.")]
     public Transform groundCheckLeft = null, groundCheckRight = null;
     [HideInInspector]
@@ -55,7 +90,7 @@ public class MovableObject : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.layer != LayerMask.NameToLayer("Ground") && other.gameObject.CompareTag("MovableObject"))
+        if (other.gameObject.layer != LayerMask.NameToLayer("Ground") && !other.gameObject.CompareTag("MovableObject"))
         {
             if (!collideWithPlayer)
             {
@@ -123,3 +158,4 @@ public class MovableObject : MonoBehaviour
         }
     }
 }
+*/
