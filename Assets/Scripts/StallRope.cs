@@ -12,7 +12,7 @@ public class StallRope : MonoBehaviour
     public float stallIsActiveTime = 5.0f;
 
     Vector2 startPos, targetPos;
-    bool stallIsActivated;
+    bool stallIsActivated, dogIsPulling;
 
     float fraction, timePassed;
 
@@ -38,7 +38,14 @@ public class StallRope : MonoBehaviour
             stallIsActivated = true;
         }
 
-        if (stallIsActivated)
+        if (transform.position.x > startPos.x)
+        {
+            transform.position = startPos;
+            stall.GetComponent<Stall>().ChangeState(false);
+            stallIsActivated = false;
+        }
+
+        if (stallIsActivated && !dogIsPulling)
             MoveBackRope();
     }
 
