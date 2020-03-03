@@ -9,6 +9,8 @@ public class MovableObject : MonoBehaviour
     [HideInInspector]
     public Collider2D objectCollider;
     [HideInInspector]
+    public Collider2D topCollider;
+    [HideInInspector]
     private Transform ColliderTransform;
     [HideInInspector]
     public bool carried;
@@ -21,6 +23,10 @@ public class MovableObject : MonoBehaviour
     //[HideInInspector]
     public bool canMoveObject;
 
+    public bool underBox;
+    public bool hitRightSide;
+    public bool hitLeftSide;
+
     public bool collideWithPlayer;
     public float pickupOffset = 0.05f;
 
@@ -30,6 +36,7 @@ public class MovableObject : MonoBehaviour
     {
         ColliderTransform = GetComponent<Transform>();
         objectCollider = ColliderTransform.GetChild(0).GetComponent<Collider2D>();
+        topCollider = ColliderTransform.GetChild(0).GetComponent<Collider2D>();
         canMoveObject = false;
         boxRb = GetComponent<Rigidbody2D>();
     }
@@ -48,16 +55,17 @@ public class MovableObject : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.layer != LayerMask.NameToLayer("Ground"))
+        if (other.gameObject.layer != LayerMask.NameToLayer("Ground") && other.gameObject.CompareTag("MovableObject"))
         {
             if (!collideWithPlayer)
             {
-                Physics2D.IgnoreCollision(other.transform.GetComponent<Collider2D>(), objectCollider);
+                //Physics2D.IgnoreCollision(other.transform.GetComponent<Collider2D>(), objectCollider);
             }
         }
-
         if (canMoveObject && other.gameObject.CompareTag("MovableObject"))
         {
+
+
             //Physics2D.IgnoreCollision(other.gameObject.transform.GetComponent<Transform>().GetChild(0).GetComponent<Collider2D>(), objectCollider);
         }
         

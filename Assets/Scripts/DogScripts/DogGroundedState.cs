@@ -95,43 +95,24 @@ public class DogGroundedState : DogState
         if (other.gameObject.CompareTag("MovableObject"))
         {
             Vector3 dir = other.transform.position - dog.transform.position;
-            Debug.Log(dir);
+            //Debug.Log(dir);
             if (dir.y >= yInteractOffsetAbove || dir.y <= yInteractOffsetBelow)
             {
                 Physics2D.IgnoreCollision(other.GetComponent<MovableObject>().objectCollider, dog.GetComponent<BoxCollider2D>());
-                if (dog.pushingState.type1)
-                {
-                    other.GetComponent<MovableObject>().canMoveObject = false;
-                }
-                else if (dog.pushingState.type2)
-                {
-                    dog.canMoveObject = false; ;
-                }
+               other.GetComponent<MovableObject>().canMoveObject = false;
             }
             else
             {
                 if (dir.x <= 0)
                 {
                     dog.affectedObject = other.gameObject;
-                    if (dog.pushingState.type1)
-                    {
-                        dog.affectedObject.GetComponent<MovableObject>().canMoveObject = true;
-                    } else if (dog.pushingState.type2)
-                    {
-                        dog.canMoveObject = true;
-                    }
+                    dog.affectedObject.GetComponent<MovableObject>().canMoveObject = true;
                     dog.pushSideIsLeft = true;
                 }
                 else if (dir.x > 0)
                 {
                     dog.affectedObject = other.gameObject;
-                    if (dog.pushingState.type1)
-                    {
-                        dog.affectedObject.GetComponent<MovableObject>().canMoveObject = true;
-                    } else if (dog.pushingState.type2)
-                    {
-                        dog.canMoveObject = true;
-                    }
+                    dog.affectedObject.GetComponent<MovableObject>().canMoveObject = true;
                     dog.pushSideIsLeft = false;
                 }
                 dog.canMoveObject = true;
@@ -158,15 +139,9 @@ public class DogGroundedState : DogState
     {
         if (other.gameObject.CompareTag("MovableObject") && dog.affectedObject == null)
         {
-            if (dog.pushingState.type1)
+            if (dog.affectedObject != null)
             {
-                if(dog.affectedObject != null)
-                {
-                    dog.affectedObject.GetComponent<MovableObject>().canMoveObject = false;
-                }
-            } else if (dog.pushingState.type2)
-            {
-                dog.canMoveObject = false;
+                dog.affectedObject.GetComponent<MovableObject>().canMoveObject = false;
             }
             dog.affectedObject = null;
         }
