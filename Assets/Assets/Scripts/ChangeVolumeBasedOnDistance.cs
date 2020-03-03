@@ -8,6 +8,7 @@ public class ChangeVolumeBasedOnDistance : MonoBehaviour
     public float changeVolumeRadius = 10.0f;
 
     public enum TypeOfVolumeChange {QuietWhenCloseToObject, NoMusicPastTheLeftOfObject, NoMusicPastTheRightOfObject}
+    public TypeOfVolumeChange typeOfVolumeChange;
 
     float volume;
 
@@ -27,6 +28,10 @@ public class ChangeVolumeBasedOnDistance : MonoBehaviour
     {
         distance = Vector3.Distance(transform.position, cameraPosition.position + cameraZOffset);
         if (changeVolumeRadius != 0.0f)
+        {
+            /*if (typeOfVolumeChange == TypeOfVolumeChange.QuietWhenCloseToObject || 
+                typeOfVolumeChange == TypeOfVolumeChange.NoMusicPastTheLeftOfObject && transform.position.x > )*/
+        }
             volume = distance / changeVolumeRadius;
         if (volume > 1.0f)
             volume = 1.0f;
