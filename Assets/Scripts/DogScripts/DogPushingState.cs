@@ -21,7 +21,7 @@ public class DogPushingState : DogState
     public override void Enter()
     {
 
-        dog.affectedObject.GetComponent<MovableObject>().Pickup(dog.gameObject);
+        //dog.affectedObject.GetComponent<MovableObject>().Pickup(dog.gameObject);
         dog.movingObject = true;
 
         dropBox = false;
@@ -37,7 +37,7 @@ public class DogPushingState : DogState
     {
         dog.movingObject = false;
         dog.canMoveObject = false;
-        dog.affectedObject.GetComponent<MovableObject>().Drop();
+        //dog.affectedObject.GetComponent<MovableObject>().Drop();
         Debug.Log("Exit pushing");
         dog.affectedObject = null;
 
@@ -69,10 +69,10 @@ public class DogPushingState : DogState
         if (dog.affectedObject != null)
 
         {
-            if (dog.affectedObject.GetComponent<MovableObject>().grounded == false)
+            /*if (dog.affectedObject.GetComponent<MovableObject>().grounded == false)
             {
                 dropBox = true;
-            }
+            }*/
         }
 
         if(dropBox && dog.swimming)

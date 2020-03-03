@@ -15,6 +15,7 @@ public class DogBehaviour : MonoBehaviour
     [HideInInspector]
     public float startGravityScale;
 
+
     [HideInInspector]
     public AudioSource audioSource = null;
     [HideInInspector]
