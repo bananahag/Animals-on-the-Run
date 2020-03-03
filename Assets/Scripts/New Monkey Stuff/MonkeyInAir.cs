@@ -23,6 +23,9 @@ public class MonkeyInAir : MonkeyState
 
     public override void Enter()
     {
+        if (monkey.eel != null && monkey.eel.GetComponent<Eel>() != null)
+            monkey.eel.GetComponent<Eel>().MonkeyInteraction(false);
+        monkey.carryingBucket = false;
         timePassed = 0.0f;
         timePassed2 = 0.0f;
         monkey.jumpBuffer = false;
