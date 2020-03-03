@@ -328,7 +328,6 @@ MonoBehaviour:
   jumpBuffer: 0
   landingVelocity: 0
   startGravityScale: 0
-  audioSource: {fileID: 0}
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   rb2d: {fileID: 0}
@@ -346,18 +345,23 @@ MonoBehaviour:
   runAwayScared: 0
   monkeyLevelComplete: 0
   movement: {x: 0, y: 0}
+  eel: {fileID: 0}
   lever: {fileID: 0}
   cage: {fileID: 0}
   scaryObject: {fileID: 0}
   active: 0
   groundedState:
     monkey: {fileID: 6503299912447353001}
-    stepSFX: {fileID: 8300000, guid: 3a62e33ab62681640bd2654aec3dd9c7, type: 3}
+    stepSource: {fileID: 0}
+    minVolume: 0.9
+    maxVolume: 1.1
+    minPitch: 0.9
+    maxPitch: 1.1
     walkingSpeed: 4
     walkingSpeedWhenCarryingBucket: 3
   jumpsquatState:
     monkey: {fileID: 6503299912447353001}
-    jumpSFX: {fileID: 8300000, guid: 23e04effed7baaf43a3d6fd86b4b40f4, type: 3}
+    jumpSource: {fileID: 0}
     jumpSquatTime: 0.125
     jumpVelocity: 10
   inAirState:
@@ -367,12 +371,16 @@ MonoBehaviour:
     jumpBufferDuration: 0.25
   landingState:
     monkey: {fileID: 6503299912447353001}
-    landingSFX: {fileID: 8300000, guid: 3a62e33ab62681640bd2654aec3dd9c7, type: 3}
+    landingSource: {fileID: 0}
     maxLandingTime: 0.2
     landingTimeMultiplier: 0.015
   climbingState:
     monkey: {fileID: 6503299912447353001}
-    ladderClimbSFX: {fileID: 8300000, guid: c7aa71b861778714cae6692104a60bd4, type: 3}
+    ladderClimbSource: {fileID: 0}
+    minVolume: 0.9
+    maxVolume: 1.1
+    minPitch: 0.9
+    maxPitch: 1.1
     ladderCenterOffsetDistance: 0.25
     climbingSpeed: 3.5
     timeBetweenClimbingSounds: 0.25
@@ -380,18 +388,18 @@ MonoBehaviour:
     canChangeClimbingDirectionTime: 0.5
   pickingUpState:
     monkey: {fileID: 6503299912447353001}
-    pickingUpSFX: {fileID: 8300000, guid: de497eae1292bee428ef2e506ecffe8b, type: 3}
+    pickingUpSource: {fileID: 0}
     pickUpTime: 1
   puttingDownState:
     monkey: {fileID: 6503299912447353001}
-    putDownSFX: {fileID: 8300000, guid: b769c3d58fe643a478ae807aa96df45d, type: 3}
+    putDownSource: {fileID: 0}
     putDownTime: 1
   interactState:
     monkey: {fileID: 6503299912447353001}
-    interactSFX: {fileID: 8300000, guid: 61246074655197b4e9b9fbc7ba6719d6, type: 3}
+    interactSource: {fileID: 0}
     interactTime: 1
   scaredState:
     monkey: {fileID: 6503299912447353001}
-    scaredSFX: {fileID: 8300000, guid: 238e39a07a175934da2be07de36b17c3, type: 3}
+    scaredSource: {fileID: 0}
     scared: 0.5
     runAwayTime: 0.5
