@@ -7,10 +7,7 @@ public class DogPushingState : DogState
 {
     public AudioSource pushSource;
     public bool dropBox;
-    public bool type1;
-    [Tooltip("")]
-    public bool type2;
-
+    public bool underBox;
 
 
     [Tooltip("The walking speed of the dog while pushing or pulling a movable object.")]
@@ -19,66 +16,28 @@ public class DogPushingState : DogState
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;
-
-        if(!type1 && !type2)
-        {
-            Debug.LogWarning("Select pushing type in DogPushingState. Either Type1 or Type2 must be selected.");
-            type1 = true;
-        }
-        if (type1 && type2)
-        {
-            type1 = !type2;
-            type2 = !type1;
-        }
    }
 
     public override void Enter()
     {
 
-        if (type1)
-        {
-            dog.affectedObject.GetComponent<MovableObject>().Pickup(dog.gameObject);
-            dog.movingObject = true;
-        }
+        dog.affectedObject.GetComponent<MovableObject>().Pickup(dog.gameObject);
+        dog.movingObject = true;
 
-        if (type2)
-        {
-            if(dog.affectedObject.transform.position.x > dog.transform.position.x)
-            {
-                dog.affectedObject.transform.position = dog.transform.position + new Vector3(dog.radius, 0, 0);
-            }
-            else if(dog.affectedObject.transform.position.x <= dog.transform.position.x)
-            {
-                dog.affectedObject.transform.position = dog.transform.position - new Vector3(dog.radius, 0, 0);
-            }
-        }
+        dropBox = false;
     }
     public override void Update()
     {
         CheckInput();
         PlayAnimations();
-        if (type2)
-        {
-            if (dog.affectedObject.transform.position.x > dog.transform.position.x)
-            {
-                dog.affectedObject.transform.position = dog.transform.position + new Vector3(dog.radius, 0, 0);
-            }
-            else if (dog.affectedObject.transform.position.x <= dog.transform.position.x)
-            {
-                dog.affectedObject.transform.position = dog.transform.position - new Vector3(dog.radius, 0, 0);
-            }
-        }
+
     }
 
     public override void Exit()
     {
         dog.movingObject = false;
         dog.canMoveObject = false;
-        dropBox = false;
-        //if (type1)
-        //{
-            dog.affectedObject.GetComponent<MovableObject>().Drop();
-        //}
+        dog.affectedObject.GetComponent<MovableObject>().Drop();
         Debug.Log("Exit pushing");
         dog.affectedObject = null;
 
@@ -116,6 +75,15 @@ public class DogPushingState : DogState
             }
         }
 
+        if(dropBox && dog.swimming)
+        {
+            dog.ChangeState(dog.swimmingState);
+        }
+
+        if (underBox)
+        {
+            dropBox = true;
+        }
     }
 
     public override void OnTriggerExit2D(Collider2D other)

@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 9076496631286118227}
   m_Layer: 8
   m_Name: ObjectCollider
-  m_TagString: Untagged
+  m_TagString: MovableObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -184,7 +184,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.85, y: 1}
   m_EdgeRadius: 0
 --- !u!1 &9076496631797710376
 GameObject:
@@ -334,8 +334,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundCheckLeft: {fileID: 286982956}
   groundCheckRight: {fileID: 1231835437}
+  objectCollider: {fileID: 0}
+  topCollider: {fileID: 0}
   carried: 0
   rightSide: 0
   carry: {fileID: 0}
   grounded: 0
   canMoveObject: 0
+  underBox: 0
+  hitRightSide: 0
+  hitLeftSide: 0
+  collideWithPlayer: 1
+  pickupOffset: 0.05
+  boxRb: {fileID: 0}
