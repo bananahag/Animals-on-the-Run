@@ -6,10 +6,41 @@ public class MovableObject : MonoBehaviour
 {
     [HideInInspector]
     public bool beingMoved;
+    public bool grounded;
     float xPos;
     public float boxDistance;
+    public float groundCheckDistance;
     public LayerMask boxMask;
+    public LayerMask groundMask;
     float startMass;
+
+    void OnValidate()
+    { 
+        if(boxDistance == 0)
+        {
+            boxDistance = 0.4f;
+        }
+        if(groundCheckDistance == 0)
+        {
+            groundCheckDistance = 0.4f;
+        }
+        if(groundMask == 0 && boxMask != 0)
+        {
+            groundMask = boxMask;
+        }
+    }
+
+    public bool BoxGrounded()
+    {
+        if (grounded)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     void Start()
     {
@@ -30,17 +61,35 @@ public class MovableObject : MonoBehaviour
             }
         }
         else
-            {
+        {
                 GetComponent<Rigidbody2D>().mass = startMass;
-            }
+        }
 
-            if (!beingMoved)
+        if (!beingMoved)
         {
             transform.position = new Vector3(xPos, transform.position.y);
         }
         else
         {
             xPos = transform.position.x;
+        }
+
+        Physics2D.queriesStartInColliders = false;
+        RaycastHit2D hitGround = Physics2D.Raycast(transform.position, -Vector2.up * transform.localScale.y, groundCheckDistance, groundMask);
+
+        Physics2D.queriesStartInColliders = false;
+        RaycastHit2D hitGroundLeft = Physics2D.Raycast(new Vector2(transform.position.x - 0.5f, transform.position.y), -Vector2.up * transform.localScale.y, groundCheckDistance, groundMask);
+
+        Physics2D.queriesStartInColliders = false;
+        RaycastHit2D hitGroundRight = Physics2D.Raycast(new Vector2(transform.position.x + 0.5f, transform.position.y), -Vector2.up * transform.localScale.y, groundCheckDistance, groundMask);
+
+        if (hitGround.collider != null || hitGroundLeft.collider != null || hitGroundRight.collider != null)
+        {
+            grounded = true;
+        }
+        else
+        {
+            grounded = false;
         }
     }
 
@@ -49,6 +98,16 @@ public class MovableObject : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + Vector2.up * transform.localScale.y * boxDistance);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + -Vector2.up * transform.localScale.y * groundCheckDistance);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, new Vector2(transform.position.x + 0.5f, transform.position.y) + -Vector2.up * transform.localScale.y * groundCheckDistance);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, new Vector2(transform.position.x - 0.5f, transform.position.y) + -Vector2.up * transform.localScale.y * groundCheckDistance);
+
     }
 
 }

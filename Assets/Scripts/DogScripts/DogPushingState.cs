@@ -8,6 +8,7 @@ public class DogPushingState : DogState
     public AudioSource pushSource;
     public bool dropBox;
     public bool underBox;
+    public bool boxGrounded;
 
 
     [Tooltip("The walking speed of the dog while pushing or pulling a movable object.")]
@@ -16,18 +17,13 @@ public class DogPushingState : DogState
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;
-   }
+    }
 
     public override void Enter()
     {
-
-        //dog.affectedObject.GetComponent<MovableObject>().Pickup(dog.gameObject);
-        //dog.canMoveObject = false;
-        //dog.movingObject = true;
         dog.affectedObject.GetComponent<FixedJoint2D>().connectedBody = dog.rb2d;
         dog.affectedObject.GetComponent<FixedJoint2D>().enabled = true;
         dog.affectedObject.GetComponent<MovableObject>().beingMoved = true;
-
 
         dog.movingObject = true;
         dropBox = false;
@@ -37,13 +33,18 @@ public class DogPushingState : DogState
         CheckInput();
         PlayAnimations();
 
+        if(dog.affectedObject != null)
+        {
+            if (!dog.grounded || !dog.affectedObject.GetComponent<MovableObject>().BoxGrounded())
+            {
+                dropBox = true;
+                dog.affectedObject.GetComponent<FixedJoint2D>().enabled = false;
+            }
+        }
     }
 
     public override void Exit()
     {
-        //dog.canMoveObject = false;
-        //dog.affectedObject = null;
-        //dog.affectedObject.GetComponent<MovableObject>().Drop();
         dog.movingObject = false;
         Debug.Log("Exit pushing");
         dog.affectedObject.GetComponent<MovableObject>().beingMoved = false;
@@ -53,7 +54,7 @@ public class DogPushingState : DogState
     void CheckInput()
     {
         
-        if(Input.GetButtonDown("Interact") /*&& dog.movingObject*/)
+        if(Input.GetButtonDown("Interact"))
         {
             dropBox = true;
             dog.affectedObject.GetComponent<FixedJoint2D>().enabled = false;
@@ -71,16 +72,6 @@ public class DogPushingState : DogState
                 pushSource.Play();
             }
 
-            if (dog.affectedObject != null)
-
-            {
-                /*if (dog.affectedObject.GetComponent<MovableObject>().grounded == false)
-                {
-                    dropBox = true;
-                }*/
-            }
-
-
             if (dropBox)
             {
                 dog.affectedObject.GetComponent<FixedJoint2D>().enabled = false;
@@ -93,45 +84,29 @@ public class DogPushingState : DogState
                     dog.ChangeState(dog.groundedState);
                 }
             }
-
-            /* if (underBox)
-             {
-                 dropBox = true;
-             }
-             */
-        }
-    }
-
-    public override void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("MovableObject"))
-        {
-
-            //dropBox = true;
-            //dog.affectedObject.GetComponent<MovableObject>().Drop();
         }
     }
 
     public void PlayAnimations()
     {
-        if (!dog.pushSideIsLeft)
+        if (dog.facingRight)
         {
-            if(dog.movement.x < 0)
+            if (dog.x < 0)
             {
                 dog.animator.Play("DogPulling");
             }
-            else
+            else if (dog.x > 0)
             {
                 dog.animator.Play("DogPushing");
             }
         }
-        if (dog.pushSideIsLeft)
+        else if (!dog.facingRight)
         {
-            if(dog.movement.x >= 0)
+            if (dog.x < 0)
             {
                 dog.animator.Play("DogPushing");
             }
-            else
+            else if (dog.x > 0)
             {
                 dog.animator.Play("DogPulling");
             }
