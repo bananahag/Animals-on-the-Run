@@ -4,7 +4,52 @@ using UnityEngine;
 
 public class MovableObject : MonoBehaviour
 {
-    
+    [HideInInspector]
+    public bool beingMoved;
+    float xPos;
+    public float boxDistance;
+    public LayerMask boxMask;
+    float startMass;
+
+    void Start()
+    {
+        xPos = transform.position.x;
+        startMass = GetComponent<Rigidbody2D>().mass;
+    }
+
+    void Update()
+    {
+        Physics2D.queriesStartInColliders = false;
+        RaycastHit2D hitBox = Physics2D.Raycast(transform.position, Vector2.up * transform.localScale.y, boxDistance, boxMask);
+
+        if (hitBox.collider != null)
+        {
+            if (hitBox.collider.CompareTag("MovableObject"))
+            {
+                GetComponent<Rigidbody2D>().mass = 100;
+            }
+        }
+        else
+            {
+                GetComponent<Rigidbody2D>().mass = startMass;
+            }
+
+            if (!beingMoved)
+        {
+            transform.position = new Vector3(xPos, transform.position.y);
+        }
+        else
+        {
+            xPos = transform.position.x;
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + Vector2.up * transform.localScale.y * boxDistance);
+    }
 
 }
 

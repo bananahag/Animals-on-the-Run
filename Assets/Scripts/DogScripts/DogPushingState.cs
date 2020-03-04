@@ -22,8 +22,14 @@ public class DogPushingState : DogState
     {
 
         //dog.affectedObject.GetComponent<MovableObject>().Pickup(dog.gameObject);
-        dog.movingObject = true;
+        //dog.canMoveObject = false;
+        //dog.movingObject = true;
+        dog.affectedObject.GetComponent<FixedJoint2D>().connectedBody = dog.rb2d;
+        dog.affectedObject.GetComponent<FixedJoint2D>().enabled = true;
+        dog.affectedObject.GetComponent<MovableObject>().beingMoved = true;
 
+
+        dog.movingObject = true;
         dropBox = false;
     }
     public override void Update()
@@ -35,20 +41,22 @@ public class DogPushingState : DogState
 
     public override void Exit()
     {
-        dog.movingObject = false;
-        dog.canMoveObject = false;
+        //dog.canMoveObject = false;
+        //dog.affectedObject = null;
         //dog.affectedObject.GetComponent<MovableObject>().Drop();
+        dog.movingObject = false;
         Debug.Log("Exit pushing");
-        dog.affectedObject = null;
-
+        dog.affectedObject.GetComponent<MovableObject>().beingMoved = false;
+        dog.StartCoroutine(dog.MoveObjectCoolDown());
     }
 
     void CheckInput()
     {
         
-        if(Input.GetButtonDown("Interact") && dog.movingObject)
+        if(Input.GetButtonDown("Interact") /*&& dog.movingObject*/)
         {
             dropBox = true;
+            dog.affectedObject.GetComponent<FixedJoint2D>().enabled = false;
         }
 
     }
@@ -56,33 +64,41 @@ public class DogPushingState : DogState
     public override void FixedUpdate()
     {
         dog.movement = new Vector2(dog.x * pushingSpeed, dog.rb2d.velocity.y);
-        if (dog.x != 0)
-        {
-            pushSource.Play();
-        }
-
-        if (dropBox && dog.grounded)
-        {
-            dog.ChangeState(dog.groundedState);
-        }
-
         if (dog.affectedObject != null)
-
         {
-            /*if (dog.affectedObject.GetComponent<MovableObject>().grounded == false)
+            if (dog.x != 0)
             {
-                dropBox = true;
-            }*/
-        }
+                pushSource.Play();
+            }
 
-        if(dropBox && dog.swimming)
-        {
-            dog.ChangeState(dog.swimmingState);
-        }
+            if (dog.affectedObject != null)
 
-        if (underBox)
-        {
-            dropBox = true;
+            {
+                /*if (dog.affectedObject.GetComponent<MovableObject>().grounded == false)
+                {
+                    dropBox = true;
+                }*/
+            }
+
+
+            if (dropBox)
+            {
+                dog.affectedObject.GetComponent<FixedJoint2D>().enabled = false;
+                if (dog.swimming)
+                {
+                    dog.ChangeState(dog.swimmingState);
+                }
+                if (dog.grounded)
+                {
+                    dog.ChangeState(dog.groundedState);
+                }
+            }
+
+            /* if (underBox)
+             {
+                 dropBox = true;
+             }
+             */
         }
     }
 
@@ -90,6 +106,7 @@ public class DogPushingState : DogState
     {
         if (other.gameObject.CompareTag("MovableObject"))
         {
+
             //dropBox = true;
             //dog.affectedObject.GetComponent<MovableObject>().Drop();
         }
