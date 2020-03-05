@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class MonkeyInteract : MonkeyState
 {
-    [Tooltip("Audio source that plays when interacting with an object.")]
-    public AudioSource interactSource;
+    [Tooltip("Audio sources that plays when interacting with an object.")]
+    public AudioSource[] interactSources;
 
     [Tooltip("The time (in seconds) the monkey stops when interacting with an object.")]
     public float interactTime = 1.0f;
@@ -22,7 +22,8 @@ public class MonkeyInteract : MonkeyState
     public override void Enter()
     {
         timePassed = 0.0f;
-        interactSource.Play();
+        int randomSource = Random.Range(0, interactSources.Length);
+        interactSources[randomSource].Play();
         monkey.animator.Play("Placeholder Monkey Interact");
     }
 
