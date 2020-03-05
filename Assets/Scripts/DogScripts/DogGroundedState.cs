@@ -24,9 +24,11 @@ public class DogGroundedState : DogState
         this.dog = dog;
     }
 
+
     public override void Enter()
     {
         dog.animator.Play("DogIdle");
+        dog.canMoveObject = true;
     }
 
     public override void Exit()
@@ -37,22 +39,34 @@ public class DogGroundedState : DogState
     public override void Update()
     {
         Physics2D.queriesStartInColliders = false;
-        RaycastHit2D hitBox = Physics2D.Raycast(dog.transform.position, Vector2.right * dog.transform.localScale.x, boxInteractDistance, boxMask);
+        RaycastHit2D hitBox = Physics2D.Raycast(dog.transform.position, Vector2.right * dog.direction * dog.transform.localScale.x, boxInteractDistance, boxMask);
+        //Skicka med vilken riktning
+        if(hitBox.collider != null)
+        {
+            if (hitBox.collider.CompareTag("MovableObject") && Input.GetButtonDown("Interact") && dog.canMoveObject)
+            {
+                dog.affectedObject = hitBox.collider.gameObject;
+                dog.ChangeState(dog.pushingState);
 
-
+            }
+            else
+            {
+                dog.affectedObject = null;
+            }
+        }
 
         if (dog.active)
         {
             CheckInput();
         
-        if (dog.x > 0)
-        {
-            dog.facingRight = true;
-        }
-        else if (dog.x < 0)
-        {
-            dog.facingRight = false;
-        }
+            if (dog.x > 0)
+            {
+                dog.facingRight = true;
+            }
+            else if (dog.x < 0)
+            {
+                dog.facingRight = false;
+            }
         }
 
         GroundedAnimations();
@@ -61,18 +75,6 @@ public class DogGroundedState : DogState
         {
             dog.ChangeState(dog.inAirState);
         }
-    }
-
-    void OnDrawGizmos() {
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(dog.transform.position, (Vector2)dog.transform.position + Vector2.right * dog.transform.localScale.x * boxInteractDistance);
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(dog.transform.position, (Vector2)dog.transform.position + Vector2.right * dog.transform.localScale.x * boxInteractDistance);
     }
 
     public override void FixedUpdate()
@@ -101,10 +103,7 @@ public class DogGroundedState : DogState
         {
             dog.ChangeState(dog.jumpsquatState);
         }
-        if(Input.GetButtonDown("Interact") && dog.canMoveObject)
-        {
-            dog.ChangeState(dog.pushingState);
-        }
+
         if (Input.GetButtonDown("Interact") && dog.closeToHuman && !dog.canMoveObject) //Om både människa och låda går att interagera med prioriteras lådan
         {
             dog.ChangeState(dog.charmingState);

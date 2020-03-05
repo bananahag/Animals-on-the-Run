@@ -8,6 +8,7 @@ public class DogPushingState : DogState
     public AudioSource pushSource;
     public bool dropBox;
     public bool underBox;
+    public bool boxGrounded;
 
 
     [Tooltip("The walking speed of the dog while pushing or pulling a movable object.")]
@@ -16,14 +17,15 @@ public class DogPushingState : DogState
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;
-   }
+    }
 
     public override void Enter()
     {
+        dog.affectedObject.GetComponent<FixedJoint2D>().connectedBody = dog.rb2d;
+        dog.affectedObject.GetComponent<FixedJoint2D>().enabled = true;
+        dog.affectedObject.GetComponent<MovableObject>().beingMoved = true;
 
-        //dog.affectedObject.GetComponent<MovableObject>().Pickup(dog.gameObject);
         dog.movingObject = true;
-
         dropBox = false;
     }
     public override void Update()
@@ -31,24 +33,31 @@ public class DogPushingState : DogState
         CheckInput();
         PlayAnimations();
 
+        if(dog.affectedObject != null)
+        {
+            if (!dog.grounded || !dog.affectedObject.GetComponent<MovableObject>().BoxGrounded())
+            {
+                dropBox = true;
+                dog.affectedObject.GetComponent<FixedJoint2D>().enabled = false;
+            }
+        }
     }
 
     public override void Exit()
     {
         dog.movingObject = false;
-        dog.canMoveObject = false;
-        //dog.affectedObject.GetComponent<MovableObject>().Drop();
         Debug.Log("Exit pushing");
-        dog.affectedObject = null;
-
+        dog.affectedObject.GetComponent<MovableObject>().beingMoved = false;
+        dog.StartCoroutine(dog.MoveObjectCoolDown());
     }
 
     void CheckInput()
     {
         
-        if(Input.GetButtonDown("Interact") && dog.movingObject)
+        if(Input.GetButtonDown("Interact"))
         {
             dropBox = true;
+            dog.affectedObject.GetComponent<FixedJoint2D>().enabled = false;
         }
 
     }
@@ -56,65 +65,48 @@ public class DogPushingState : DogState
     public override void FixedUpdate()
     {
         dog.movement = new Vector2(dog.x * pushingSpeed, dog.rb2d.velocity.y);
-        if (dog.x != 0)
-        {
-            pushSource.Play();
-        }
-
-        if (dropBox && dog.grounded)
-        {
-            dog.ChangeState(dog.groundedState);
-        }
-
         if (dog.affectedObject != null)
-
         {
-            /*if (dog.affectedObject.GetComponent<MovableObject>().grounded == false)
+            if (dog.x != 0)
             {
-                dropBox = true;
-            }*/
-        }
+                pushSource.Play();
+            }
 
-        if(dropBox && dog.swimming)
-        {
-            dog.ChangeState(dog.swimmingState);
-        }
-
-        if (underBox)
-        {
-            dropBox = true;
-        }
-    }
-
-    public override void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("MovableObject"))
-        {
-            //dropBox = true;
-            //dog.affectedObject.GetComponent<MovableObject>().Drop();
+            if (dropBox)
+            {
+                dog.affectedObject.GetComponent<FixedJoint2D>().enabled = false;
+                if (dog.swimming)
+                {
+                    dog.ChangeState(dog.swimmingState);
+                }
+                if (dog.grounded)
+                {
+                    dog.ChangeState(dog.groundedState);
+                }
+            }
         }
     }
 
     public void PlayAnimations()
     {
-        if (!dog.pushSideIsLeft)
+        if (dog.facingRight)
         {
-            if(dog.movement.x < 0)
+            if (dog.x < 0)
             {
                 dog.animator.Play("DogPulling");
             }
-            else
+            else if (dog.x > 0)
             {
                 dog.animator.Play("DogPushing");
             }
         }
-        if (dog.pushSideIsLeft)
+        else if (!dog.facingRight)
         {
-            if(dog.movement.x >= 0)
+            if (dog.x < 0)
             {
                 dog.animator.Play("DogPushing");
             }
-            else
+            else if (dog.x > 0)
             {
                 dog.animator.Play("DogPulling");
             }
