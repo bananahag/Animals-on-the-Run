@@ -15,6 +15,7 @@ public class DogBehaviour : MonoBehaviour
     [HideInInspector]
     public float startGravityScale;
 
+
     [HideInInspector]
     public AudioSource audioSource = null;
     [HideInInspector]
@@ -31,6 +32,8 @@ public class DogBehaviour : MonoBehaviour
     [HideInInspector]
     public float timePassed2 = 0.0f;
     public float wetDuration = 8.0f;
+    [HideInInspector]
+    public float direction = 1;
 
     [HideInInspector]
     public Vector2 movement;
@@ -100,9 +103,23 @@ public class DogBehaviour : MonoBehaviour
         radius = GetComponent<SpriteRenderer>().size.x;
     }
 
+    public IEnumerator MoveObjectCoolDown()
+    {
+        canMoveObject = false;
+        yield return new WaitForSecondsRealtime(0.25f);
+        canMoveObject = true;
+    }
+
     void Update()
     {
         currentState.Update();
+    }
+
+    void OnDrawGizmos()
+    {
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + Vector2.right * direction * transform.localScale.x * groundedState.boxInteractDistance);
     }
 
     void FixedUpdate()
@@ -112,10 +129,12 @@ public class DogBehaviour : MonoBehaviour
         if (facingRight)
         {
             spriteRenderer.flipX = false;
+            direction = 1;
         }
         else
         {
             spriteRenderer.flipX = true;
+            direction = -1;
         }
 
         GroundCheck();

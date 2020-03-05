@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 [System.Serializable]
 public class DogGroundedState : DogState
 {
+    public float boxInteractDistance = 0.5f;
+    public LayerMask boxMask;
+
     [Tooltip("Audio source that plays when the dog takes a step on the ground.")]
     public AudioSource stepSource;
 
@@ -20,9 +24,11 @@ public class DogGroundedState : DogState
         this.dog = dog;
     }
 
+
     public override void Enter()
     {
         dog.animator.Play("DogIdle");
+        dog.canMoveObject = true;
     }
 
     public override void Exit()
@@ -32,18 +38,35 @@ public class DogGroundedState : DogState
 
     public override void Update()
     {
+        Physics2D.queriesStartInColliders = false;
+        RaycastHit2D hitBox = Physics2D.Raycast(dog.transform.position, Vector2.right * dog.direction * dog.transform.localScale.x, boxInteractDistance, boxMask);
+        //Skicka med vilken riktning
+        if(hitBox.collider != null)
+        {
+            if (hitBox.collider.CompareTag("MovableObject") && Input.GetButtonDown("Interact") && dog.canMoveObject)
+            {
+                dog.affectedObject = hitBox.collider.gameObject;
+                dog.ChangeState(dog.pushingState);
+
+            }
+            else
+            {
+                dog.affectedObject = null;
+            }
+        }
+
         if (dog.active)
         {
             CheckInput();
         
-        if (dog.x > 0)
-        {
-            dog.facingRight = true;
-        }
-        else if (dog.x < 0)
-        {
-            dog.facingRight = false;
-        }
+            if (dog.x > 0)
+            {
+                dog.facingRight = true;
+            }
+            else if (dog.x < 0)
+            {
+                dog.facingRight = false;
+            }
         }
 
         GroundedAnimations();
@@ -80,10 +103,7 @@ public class DogGroundedState : DogState
         {
             dog.ChangeState(dog.jumpsquatState);
         }
-        if(Input.GetButtonDown("Interact") && dog.canMoveObject)
-        {
-            dog.ChangeState(dog.pushingState);
-        }
+
         if (Input.GetButtonDown("Interact") && dog.closeToHuman && !dog.canMoveObject) //Om både människa och låda går att interagera med prioriteras lådan
         {
             dog.ChangeState(dog.charmingState);
@@ -92,6 +112,7 @@ public class DogGroundedState : DogState
 
     public override void OnTriggerEnter2D(Collider2D other)
     {
+        /*
         if (other.gameObject.CompareTag("MovableObject"))
         {
             Vector3 dir = other.transform.position - dog.transform.position;
@@ -118,6 +139,7 @@ public class DogGroundedState : DogState
                 dog.canMoveObject = true;
             }
         }
+        */
         if (other.gameObject.tag == "Finish")
         {
             dog.levelCompleted = true;
@@ -137,7 +159,7 @@ public class DogGroundedState : DogState
 
     public override void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("MovableObject") && dog.affectedObject == null)
+        /*if (other.gameObject.CompareTag("MovableObject") && dog.affectedObject == null)
         {
             if (dog.affectedObject != null)
             {
@@ -149,7 +171,7 @@ public class DogGroundedState : DogState
         {
             dog.human = null;
             dog.closeToHuman = false;
-        }
+        }*/
     }
 
     public void GroundedAnimations()

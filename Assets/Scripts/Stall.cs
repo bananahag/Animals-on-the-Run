@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Stall : MonoBehaviour
 {
+    [Tooltip("The audio source that plays when the stall opens or closes.")]
+    public AudioSource stallSource;
+
     public enum StallColor {Blue, Green, Purple, Lime, Pink}
     public StallColor stallColor;
 
     EdgeCollider2D boxCol2D;
     Animator animator;
-
-    bool testing;//REMOVE LATER;
 
     // Start is called before the first frame update
     void Start()
@@ -83,17 +84,7 @@ public class Stall : MonoBehaviour
                     break;
             }
         }
-
+        stallSource.Play();
         boxCol2D.enabled = active;
-    }
-
-    //TESTING PURPOSES
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            testing = !testing;
-            ChangeState(testing);
-        }
     }
 }
