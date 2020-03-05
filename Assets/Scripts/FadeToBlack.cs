@@ -38,8 +38,10 @@ public class FadeToBlack : MonoBehaviour
     void FadeIn()
     {
         timePassed += Time.deltaTime;
-        if (timePassed > 1.0f)
-            timePassed = 1.0f;
+        if (timePassed > fadeDuration)
+            timePassed = fadeDuration;
+        if (!blackImageObject.activeSelf)
+            blackImageObject.SetActive(true);
         blackImage.color = new Color(0.0f, 0.0f, 0.0f, timePassed / fadeDuration);
     }
 
@@ -47,7 +49,11 @@ public class FadeToBlack : MonoBehaviour
     {
         timePassed -= Time.deltaTime;
         if (timePassed < 0.0f)
+        {
+            if (blackImageObject.activeSelf)
+                blackImageObject.SetActive(false);
             timePassed = 0.0f;
+        }
         blackImage.color = new Color(0.0f, 0.0f, 0.0f, timePassed / fadeDuration);
     }
 }
