@@ -1037,6 +1037,7 @@ MonoBehaviour:
   radius: 0
   timePassed2: 0
   wetDuration: 8
+  direction: 1
   movement: {x: 0, y: 0}
   facingRight: 0
   active: 0
@@ -1048,10 +1049,16 @@ MonoBehaviour:
   wet: 0
   swimming: 0
   pushSideIsLeft: 0
+  landing: 0
   affectedObject: {fileID: 0}
   human: {fileID: 0}
+  levelCompleted: 0
   groundedState:
     dog: {fileID: 712267012}
+    boxInteractDistance: 1
+    boxMask:
+      serializedVersion: 2
+      m_Bits: 256
     stepSource: {fileID: 1025285274}
     walkingSpeed: 4
     yInteractOffsetAbove: 0.9
@@ -1060,14 +1067,15 @@ MonoBehaviour:
     dog: {fileID: 712267012}
     landingSource: {fileID: 292790690}
     jumpBufferDuration: 0.25
-    airSpeed: 4
+    airSpeed: 5
     landingSFX: {fileID: 0}
     jumpSFX: {fileID: 0}
   pushingState:
     dog: {fileID: 712267012}
     pushSource: {fileID: 1027599610}
-    type1: 1
-    type2: 0
+    dropBox: 0
+    underBox: 0
+    boxGrounded: 0
     pushingSpeed: 3
   charmingState:
     dog: {fileID: 712267012}
