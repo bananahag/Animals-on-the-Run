@@ -105,8 +105,9 @@ public class DogGroundedState : DogState
             dog.ChangeState(dog.jumpsquatState);
         }
 
-        if (Input.GetButtonDown("Interact") && dog.closeToHuman && !dog.canMoveObject) //Om både människa och låda går att interagera med prioriteras lådan
+        if (Input.GetButtonDown("Interact") && dog.closeToHuman) //Om både människa och låda går att interagera med prioriteras lådan
         {
+            Debug.Log("PRESSING EEEEEEEEE");
             dog.ChangeState(dog.charmingState);
         }
     }
@@ -121,12 +122,14 @@ public class DogGroundedState : DogState
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
         {
+            Debug.Log("Hello");
             dog.human = other.gameObject;
             dog.closeToHuman = true;
         }
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Water"))
         {
+            Debug.Log("water");
             dog.swimming = true;
         }
     }
