@@ -63,6 +63,7 @@ public class DogGroundedState : DogState
         if (dog.active)
         {
             CheckInput();
+        }
         
             if (dog.x > 0)
             {
@@ -72,7 +73,6 @@ public class DogGroundedState : DogState
             {
                 dog.facingRight = false;
             }
-        }
 
         GroundedAnimations();
 
@@ -84,12 +84,8 @@ public class DogGroundedState : DogState
 
     public override void FixedUpdate()
     {
-        if (dog.active)
-        {
+        dog.movement = new Vector2(dog.x * walkingSpeed, dog.rb2d.velocity.y);
 
-            dog.movement = new Vector2(dog.x * walkingSpeed, dog.rb2d.velocity.y);
-
-        }
         if (dog.movingObject)
         {
             dog.ChangeState(dog.pushingState);

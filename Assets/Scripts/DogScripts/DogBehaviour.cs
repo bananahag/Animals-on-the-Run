@@ -134,7 +134,14 @@ public class DogBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
-        x = Input.GetAxisRaw("Horizontal");
+        if (active)
+        {
+            x = Input.GetAxisRaw("Horizontal");
+        }
+        else
+        {
+            x = 0.0f;
+        }
 
         if (facingRight)
         {
