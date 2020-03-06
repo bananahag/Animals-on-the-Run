@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Human : MonoBehaviour
 {
+    [Tooltip("Time it takes for human to travel from maxdistanceleft to maxdistanceright")]
     public float travelTime = 3;
     private float fraction;
     public bool moving;
@@ -15,13 +16,16 @@ public class Human : MonoBehaviour
     BoxCollider2D box;
     private Animator an;
     private SpriteRenderer sr;
+    [Tooltip("Distance human will walk right")]
     public float maxDistanceRight;
+    [Tooltip("Distance human will walk left")]
     public float maxDistanceLeft;
     Vector3 distanceRight;
     Vector3 distanceLeft;
     Vector3 moveSpeed;
     Vector3 oldpos;
     Vector3 gizmopos;
+    [Tooltip("x amount of minimum seconds, Y amount of maximum seconds -1 before turning around")]
     public Vector2 RandomAmountStoppTime;
     private float timer;
     bool turn;
