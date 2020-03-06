@@ -31,6 +31,7 @@ public class DogInAirState : DogState
     public override void Exit()
     {
         landingSource.Play();
+        dog.StartCoroutine(dog.PlayLandingAnimation());
         dog.animator.Play("Landing");
     }
 

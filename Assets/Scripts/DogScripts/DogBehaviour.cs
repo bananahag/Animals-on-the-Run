@@ -57,6 +57,9 @@ public class DogBehaviour : MonoBehaviour
     public bool swimming = false;
     [HideInInspector]
     public bool pushSideIsLeft;
+    [HideInInspector]
+    public bool landing;
+
 
     [HideInInspector]
     public GameObject affectedObject;
@@ -110,6 +113,13 @@ public class DogBehaviour : MonoBehaviour
         canMoveObject = true;
     }
 
+    public IEnumerator PlayLandingAnimation()
+    {
+        landing = true;
+        yield return new WaitForSecondsRealtime(0.5f);
+        landing = false;
+    }
+
     void Update()
     {
         currentState.Update();
@@ -124,7 +134,14 @@ public class DogBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
-        x = Input.GetAxisRaw("Horizontal");
+        if (active)
+        {
+            x = Input.GetAxisRaw("Horizontal");
+        }
+        else
+        {
+            x = 0.0f;
+        }
 
         if (facingRight)
         {
