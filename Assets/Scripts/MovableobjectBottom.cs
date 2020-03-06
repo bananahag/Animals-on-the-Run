@@ -17,8 +17,7 @@ public class MovableobjectBottom : MonoBehaviour
         print("hit");
         bool lefthit = false;
         bool righthit = false;
-        leftoffset = new Vector3(-.7f, -.5f, 0);
-        rightoffest = new Vector3(.7f, -.5f, 0);
+        
         if (collision.gameObject.tag == "MovableObject" || collision.gameObject.tag == "Scale")
         {
             
