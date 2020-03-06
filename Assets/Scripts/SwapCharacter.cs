@@ -31,7 +31,7 @@ public class SwapCharacter : MonoBehaviour
         mDog = characters[1].GetComponent<DogBehaviour>();
         mEel = characters[2].GetComponent<Eel>();
         timePassed = 0.0f;
-        fraction = 0.0f;
+        fraction = 1.0f;
     }
     void Start()
     {
