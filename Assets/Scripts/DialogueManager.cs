@@ -34,6 +34,8 @@ public class DialogueManager : MonoBehaviour
         customSources = new Queue<AudioSource>();
         sentences = new Queue<string>();
         canContinue = true;
+        isOpen = false;
+        animator.SetBool("isOpen", false);
     }
 
     public void StartDialogue(Dialogue dialogue)
