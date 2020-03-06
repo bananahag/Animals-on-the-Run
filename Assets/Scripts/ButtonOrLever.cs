@@ -56,11 +56,7 @@ public class ButtonOrLever : MonoBehaviour
                     elevator.GetComponent<Elevator>().Activate(false, gameObject);
                 if (bridge != null)
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
-
-                if (noAnimator)
-                    GetComponent<SpriteRenderer>().color = startColor;
-                else
-                    animator.Play(incactiveAnimationName);
+                GetComponent<SpriteRenderer>().color = startColor;//animator.Play(incactiveAnimationName);
                 if (bridge != null)
                 {
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
@@ -74,10 +70,7 @@ public class ButtonOrLever : MonoBehaviour
                     elevator.GetComponent<Elevator>().Activate(true, gameObject);
                 if (bridge != null)
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
-                if (noAnimator)
-                    GetComponent<SpriteRenderer>().color = Color.yellow;
-                else
-                    animator.Play(activeAnimationName);
+                GetComponent<SpriteRenderer>().color = Color.yellow;//animator.Play(activeAnimationName);
                 if (bridge != null)
                 {
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
@@ -88,3 +81,13 @@ public class ButtonOrLever : MonoBehaviour
 
     }
 }
+
+
+                if (noAnimator)
+                    GetComponent<SpriteRenderer>().color = startColor;
+                else
+                    animator.Play(incactiveAnimationName);
+                if (noAnimator)
+                    GetComponent<SpriteRenderer>().color = Color.yellow;
+                else
+                    animator.Play(activeAnimationName);

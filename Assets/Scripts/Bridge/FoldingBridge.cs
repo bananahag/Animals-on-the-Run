@@ -9,14 +9,17 @@ public class FoldingBridge : MonoBehaviour
     Rigidbody2D lrb;
     public Rigidbody2D rb;
     
-    bool Active = false;
-
+    float startpos;
+    float otherstartpos;
+    
+    bool bridgemoving;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         lrb = Bridge.GetComponent<Rigidbody2D>();
-        
+        startpos = rb.rotation;
+        otherstartpos = lrb.rotation;
     }
 
     // Update is called once per frame
@@ -27,34 +30,43 @@ public class FoldingBridge : MonoBehaviour
    
     }
    
-    public void BridgeFold(float angle, float foldtime, float clipp , bool active)
+    public void BridgeFold(float angle, float foldtime, bool active)
     {
         if (active)
         {
+            
 
-
-            if (rb.rotation < clipp)
+            if (rb.rotation < angle)
             {
-                rb.MoveRotation(Mathf.LerpAngle(rb.rotation, angle, foldtime * Time.deltaTime));
-                lrb.MoveRotation(Mathf.LerpAngle(lrb.rotation, -1 * angle, foldtime * Time.deltaTime));
+                rb.MoveRotation(Mathf.LerpAngle(startpos, angle, foldtime));
+                lrb.MoveRotation(Mathf.LerpAngle(otherstartpos, -1 * angle, foldtime));
             }
             else
             {
                 rb.rotation = angle;
                 lrb.rotation = rb.rotation * -1;
+                startpos = angle;
+                otherstartpos = angle * -1;
+                
+                Debug.Log(startpos + "Erik");
             }
         }
         else if (!active)
         {
-            if (rb.rotation > clipp)
+            
+            if (rb.rotation > 0)
             {
-                rb.MoveRotation(Mathf.LerpAngle(rb.rotation, 0, foldtime * Time.deltaTime));
-                lrb.MoveRotation(Mathf.LerpAngle(lrb.rotation, 0, foldtime * Time.deltaTime));
+                Debug.Log(startpos);
+                rb.MoveRotation(Mathf.LerpAngle(startpos, 0, foldtime));
+                lrb.MoveRotation(Mathf.LerpAngle(otherstartpos, 0, foldtime));
             }
             else
             {
                 rb.rotation = 0;
                 lrb.rotation = rb.rotation * -1;
+                startpos = rb.rotation;
+                otherstartpos = lrb.rotation;
+               
             }
         }
     }

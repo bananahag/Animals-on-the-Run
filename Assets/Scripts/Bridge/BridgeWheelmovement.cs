@@ -19,6 +19,8 @@ public class BridgeWheelmovement : MonoBehaviour
     float timer;
     float accelerationtimer;
     float newangle;
+    float fraction;
+    
     void Start()
     {
         bridge = GameObject.Find("Right Bridge").GetComponent<FoldingBridge>();
@@ -29,6 +31,7 @@ public class BridgeWheelmovement : MonoBehaviour
         timer = spinnTime;
         accelerationtimer = accelerationTime;
         active = !active;
+        fraction = 0;
     }
 
     void RotateWheel(bool active)
@@ -78,23 +81,24 @@ public class BridgeWheelmovement : MonoBehaviour
     {
         accelerationtimer -= Time.deltaTime;
         timer -= Time.deltaTime;
+        
         if (active)
         {
             if (timer < 0)
             {
-                bridge.BridgeFold(angle, foldtime, clipAngle, active);
+                fraction += Time.deltaTime / foldtime;
+                bridge.BridgeFold(angle, fraction, active);
             }
             RotateWheel(active);
        
         }
         else if (!active)
         {
-           
-           newangle = angle - angle;
-            float newclipAngle = angle - clipAngle;
+
             if (timer < 0)
             {
-            bridge.BridgeFold(newangle, foldtime, newclipAngle, active);
+                fraction += Time.deltaTime / foldtime;
+                bridge.BridgeFold(angle, fraction, active);
 
             }
             RotateWheel(active);
