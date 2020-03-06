@@ -15,6 +15,7 @@ public class DogBehaviour : MonoBehaviour
     [HideInInspector]
     public float startGravityScale;
 
+
     [HideInInspector]
     public AudioSource audioSource = null;
     [HideInInspector]
@@ -31,6 +32,8 @@ public class DogBehaviour : MonoBehaviour
     [HideInInspector]
     public float timePassed2 = 0.0f;
     public float wetDuration = 8.0f;
+    [HideInInspector]
+    public float direction = 1;
 
     [HideInInspector]
     public Vector2 movement;
@@ -54,6 +57,9 @@ public class DogBehaviour : MonoBehaviour
     public bool swimming = false;
     [HideInInspector]
     public bool pushSideIsLeft;
+    [HideInInspector]
+    public bool landing;
+
 
     [HideInInspector]
     public GameObject affectedObject;
@@ -100,22 +106,52 @@ public class DogBehaviour : MonoBehaviour
         radius = GetComponent<SpriteRenderer>().size.x;
     }
 
+    public IEnumerator MoveObjectCoolDown()
+    {
+        canMoveObject = false;
+        yield return new WaitForSecondsRealtime(0.25f);
+        canMoveObject = true;
+    }
+
+    public IEnumerator PlayLandingAnimation()
+    {
+        landing = true;
+        yield return new WaitForSecondsRealtime(0.5f);
+        landing = false;
+    }
+
     void Update()
     {
         currentState.Update();
     }
 
+    void OnDrawGizmos()
+    {
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + Vector2.right * direction * transform.localScale.x * groundedState.boxInteractDistance);
+    }
+
     void FixedUpdate()
     {
-        x = Input.GetAxisRaw("Horizontal");
+        if (active)
+        {
+            x = Input.GetAxisRaw("Horizontal");
+        }
+        else
+        {
+            x = 0.0f;
+        }
 
         if (facingRight)
         {
             spriteRenderer.flipX = false;
+            direction = 1;
         }
         else
         {
             spriteRenderer.flipX = true;
+            direction = -1;
         }
 
         GroundCheck();
@@ -153,6 +189,10 @@ public class DogBehaviour : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Water"))
+        {
+            swimming = true;
+        }
         currentState.OnTriggerEnter2D(other);
     }
 

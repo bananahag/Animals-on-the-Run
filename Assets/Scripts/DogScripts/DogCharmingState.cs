@@ -20,14 +20,17 @@ public class DogCharmingState : DogState
         }
         else
         {
+            
             dog.animator.Play("Charming");
             dog.human.GetComponent<Human>().charmed = true;
+            
         }
         dog.movement = new Vector2(0, 0);
     }
 
     public override void Exit()
     {
+        
         dog.human.GetComponent<Human>().charmed = false;
     }
 
@@ -35,9 +38,9 @@ public class DogCharmingState : DogState
     {
         if(Input.GetButtonDown("Interact") && dog.charmingHuman)
         {
+            
             dog.charmingHuman = false;
         }
-
         if(dog.transform.position.x <= dog.human.transform.position.x) {
             dog.facingRight = true;
         }
@@ -45,7 +48,6 @@ public class DogCharmingState : DogState
         {
             dog.facingRight = false;
         }
-
     }
 
     public override void FixedUpdate()
@@ -56,13 +58,14 @@ public class DogCharmingState : DogState
         }
     }
 
-    public override void OnTriggerExit2D(Collider2D other)
+    /*public override void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
         {
+            Debug.Log("trigger in charming leaving human");
             dog.closeToHuman = false;
             dog.charmingHuman = false;
         }
-    }
+    }*/
 
 }

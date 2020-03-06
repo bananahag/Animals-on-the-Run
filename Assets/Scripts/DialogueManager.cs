@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class DialogueManager : MonoBehaviour
 {
     Queue<Dialogue.Animal> animals;
+    Queue<AudioSource> customSources;
     Queue<string> sentences;
     static public bool isOpen, canContinue;
     [Tooltip("The audio sources that plays the different animal talking sound effects.")]
@@ -21,29 +22,59 @@ public class DialogueManager : MonoBehaviour
     public enum DisplayType {TypeWriterStyle, AllTextAppearsAtOnce};
     public DisplayType displayType;
 
+    enum ActiveCharacter {Monkey, Dog, Eel}
+    ActiveCharacter activeCharacter;
+
     bool firstTextBox; //This is some real dumbo shit right here
 
     // Start is called before the first frame update
     void Start()
     {
         animals = new Queue<Dialogue.Animal>();
+        customSources = new Queue<AudioSource>();
         sentences = new Queue<string>();
         canContinue = true;
+        isOpen = false;
+        animator.SetBool("isOpen", false);
     }
 
     public void StartDialogue(Dialogue dialogue)
     {
+        if (FindObjectOfType<MonkeyBehavior>() != null)
+        {
+            if (FindObjectOfType<MonkeyBehavior>().active)
+                activeCharacter = ActiveCharacter.Monkey;
+            FindObjectOfType<MonkeyBehavior>().active = false;
+        }
+        if (FindObjectOfType<DogBehaviour>() != null)
+        {
+            if (FindObjectOfType<DogBehaviour>().active)
+                activeCharacter = ActiveCharacter.Dog;
+            FindObjectOfType<DogBehaviour>().active = false;
+        }
+        if (FindObjectOfType<Eel>() != null)
+        {
+            if (FindObjectOfType<Eel>().active)
+                activeCharacter = ActiveCharacter.Eel;
+            FindObjectOfType<Eel>().active = false;
+        }
+
         canContinue = false;
         firstTextBox = true;
         animals.Clear();
         monkeyPortrait.enabled = false;
         dogPortrait.enabled = false;
         eelPortrait.enabled = false;
+        customSources.Clear();
         sentences.Clear();
         dialogueText.text = "";
         foreach (Dialogue.Animal animal in dialogue.animals)
         {
             animals.Enqueue(animal);
+        }
+        foreach (AudioSource customSource in dialogue.customSources)
+        {
+            customSources.Enqueue(customSource);
         }
         foreach (string sentence in dialogue.sentences)
         {
@@ -69,7 +100,7 @@ public class DialogueManager : MonoBehaviour
         {
             if(sentences.Count == 0)
             {
-                EndDialogue();
+                StartCoroutine(EndDialogue());
                 return;
             }
             if (firstTextBox)
@@ -85,32 +116,52 @@ public class DialogueManager : MonoBehaviour
     void DisplayNextPortrait()
     {
         Dialogue.Animal animal = animals.Dequeue();
+        AudioSource customSource = customSources.Dequeue();
         if (animal == Dialogue.Animal.Monkey)
         {
-            monkeySource.Play();
+            if (customSource == null)
+                monkeySource.Play();
+            else
+                customSource.Play();
+
             monkeyPortrait.enabled = true;
         }
         else { monkeyPortrait.enabled = false; }
 
         if (animal == Dialogue.Animal.Dog)
         {
-            dogSource.Play();
+            if (customSource == null)
+                dogSource.Play();
+            else
+                customSource.Play();
             dogPortrait.enabled = true;
         }
         else { dogPortrait.enabled = false; }
 
         if (animal == Dialogue.Animal.Eel)
         {
-            eelSource.Play();
+            if (customSource == null)
+                eelSource.Play();
+            else
+                customSource.Play();
             eelPortrait.enabled = true;
         }
         else { eelPortrait.enabled = false; }
     }
 
-    void EndDialogue()
+    IEnumerator EndDialogue()
     {
         isOpen = false;
         animator.SetBool("isOpen", false);
+
+        yield return null;
+
+        if (activeCharacter == ActiveCharacter.Monkey && FindObjectOfType<MonkeyBehavior>() != null)
+            FindObjectOfType<MonkeyBehavior>().active = true;
+        else if (activeCharacter == ActiveCharacter.Dog && FindObjectOfType<DogBehaviour>() != null)
+            FindObjectOfType<DogBehaviour>().active = true;
+        else if (activeCharacter == ActiveCharacter.Eel && FindObjectOfType<Eel>() != null)
+            FindObjectOfType<Eel>().active = true;
     }
 
     IEnumerator StartUp()
