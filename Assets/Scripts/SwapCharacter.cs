@@ -11,6 +11,12 @@ public class SwapCharacter : MonoBehaviour
     private Eel mEel;
     public int SelectedChar;
     private Camera cam;
+    Vector3 oldCameraPos;
+
+    public float cameraTravelTime = 1.0f;
+    float timePassed;
+    float fraction;
+    int targetPosition;
     
     public enum activeCharacter
     {
@@ -21,10 +27,11 @@ public class SwapCharacter : MonoBehaviour
 
     private void Awake()
     {
-
         mMonkey = characters[0].GetComponent<MonkeyBehavior>();
         mDog = characters[1].GetComponent<DogBehaviour>();
         mEel = characters[2].GetComponent<Eel>();
+        timePassed = 0.0f;
+        fraction = 0.0f;
     }
     void Start()
     {
@@ -32,13 +39,20 @@ public class SwapCharacter : MonoBehaviour
         
         cam = Camera.main;
         mMeny = GameObject.Find("Meny").GetComponent<MenyUI>();
+
+        
+        oldCameraPos = cam.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        print(fraction);
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
+            timePassed = 0.0f;
+            fraction = 0.0f;
+            oldCameraPos = cam.transform.position;
             if (SelectedChar < characters.Count -1)
             {
                 SelectedChar++;
@@ -63,7 +77,8 @@ public class SwapCharacter : MonoBehaviour
             mEel.active = false;
             mDog.active = false;
             mMonkey.active = true;
-            cam.transform.position = new Vector3(characters[0].transform.position.x, characters[0].transform.position.y, cam.transform.position.z);
+            if (fraction >= 1.0f)
+                cam.transform.position = new Vector3(characters[SelectedChar].transform.position.x, characters[SelectedChar].transform.position.y, cam.transform.position.z);
         }
 
         else if (SelectedChar == (int)activeCharacter.Dog)
@@ -71,14 +86,16 @@ public class SwapCharacter : MonoBehaviour
             mEel.active = false;
             mMonkey.active = false;
             mDog.active = true;
-            cam.transform.position = new Vector3(characters[1].transform.position.x, characters[1].transform.position.y, cam.transform.position.z);
+            if (fraction >= 1.0f)
+                cam.transform.position = new Vector3(characters[SelectedChar].transform.position.x, characters[SelectedChar].transform.position.y, cam.transform.position.z);
         }
         else if (SelectedChar == (int)activeCharacter.Eel)
         {
             mDog.active = false;
             mMonkey.active = false;
             mEel.active = true;
-            cam.transform.position = new Vector3(characters[2].transform.position.x, characters[0].transform.position.y, cam.transform.position.z);
+            if (fraction >= 1.0f)
+                cam.transform.position = new Vector3(characters[SelectedChar].transform.position.x, characters[SelectedChar].transform.position.y, cam.transform.position.z);
         }
 
 
@@ -86,6 +103,14 @@ public class SwapCharacter : MonoBehaviour
         {
             mMeny.NextLevel();
         }
-        
+        if (fraction < 1.0f)
+            MoveCamera();
+    }
+
+    void MoveCamera()
+    {
+        timePassed += Time.deltaTime;
+        fraction = timePassed / cameraTravelTime;
+        cam.transform.position = Vector3.Lerp(oldCameraPos, new Vector3(characters[SelectedChar].transform.position.x, characters[SelectedChar].transform.position.y, cam.transform.position.z), fraction);
     }
 }
