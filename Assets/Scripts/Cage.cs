@@ -6,6 +6,7 @@ public class Cage : MonoBehaviour
 {
     AudioSource audioSource;
 
+    MenyUI menyUI;
     public GameObject animal;
     public AudioClip openSFX;
     public float shakeSpeed = 50.0f;
@@ -20,6 +21,7 @@ public class Cage : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        menyUI = FindObjectOfType<MenyUI>().GetComponent<MenyUI>();
     }
 
     // Update is called once per frame
@@ -37,6 +39,10 @@ public class Cage : MonoBehaviour
     {
         if (!opened)
         {
+            if(menyUI != null)
+            {
+                menyUI.AddScoreCount();
+            }
             //audioSource.PlayOneShot(openSFX);
             Instantiate(animal, transform.position, transform.rotation);
             StartCoroutine(Shake());

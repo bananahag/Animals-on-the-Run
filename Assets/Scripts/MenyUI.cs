@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 public class MenyUI : MonoBehaviour
 {
     public GameObject pauseMeny;
-   
+
+    public static int scoreCount = 0;
     public static int scene;
     bool paused = false;
 
@@ -42,6 +43,12 @@ public class MenyUI : MonoBehaviour
         Debug.Log(scene + "int");
         SceneManager.LoadScene(scene);
 
+    }
+
+    public void AddScoreCount()
+    {
+        scoreCount++;
+        Debug.Log(scoreCount);
     }
 
     public void QuitGame()
