@@ -18,6 +18,8 @@ public class ButtonOrLever : MonoBehaviour
     AudioSource audioSource;
     Animator animator;
 
+    bool noAnimator;
+
     //DELETE THIS WHEN WE HAVE ANIMATIONS
     Color startColor;
 
@@ -25,8 +27,13 @@ public class ButtonOrLever : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        //animator = GetComponent<Animator>();
-        //animator.Play(incactiveAnimationName);
+        if (GetComponent<Animator>() != null)
+        {
+            animator = GetComponent<Animator>();
+            animator.Play(incactiveAnimationName);
+        }
+        else
+            noAnimator = true;
 
         startColor = GetComponent<SpriteRenderer>().color;
     }
@@ -49,11 +56,10 @@ public class ButtonOrLever : MonoBehaviour
                     elevator.GetComponent<Elevator>().Activate(false, gameObject);
                 if (bridge != null)
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
-                GetComponent<SpriteRenderer>().color = startColor;//animator.Play(incactiveAnimationName);
-                if (bridge != null)
-                {
-                    bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
-                }
+                if (noAnimator)
+                    GetComponent<SpriteRenderer>().color = startColor;
+                else
+                    animator.Play(incactiveAnimationName);
 
             }
             else
@@ -63,14 +69,16 @@ public class ButtonOrLever : MonoBehaviour
                     elevator.GetComponent<Elevator>().Activate(true, gameObject);
                 if (bridge != null)
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
-                GetComponent<SpriteRenderer>().color = Color.yellow;//animator.Play(activeAnimationName);
-                if (bridge != null)
-                {
-                    bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
-                }
+                if (noAnimator)
+                    GetComponent<SpriteRenderer>().color = Color.yellow;
+                else
+                    animator.Play(activeAnimationName);
             }
             audioSource.PlayOneShot(activateSFX);
         }
 
     }
 }
+
+
+                
