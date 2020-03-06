@@ -11,6 +11,8 @@ public class StallRope : MonoBehaviour
     [Tooltip("The amount of time (in seconds) the stall will be activeted.")]
     public float stallIsActiveTime = 5.0f;
 
+    Animator animator;
+
     Vector2 startPos, targetPos;
     bool stallIsActivated, dogIsPulling;
 
@@ -19,6 +21,7 @@ public class StallRope : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         startPos = transform.position;
         targetPos = new Vector2(startPos.x - dragDistance, startPos.y);
         timePassed = 0.0f;
@@ -41,12 +44,15 @@ public class StallRope : MonoBehaviour
         if (transform.position.x > startPos.x)
         {
             transform.position = startPos;
-            stall.GetComponent<Stall>().ChangeState(false);
+            if (stallIsActivated)
+                stall.GetComponent<Stall>().ChangeState(false);
             stallIsActivated = false;
         }
 
         if (stallIsActivated && !dogIsPulling)
             MoveBackRope();
+
+        Animations();
     }
 
     void MoveBackRope()
@@ -59,5 +65,13 @@ public class StallRope : MonoBehaviour
             stall.GetComponent<Stall>().ChangeState(false);
             stallIsActivated = false;
         }
+    }
+
+    void Animations()
+    {
+        if (stallIsActivated)
+            animator.Play("Active Rope");
+        else
+            animator.Play("Inactive Rope");
     }
 }

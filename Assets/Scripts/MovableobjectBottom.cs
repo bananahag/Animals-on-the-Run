@@ -6,8 +6,8 @@ public class MovableobjectBottom : MonoBehaviour
 {
     public float raycastlength;
 
-    Vector3 leftoffset = new Vector3(-.7f, -.7f, 0);
-    Vector3 rightoffest = new Vector3(.7f, -.7f, 0);
+   public Vector3 leftoffset = new Vector3(-.7f, -.7f, 0);
+   public Vector3 rightoffest = new Vector3(.7f, -.7f, 0);
     
 
 
@@ -100,12 +100,11 @@ public class MovableobjectBottom : MonoBehaviour
     private void OnDrawGizmos()
     {
 
-        Vector3 leftoffset = new Vector3(-.7f, -.5f, 0);
-        Vector3 rightoffest = new Vector3(.7f, -.5f, 0);
+      
         Gizmos.color = Color.red;
 
-        Gizmos.DrawLine(transform.position + leftoffset, new Vector2((transform.position.x - 0.7f), (transform.position.y - 0.5f) - raycastlength));
+        Gizmos.DrawLine(transform.position + leftoffset , (transform.position + leftoffset - new Vector3(0,raycastlength,0)));
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position + rightoffest, new Vector2((transform.position.x + 0.7f), (transform.position.y - 0.5f) - raycastlength));
+        Gizmos.DrawLine(transform.position + rightoffest, (transform.position + rightoffest - new Vector3(0, raycastlength, 0)));
     }
 }
