@@ -47,7 +47,6 @@ public class SwapCharacter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(fraction);
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             timePassed = 0.0f;
