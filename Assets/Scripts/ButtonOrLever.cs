@@ -50,10 +50,7 @@ public class ButtonOrLever : MonoBehaviour
                 if (bridge != null)
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
                 GetComponent<SpriteRenderer>().color = startColor;//animator.Play(incactiveAnimationName);
-                if (bridge != null)
-                {
-                    bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
-                }
+                
 
             }
             else
@@ -64,10 +61,7 @@ public class ButtonOrLever : MonoBehaviour
                 if (bridge != null)
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
                 GetComponent<SpriteRenderer>().color = Color.yellow;//animator.Play(activeAnimationName);
-                if (bridge != null)
-                {
-                    bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
-                }
+               
             }
             audioSource.PlayOneShot(activateSFX);
         }

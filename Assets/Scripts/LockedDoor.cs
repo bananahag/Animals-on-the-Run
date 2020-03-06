@@ -9,6 +9,10 @@ public class LockedDoor : MonoBehaviour
     [Tooltip("The sprite that is used by the door when it gets unlocked.")]
     public Sprite openedSprite;
 
+    public enum KeyColor {Orange, Purple}
+    [Tooltip("Determines what kind of key gets removed from the UI.")]
+    public KeyColor keyColor; 
+
     BoxCollider2D boxCol2D;
     bool canBeOpened = false;
 
@@ -24,6 +28,10 @@ public class LockedDoor : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().sprite = openedSprite;
             boxCol2D.enabled = false;
+            if (keyColor == KeyColor.Orange)
+                FindObjectOfType<KeyUI>().ViewOrangeKey(false);
+            else
+                FindObjectOfType<KeyUI>().ViewPurpleKey(false);
             openSource.Play();
         }
     }
