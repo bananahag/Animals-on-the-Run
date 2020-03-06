@@ -10,12 +10,19 @@ public class StartDialogue : MonoBehaviour
     public bool dialogueStartsWhenEntering = true;
 
     bool touching;
+    bool hasPlayed = false;
 
     // Update is called once per frame
     void Update()
     {
         if (touching && Input.GetButtonDown("Interact") && !DialogueManager.isOpen && DialogueManager.canContinue)
-            GetComponent<DialogueTrigger>().TriggerDialogue();
+        {
+            if (onlyActivatesOnce && !hasPlayed)
+                GetComponent<DialogueTrigger>().TriggerDialogue();
+            else if (!onlyActivatesOnce)
+                GetComponent<DialogueTrigger>().TriggerDialogue();
+            hasPlayed = true;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -23,7 +30,13 @@ public class StartDialogue : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             if (dialogueStartsWhenEntering && !DialogueManager.isOpen && DialogueManager.canContinue)
-                GetComponent<DialogueTrigger>().TriggerDialogue();
+            {
+                if (onlyActivatesOnce && !hasPlayed)
+                    GetComponent<DialogueTrigger>().TriggerDialogue();
+                else if (!onlyActivatesOnce)
+                    GetComponent<DialogueTrigger>().TriggerDialogue();
+                hasPlayed = true;
+            }
             else
                 touching = true;
         }
