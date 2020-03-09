@@ -13,6 +13,8 @@ public class MovableObject : MonoBehaviour
     public LayerMask boxMask;
     public LayerMask groundMask;
     float startMass;
+    public bool noCollision = false;
+    GameObject topCollider;
 
     public float leftGroundCheckoffset = -1.9f;
     public float rightGroundCheckoffset = 1.9f;
@@ -31,6 +33,7 @@ public class MovableObject : MonoBehaviour
         {
             groundMask = boxMask;
         }
+
     }
 
     public bool BoxGrounded()
@@ -45,8 +48,24 @@ public class MovableObject : MonoBehaviour
         }
     }
 
+    void Awake()
+    {
+        topCollider = gameObject.transform.Find("TopCollider").gameObject;
+    }
+
     void Start()
     {
+        //GameObject topCollider = gameObject.transform.Find("TopCollider").gameObject;
+
+        if (noCollision)
+        {
+            topCollider.SetActive(true);
+        }
+        else
+        {
+            topCollider.SetActive(false);
+        }
+
         xPos = transform.position.x;
         startMass = GetComponent<Rigidbody2D>().mass;
     }
@@ -110,6 +129,18 @@ public class MovableObject : MonoBehaviour
 
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(new Vector2(transform.position.x + leftGroundCheckoffset, transform.position.y), new Vector2(transform.position.x + leftGroundCheckoffset, transform.position.y) + -Vector2.up * groundCheckDistance);
+
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (noCollision)
+        {
+            if (other.gameObject.layer != LayerMask.NameToLayer("Ground"))
+            {
+                Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), other.gameObject.GetComponent<BoxCollider2D>());
+            }
+        }
 
     }
 
