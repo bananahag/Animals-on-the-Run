@@ -6,17 +6,25 @@ public class MovableObject : MonoBehaviour
 {
     [HideInInspector]
     public bool beingMoved;
+    [HideInInspector]
     public bool grounded;
     float xPos;
+    [Tooltip("From what distance the dog can interact with the box.")]
     public float boxDistance;
+    [Tooltip("How close the box must be to the ground to be considered grounded.")]
     public float groundCheckDistance;
+    [Tooltip("Checks if the box has this layer. It's used by RayCast and should be Ground")]
     public LayerMask boxMask;
+    [Tooltip("Checks if ground is below it. It's used by RayCast and should be Ground")]
     public LayerMask groundMask;
     float startMass;
+    [Tooltip("Disables collision to player and enables the top collider. Makes it possible to stand on top of the box and still pass through it from the sides.")]
     public bool noCollision = false;
     GameObject topCollider;
 
+    [Tooltip("Checks if there is ground is below the box on it's left side of it.")]
     public float leftGroundCheckoffset = -1.9f;
+    [Tooltip("Checks if there is ground is below the box on it's right side of it.")]
     public float rightGroundCheckoffset = 1.9f;
 
     void OnValidate()
