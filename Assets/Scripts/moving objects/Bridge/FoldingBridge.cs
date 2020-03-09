@@ -12,7 +12,7 @@ public class FoldingBridge : MonoBehaviour
     float startpos;
     float otherstartpos;
     
-    bool bridgemoving;
+     public bool bridgemoving;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +40,7 @@ public class FoldingBridge : MonoBehaviour
             {
                 rb.MoveRotation(Mathf.LerpAngle(startpos, angle, foldtime));
                 lrb.MoveRotation(Mathf.LerpAngle(otherstartpos, -1 * angle, foldtime));
+                bridgemoving = true;
             }
             else
             {
@@ -47,8 +48,8 @@ public class FoldingBridge : MonoBehaviour
                 lrb.rotation = rb.rotation * -1;
                 startpos = angle;
                 otherstartpos = angle * -1;
-                
-                Debug.Log(startpos + "Erik");
+                bridgemoving = false;
+
             }
         }
         else if (!active)
@@ -56,9 +57,10 @@ public class FoldingBridge : MonoBehaviour
             
             if (rb.rotation > 0)
             {
-                Debug.Log(startpos);
+                
                 rb.MoveRotation(Mathf.LerpAngle(startpos, 0, foldtime));
                 lrb.MoveRotation(Mathf.LerpAngle(otherstartpos, 0, foldtime));
+                bridgemoving = true;
             }
             else
             {
@@ -66,7 +68,7 @@ public class FoldingBridge : MonoBehaviour
                 lrb.rotation = rb.rotation * -1;
                 startpos = rb.rotation;
                 otherstartpos = lrb.rotation;
-               
+                bridgemoving = false;
             }
         }
     }
