@@ -23,7 +23,7 @@ public class BridgeWheelmovement : MonoBehaviour
     
     void Start()
     {
-        bridge = GameObject.Find("Right Bridge").GetComponent<FoldingBridge>();
+        bridge = GameObject.Find("Right Bridge 1").GetComponent<FoldingBridge>();
        
     }
     public void DraiSpakenKronk()
