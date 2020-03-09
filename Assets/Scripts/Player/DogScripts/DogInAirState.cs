@@ -11,6 +11,7 @@ public class DogInAirState : DogState
     float timePassed = 0.0f;
     [Tooltip("The time (in seconds) you can press jump before landing to still jump when you land. Basically when you press jump a little bit too early the dog still jumps. Please ask Albin if you're confused about what this means.")]
     public float jumpBufferDuration = 0.25f;
+    [Tooltip("Movement speed while in air. Higher values make the dog jump longer and faster.")]
     public float airSpeed = 4.0f;
 
     public AudioClip landingSFX;

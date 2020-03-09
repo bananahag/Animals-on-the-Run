@@ -31,6 +31,7 @@ public class DogBehaviour : MonoBehaviour
     public float radius;
     [HideInInspector]
     public float timePassed2 = 0.0f;
+    [Tooltip("How long the dog fur stays wet. Time in seconds. Must be a positive value.")]
     public float wetDuration = 8.0f;
     [HideInInspector]
     public float direction = 1;

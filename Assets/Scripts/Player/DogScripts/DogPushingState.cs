@@ -6,8 +6,9 @@ using UnityEngine;
 public class DogPushingState : DogState
 {
     public AudioSource pushSource;
+    [HideInInspector]
     public bool dropBox;
-    public bool underBox;
+    [HideInInspector]
     public bool boxGrounded;
 
 
