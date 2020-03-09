@@ -14,8 +14,8 @@ public class MovableObject : MonoBehaviour
     public LayerMask groundMask;
     float startMass;
 
-    public float leftGroundCheckoffset = -1.5f;
-    public float rightGroundCheckoffset = 1.5f;
+    public float leftGroundCheckoffset = -1.9f;
+    public float rightGroundCheckoffset = 1.9f;
 
     void OnValidate()
     { 
@@ -81,10 +81,10 @@ public class MovableObject : MonoBehaviour
         RaycastHit2D hitGround = Physics2D.Raycast(transform.position, -Vector2.up * transform.localScale.y, groundCheckDistance, groundMask);
 
         Physics2D.queriesStartInColliders = false;
-        RaycastHit2D hitGroundLeft = Physics2D.Raycast(transform.position, -Vector2.up * leftGroundCheckoffset, groundCheckDistance, groundMask);
+        RaycastHit2D hitGroundRight = Physics2D.Raycast(new Vector2(transform.position.x + rightGroundCheckoffset, transform.position.y), new Vector2(transform.position.x + rightGroundCheckoffset, transform.position.y) * -Vector2.up, groundCheckDistance, groundMask);
 
         Physics2D.queriesStartInColliders = false;
-        RaycastHit2D hitGroundRight = Physics2D.Raycast(transform.position, -Vector2.up * rightGroundCheckoffset, groundCheckDistance, groundMask);
+        RaycastHit2D hitGroundLeft = Physics2D.Raycast(new Vector2(transform.position.x + leftGroundCheckoffset, transform.position.y), new Vector2(transform.position.x + leftGroundCheckoffset, transform.position.y) * -Vector2.up, groundCheckDistance, groundMask);
 
         if (hitGround.collider != null || hitGroundLeft.collider != null || hitGroundRight.collider != null)
         {
@@ -106,10 +106,10 @@ public class MovableObject : MonoBehaviour
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + -Vector2.up * transform.localScale.y * groundCheckDistance);
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(new Vector2(transform.position.x, transform.position.y), new Vector2(transform.position.x + rightGroundCheckoffset, transform.position.y) + -Vector2.up * groundCheckDistance);
+        Gizmos.DrawLine(new Vector2(transform.position.x + rightGroundCheckoffset, transform.position.y), new Vector2(transform.position.x + rightGroundCheckoffset, transform.position.y) + -Vector2.up * groundCheckDistance);
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(new Vector2(transform.position.x, transform.position.y), new Vector2(transform.position.x + leftGroundCheckoffset, transform.position.y) + -Vector2.up * groundCheckDistance);
+        Gizmos.DrawLine(new Vector2(transform.position.x + leftGroundCheckoffset, transform.position.y), new Vector2(transform.position.x + leftGroundCheckoffset, transform.position.y) + -Vector2.up * groundCheckDistance);
 
     }
 
