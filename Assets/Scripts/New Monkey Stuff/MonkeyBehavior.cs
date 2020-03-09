@@ -125,6 +125,12 @@ public class MonkeyBehavior : MonoBehaviour
         groundedState.PlayStepSound();
     }
 
+    public void DropEel()
+    {
+        if (eel != null && eel.GetComponent<Eel>() != null)
+            eel.GetComponent<Eel>().MonkeyInteraction(false);
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "Ladder")
