@@ -13,7 +13,7 @@ public class ButtonOrLever : MonoBehaviour
     [Tooltip("The bridge object that gets activated. Can be left null.")]
     public GameObject bridge = null;
     [HideInInspector]
-    public bool activated;
+    public bool activated, needsElectricity;
 
     AudioSource audioSource;
     Animator animator;
@@ -24,7 +24,7 @@ public class ButtonOrLever : MonoBehaviour
     Color startColor;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         if (GetComponent<Animator>() != null)
@@ -36,12 +36,6 @@ public class ButtonOrLever : MonoBehaviour
             noAnimator = true;
 
         startColor = GetComponent<SpriteRenderer>().color;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Activate()
@@ -77,6 +71,15 @@ public class ButtonOrLever : MonoBehaviour
             audioSource.PlayOneShot(activateSFX);
         }
 
+    }
+
+    public void Charge (bool charged)
+    {
+        needsElectricity = !charged;
+        if (needsElectricity)
+            GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f, 1.0f);
+        else
+            GetComponent<SpriteRenderer>().color = startColor;
     }
 }
 
