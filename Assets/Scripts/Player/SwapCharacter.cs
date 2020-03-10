@@ -52,7 +52,7 @@ public class SwapCharacter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetButtonDown("Swap1"))
         {
             timePassed = 0.0f;
             fraction = 0.0f;
@@ -69,6 +69,29 @@ public class SwapCharacter : MonoBehaviour
             if (SelectedChar == (int)activeCharacter.Dog)
             {
             characters[0].GetComponent<Rigidbody2D>().velocity = new Vector3(0, characters[0].GetComponent<Rigidbody2D>().velocity.y, 0);
+            }
+            else if (SelectedChar == (int)activeCharacter.Monkey)
+            {
+                characters[1].GetComponent<Rigidbody2D>().velocity = new Vector3(0, characters[1].GetComponent<Rigidbody2D>().velocity.y, 0);
+            }
+        }
+        else if (Input.GetButtonDown("Swap2"))
+        {
+            timePassed = 0.0f;
+            fraction = 0.0f;
+            oldCameraPos = cam.transform.position;
+            if (SelectedChar > 0)
+            {
+                SelectedChar--;
+            }
+            else
+            {
+                SelectedChar = characters.Count - 1;
+            }
+
+            if (SelectedChar == (int)activeCharacter.Dog)
+            {
+                characters[0].GetComponent<Rigidbody2D>().velocity = new Vector3(0, characters[0].GetComponent<Rigidbody2D>().velocity.y, 0);
             }
             else if (SelectedChar == (int)activeCharacter.Monkey)
             {
