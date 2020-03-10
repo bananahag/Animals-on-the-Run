@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class Elevator : MonoBehaviour
 {
-    [Tooltip("The sound effect that plays when a player character gets squished.")]
-    public AudioClip squishedSFX;
-    [Tooltip("What is this sound effect? I don't know. Don't ask Albin about this because he won't be able to help you.")]
-    public AudioClip mysterySFX;
-    [Tooltip("The sound effect that plays when a player grows agter being squished.")]
-    public AudioClip growSFX;
+    [Tooltip("The audio source that plays when a player character gets squished.")]
+    public AudioSource squishedSource;
+    [Tooltip("What is this audio source? I don't know. Don't ask Albin about this because he won't be able to help you.")]
+    public AudioSource mysterySource;
+    [Tooltip("The audio source that plays when a player grows after being squished.")]
+    public AudioSource growSource;
+    [Tooltip("The audio source that plays and loops when the elevator moves.")]
+    public AudioSource elevatorMoveSource;
+    [Tooltip("The audio source that plays when the elevator starts moving.")]
+    public AudioSource startSource;
+    [Tooltip("The audio source that plays when the elevator stops moving.")]
+    public AudioSource stopSource;
 
     [Tooltip("The start position of the elevator.")]
     public Transform startPosition;
@@ -29,6 +35,7 @@ public class Elevator : MonoBehaviour
     float fraction, timePassed, timePassed2;
     bool goingBack;
     bool goingUp;
+    bool canPlayLoopSound;
 
     float flattenAmount, widenAmount, timeFlattened = 1.0f;
     bool isFlat;
@@ -37,18 +44,18 @@ public class Elevator : MonoBehaviour
     GameObject lever = null;
 
     Rigidbody2D rb2d;
-    AudioSource audioSource;
     BoxCollider2D bc2d;
 
     // Start is called before the first frame update
     void Start()
     {
+        canPlayLoopSound = true;
         rb2d = GetComponent<Rigidbody2D>();
         bc2d = GetComponent<BoxCollider2D>();
-        audioSource = GetComponent<AudioSource>();
         fraction = 0.0f;
         flattenAmount = 1.0f;
         widenAmount = 1.0f;
+        elevatorMoveSource.loop = true;
     }
 
     // Update is called once per frame
@@ -56,6 +63,13 @@ public class Elevator : MonoBehaviour
     {
         if (fraction < 1.0f && !goingBack && active)
         {
+            if (elevatorMoveSource != null && canPlayLoopSound)
+            {
+                elevatorMoveSource.Play();
+                if (startSource != null)
+                    startSource.Play();
+                canPlayLoopSound = false;
+            }
             timePassed = 0.0f;
             fraction += Time.deltaTime / travelTime;
             if (targetPosition.position.y > startPosition.position.y)
@@ -74,6 +88,20 @@ public class Elevator : MonoBehaviour
         }
         else if (fraction > 0.0f && goingBack || !active)
         {
+            if (elevatorMoveSource != null && canPlayLoopSound && fraction > 0.0f)
+            {
+                elevatorMoveSource.Play();
+                if (startSource != null)
+                    startSource.Play();
+                canPlayLoopSound = false;
+            }
+            else if (elevatorMoveSource != null && fraction <= 0.0f)
+            {
+                elevatorMoveSource.Stop();
+                if (!canPlayLoopSound && stopSource != null)
+                    stopSource.Play();
+                canPlayLoopSound = true;
+            }
             goingBack = true;
             timePassed = 0.0f;
             fraction -= Time.deltaTime / travelTime;
@@ -96,11 +124,21 @@ public class Elevator : MonoBehaviour
         }
         else if (timePassed < stayTime)
         {
+            if (elevatorMoveSource != null)
+                elevatorMoveSource.Stop();
+            if (!canPlayLoopSound && stopSource != null)
+                stopSource.Play();
+            canPlayLoopSound = true;
             timePassed += Time.deltaTime;
             goingUp = false;
         }
         else if (returns)
         {
+            if (!canPlayLoopSound && stopSource != null)
+                stopSource.Play();
+            canPlayLoopSound = true;
+            if (elevatorMoveSource != null)
+                elevatorMoveSource.Stop();
             if (goingBack)
                 goingBack = false;
             else
@@ -112,7 +150,15 @@ public class Elevator : MonoBehaviour
                     lever.GetComponent<ButtonOrLever>().Activate();
             }
         }
-        
+        else
+        {
+            if (!canPlayLoopSound && stopSource != null)
+                stopSource.Play();
+            canPlayLoopSound = true;
+            if (elevatorMoveSource != null)
+                elevatorMoveSource.Stop();
+        }
+
         if (touchingPlayer && !goingUp && monkey.transform.position.y > transform.position.y)
             monkey.transform.SetParent(transform);
         else if (monkey != null)
@@ -147,10 +193,10 @@ public class Elevator : MonoBehaviour
         if (!isFlat)
         {
             int whatDoesThisDo = Random.Range(1, 11);
-            if (whatDoesThisDo == 10)
-                audioSource.PlayOneShot(mysterySFX);
-            audioSource.PlayOneShot(squishedSFX);
-
+            if (whatDoesThisDo == 10 && mysterySource != null)
+                mysterySource.Play();
+            if (squishedSource != null)
+                squishedSource.Play();
         }
         timePassed2 = 0.0f;
         isFlat = true;
@@ -173,7 +219,8 @@ public class Elevator : MonoBehaviour
         {
             if (flattenAmount <= 0.2f)
             {
-                audioSource.PlayOneShot(growSFX);
+                if (growSource != null)
+                    growSource.Play();
                 flattenAmount = 0.2f;
             }
             flattenAmount += 0.2f;

@@ -7,6 +7,7 @@ public class Cage : MonoBehaviour
     AudioSource audioSource;
 
     MenyUI menyUI;
+    public Sprite openedSprite;
     public GameObject animal;
     public AudioClip openSFX;
     public float shakeSpeed = 50.0f;
@@ -44,6 +45,7 @@ public class Cage : MonoBehaviour
                 menyUI.AddScoreCount();
             }
             //audioSource.PlayOneShot(openSFX);
+            GetComponent<SpriteRenderer>().sprite = openedSprite;
             Instantiate(animal, transform.position, transform.rotation);
             StartCoroutine(Shake());
             opened = true;
