@@ -70,8 +70,11 @@ public class MonkeyGrounded : MonkeyState
 
             else if (monkey.canPullLever)
             {
-                monkey.lever.GetComponent<ButtonOrLever>().Activate();
-                monkey.ChangeState(monkey.interactState);
+                if (!monkey.lever.GetComponent<ButtonOrLever>().needsElectricity)
+                {
+                    monkey.lever.GetComponent<ButtonOrLever>().Activate();
+                    monkey.ChangeState(monkey.interactState);
+                }
             }
         }
     }
