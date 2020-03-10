@@ -21,7 +21,7 @@ public class SwapCharacter : MonoBehaviour
     float fraction;
     int targetPosition;
 
-    public Vector2 minCameraPos, maxCameraPos;
+    public Vector2 minCameraPos = new Vector2(-100, -100), maxCameraPos = new Vector2(100, 100);
 
     public enum activeCharacter
     {

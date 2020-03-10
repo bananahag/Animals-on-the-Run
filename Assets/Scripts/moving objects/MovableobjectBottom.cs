@@ -5,6 +5,7 @@ using UnityEngine;
 public class MovableobjectBottom : MonoBehaviour
 {
     public float raycastlength;
+    GameObject scalehit;
 
    public Vector3 leftoffset = new Vector3(-.7f, -.7f, 0);
    public Vector3 rightoffest = new Vector3(.7f, -.7f, 0);
@@ -27,12 +28,9 @@ public class MovableobjectBottom : MonoBehaviour
                 if (hit.collider.tag == "Scale")
                 {
                     lefthit = true;
+                    scalehit = hit.collider.gameObject;
                 }
-                if (righthit || lefthit)
-                {
-                    hit.collider.gameObject.GetComponent<NewScale>().MoveScaleDown();
-                    hit.collider.gameObject.GetComponent<NewScale>().OtherScale.GetComponent<NewScale>().MoveScaleUp();
-                }
+                
             }
             RaycastHit2D[] righthits = Physics2D.RaycastAll(transform.position + rightoffest, Vector2.down, raycastlength);
             foreach (RaycastHit2D hit in righthits)
@@ -40,16 +38,18 @@ public class MovableobjectBottom : MonoBehaviour
                 if (hit.collider.tag == "Scale")
                 {
                     righthit = true;
+                    scalehit = hit.collider.gameObject;
                 }
-                if (righthit || lefthit)
-                {
-                    hit.collider.gameObject.GetComponent<NewScale>().MoveScaleDown();
-                    hit.collider.gameObject.GetComponent<NewScale>().OtherScale.GetComponent<NewScale>().MoveScaleUp();
-                }
+                
 
             }
 
-
+            if (righthit || lefthit)
+            {
+                
+                scalehit.GetComponent<NewScale>().MoveScaleDown();
+                scalehit.GetComponent<NewScale>().OtherScale.GetComponent<NewScale>().MoveScaleUp();
+            }
         }
 
     }
@@ -70,12 +70,9 @@ public class MovableobjectBottom : MonoBehaviour
                 if (hit.collider.tag == "Scale")
                 {
                     lefthit = true;
+                    scalehit = hit.collider.gameObject;
                 }
-                if (righthit || lefthit)
-                {
-                    hit.collider.gameObject.GetComponent<NewScale>().MoveScaleUp();
-                    hit.collider.gameObject.GetComponent<NewScale>().OtherScale.GetComponent<NewScale>().MoveScaleDown();
-                }
+               
             }
             RaycastHit2D[] righthits = Physics2D.RaycastAll(transform.position + rightoffest, Vector2.down, raycastlength);
             foreach (RaycastHit2D hit in righthits)
@@ -83,15 +80,16 @@ public class MovableobjectBottom : MonoBehaviour
                 if (hit.collider.tag == "Scale")
                 {
                     righthit = true;
+                    scalehit = hit.collider.gameObject;
                 }
-                 if (righthit || lefthit)
-                 {
-                hit.collider.gameObject.GetComponent<NewScale>().MoveScaleUp();
-                hit.collider.gameObject.GetComponent<NewScale>().OtherScale.GetComponent<NewScale>().MoveScaleDown();
-                 }
+                
 
             }
-            
+            if (righthit || lefthit)
+            {
+                scalehit.GetComponent<NewScale>().MoveScaleUp();
+                scalehit.GetComponent<NewScale>().OtherScale.GetComponent<NewScale>().MoveScaleDown();
+            }
 
         }
     }

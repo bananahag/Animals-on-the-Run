@@ -14,6 +14,7 @@ public class NewScale : MonoBehaviour
     public float travelTime;
     private float fraction;
     bool scalehit;
+    public AudioSource scaleMoveAudioSource;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -29,7 +30,7 @@ public class NewScale : MonoBehaviour
         
         if (transform.position != nextpos)
         {
-          
+            scaleMoveAudioSource.Play();
             fraction += Time.deltaTime / travelTime;
             rb.MovePosition(Vector2.Lerp(oldpos, nextpos, fraction));
 
