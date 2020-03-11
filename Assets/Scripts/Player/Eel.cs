@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Eel : MonoBehaviour
 {
-    [Tooltip("The sound effect that plays when the eel uses its electicity.")]
-    public AudioClip electricitySFX;
-    [Tooltip("The sound effect that plays when the eel uses its light")]
-    public AudioClip lightSFX;
-    [Tooltip("The sound effect that plays when the eel lands on the ground after falling.")]
-    public AudioClip landingSFX;
+    [Tooltip("The audio source that plays when the eel uses its electicity.")]
+    public AudioSource electricitySource;
+    [Tooltip("The audio source that plays when the eel uses its light")]
+    public AudioSource lightSource;
+    [Tooltip("The audio source that plays when the eel lands on the ground after falling.")]
+    public AudioSource landingSource;
 
     [Tooltip("If either of these transforms touches an object with the ''Ground'' layer the eel will be grounded.")]
     public Transform groundCheckLeft = null, groundCheckRight = null;
@@ -43,7 +43,6 @@ public class Eel : MonoBehaviour
     float targetLightScaleX, targetLightScaleY;
     float currentScaleX, currentScaleY;
 
-    AudioSource audioSource;
     Animator animator;
 
     void Start()
@@ -56,7 +55,8 @@ public class Eel : MonoBehaviour
 
         LightObj.transform.localScale = new Vector2(0.0f, 0.0f);
 
-        audioSource = GetComponent<AudioSource>();
+        lightSource.loop = true;
+
         animator = GetComponent<Animator>();
     }
 
@@ -85,7 +85,7 @@ public class Eel : MonoBehaviour
             if (!grounded)
             {
                 canAct = false;
-                audioSource.PlayOneShot(landingSFX);
+                landingSource.Play();
                 animator.Play("Placeholder Eel Land");
                 StartCoroutine(LandingTimer());
             }
@@ -102,7 +102,6 @@ public class Eel : MonoBehaviour
     {
         if (Input.GetButtonDown("Light") && canAct && grounded && active)
         {
-            audioSource.PlayOneShot(lightSFX);
             if (lightIsActive)
             {
                 lightIsActive = false;
@@ -114,6 +113,11 @@ public class Eel : MonoBehaviour
                 animator.Play("Placeholder Eel Light");
             }
         }
+
+        if (lightIsActive)
+            lightSource.Play();
+        else
+            lightSource.Stop();
     }
 
     void EelAnimations()
@@ -135,7 +139,7 @@ public class Eel : MonoBehaviour
     {
         if (Input.GetButtonDown("Interact") && canAct && grounded && active)
         {
-            audioSource.PlayOneShot(electricitySFX);
+            electricitySource.Play();
             canAct = false;
             StartCoroutine(ElectricityTimer());
             animator.Play("Placeholder Eel Idle");

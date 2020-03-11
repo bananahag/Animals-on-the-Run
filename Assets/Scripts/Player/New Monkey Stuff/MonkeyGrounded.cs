@@ -6,8 +6,10 @@ using UnityEngine;
 
 public class MonkeyGrounded : MonkeyState
 {
-    [Tooltip("Audio sources that plays when the monkey takes a step on the ground.")]
-    public AudioSource[] stepSources;
+    [Tooltip("Audio source that plays the audio clips.")]
+    public AudioSource stepSource;
+    [Tooltip("Audio clips that plays when the monkey takes a step on the ground.")]
+    public AudioClip[] stepClips;
     [Tooltip("The minimum and the maximum volume of the footstep sounds.")]
     public float minVolume = 0.9f, maxVolume = 1.1f;
     [Tooltip("The minimum and the maximum pitch of the footstep sounds.")]
@@ -105,12 +107,12 @@ public class MonkeyGrounded : MonkeyState
 
     public void PlayStepSound()
     {
-        if (stepSources.Length > 0)
+        if (stepClips.Length > 0)
         {
-            int randomSource = Random.Range(0, stepSources.Length);
-            stepSources[randomSource].volume = Random.Range(minVolume, maxVolume);
-            stepSources[randomSource].pitch = Random.Range(minPitch, maxPitch);
-            stepSources[randomSource].Play();
+            int randomSource = Random.Range(0, stepClips.Length);
+            stepSource.volume = Random.Range(minVolume, maxVolume);
+            stepSource.pitch = Random.Range(minPitch, maxPitch);
+            stepSource.PlayOneShot(stepClips[randomSource]);
         }
     }
 }

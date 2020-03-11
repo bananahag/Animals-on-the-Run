@@ -8,9 +8,14 @@ public class DogGroundedState : DogState
 {
     public float boxInteractDistance = 0.5f;
     public LayerMask boxMask;
-
-    [Tooltip("Audio source that plays when the dog takes a step on the ground.")]
+    [Tooltip("Audio source that plays the audio clips.")]
     public AudioSource stepSource;
+    [Tooltip("Audio clips that plays when the dog takes a step on the ground.")]
+    public AudioClip[] stepClips;
+    [Tooltip("The minimum and the maximum volume of the footstep sounds.")]
+    public float minVolume = 0.9f, maxVolume = 1.1f;
+    [Tooltip("The minimum and the maximum pitch of the footstep sounds.")]
+    public float minPitch = 0.9f, maxPitch = 1.1f;
 
     public float walkingSpeed = 4.0f;
 
@@ -169,7 +174,13 @@ public class DogGroundedState : DogState
     }
     public void PlayStepSound()
     {
-        stepSource.Play();
+        if (stepClips.Length > 0)
+        {
+            int randomSource = Random.Range(0, stepClips.Length);
+            stepSource.volume = Random.Range(minVolume, maxVolume);
+            stepSource.pitch = Random.Range(minPitch, maxPitch);
+            stepSource.PlayOneShot(stepClips[randomSource]);
+        }
     }
 
 
