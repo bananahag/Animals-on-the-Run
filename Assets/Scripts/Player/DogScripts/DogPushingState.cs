@@ -50,6 +50,8 @@ public class DogPushingState : DogState
 
     public override void Exit()
     {
+        pushSource.Stop();
+        canPlayPushSource = true;
         dog.movingObject = false;
         Debug.Log("Exit pushing");
         dog.affectedObject.GetComponent<MovableObject>().beingMoved = false;

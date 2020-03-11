@@ -25,7 +25,6 @@ public class ButtonOrLever : MonoBehaviour
     //DELETE THIS WHEN WE HAVE ANIMATIONS
     Color startColor;
 
-
     // Start is called before the first frame update
     void Awake()
     {
