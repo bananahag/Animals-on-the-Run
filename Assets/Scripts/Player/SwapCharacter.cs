@@ -43,7 +43,7 @@ public class SwapCharacter : MonoBehaviour
         SelectedChar = 0;
         
         cam = Camera.main;
-        mMeny = GameObject.Find("Meny").GetComponent<MenyUI>();
+        mMeny = FindObjectOfType<MenyUI>().GetComponent<MenyUI>();
 
         
         oldCameraPos = cam.transform.position;
