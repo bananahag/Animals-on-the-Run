@@ -30,20 +30,22 @@ public class NewScale : MonoBehaviour
         
         if (transform.position != nextpos)
         {
-            scaleMoveAudioSource.Play();
+            
             fraction += Time.deltaTime / travelTime;
             rb.MovePosition(Vector2.Lerp(oldpos, nextpos, fraction));
 
         }
-       
-      
+        else 
+        {
+        scaleMoveAudioSource.Stop();
+        }
        
     }
   
 
     public void MoveScaleDown()
     {
-        
+        scaleMoveAudioSource.Play();
         amountBoxes++;
         Vector3 offset = new Vector3(0.0f, amountBoxes * -length);
         nextpos = startpos + offset;
@@ -52,7 +54,7 @@ public class NewScale : MonoBehaviour
     }
     public void MoveScaleUp()
     {
-        
+        scaleMoveAudioSource.Play();
         amountBoxes--;
         Vector3 offset = new Vector3(0.0f, amountBoxes * -length);
         nextpos = startpos + offset;
