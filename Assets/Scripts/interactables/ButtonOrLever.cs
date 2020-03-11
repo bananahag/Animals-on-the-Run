@@ -25,16 +25,10 @@ public class ButtonOrLever : MonoBehaviour
     //DELETE THIS WHEN WE HAVE ANIMATIONS
     Color startColor;
 
-
-    void Awake()
-    {
-        swapCharacter = FindObjectOfType<SwapCharacter>();
-
-    }
-
     // Start is called before the first frame update
     void Awake()
     {
+        swapCharacter = FindObjectOfType<SwapCharacter>();
         audioSource = GetComponent<AudioSource>();
         if (GetComponent<Animator>() != null)
         {
