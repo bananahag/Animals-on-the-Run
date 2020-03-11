@@ -2390,7 +2390,8 @@ MonoBehaviour:
   active: 0
   groundedState:
     monkey: {fileID: 1659165703}
-    stepSources: []
+    stepSource: {fileID: 0}
+    stepClips: []
     minVolume: 0.9
     maxVolume: 1.1
     minPitch: 0.9
@@ -2414,7 +2415,8 @@ MonoBehaviour:
     landingTimeMultiplier: 0.015
   climbingState:
     monkey: {fileID: 1659165703}
-    ladderClimbSources: []
+    ladderClimbSource: {fileID: 0}
+    ladderClimbClips: []
     minVolume: 0.9
     maxVolume: 1.1
     minPitch: 0.9
@@ -2546,6 +2548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcd0c03eaae652243bcef6504977e983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openedSprite: {fileID: 0}
   animal: {fileID: 3980038072491159994, guid: a8b57490d463e61448d924de05eaa1ea, type: 3}
   openSFX: {fileID: 0}
   shakeSpeed: 50

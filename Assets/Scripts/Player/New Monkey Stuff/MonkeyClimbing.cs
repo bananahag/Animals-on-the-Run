@@ -6,8 +6,10 @@ using UnityEngine;
 
 public class MonkeyClimbing : MonkeyState
 {
-    [Tooltip("Audio sources that plays when the monkey is climbing.")]
-    public AudioSource[] ladderClimbSources;
+    [Tooltip("Audio source that plays the audio clips.")]
+    public AudioSource ladderClimbSource;
+    [Tooltip("Audio clips that plays when the monkey is climbing.")]
+    public AudioClip[] ladderClimbClips;
     [Tooltip("The minimum and the maximum volume of the climbing sounds.")]
     public float minVolume = 0.9f, maxVolume = 1.1f;
     [Tooltip("The minimum and the maximum pitch of the climbing sounds.")]
@@ -107,12 +109,12 @@ public class MonkeyClimbing : MonkeyState
     {
         if (Input.GetButtonDown("Jump"))
         {
-            if (ladderClimbSources.Length > 0)
+            if (ladderClimbClips.Length > 0)
             {
-                int randomSource = Random.Range(0, ladderClimbSources.Length);
-                ladderClimbSources[randomSource].volume = Random.Range(minVolume, maxVolume);
-                ladderClimbSources[randomSource].pitch = Random.Range(minPitch, maxPitch);
-                ladderClimbSources[randomSource].Play();
+                int randomSource = Random.Range(0, ladderClimbClips.Length);
+                ladderClimbSource.volume = Random.Range(minVolume, maxVolume);
+                ladderClimbSource.pitch = Random.Range(minPitch, maxPitch);
+                ladderClimbSource.PlayOneShot(ladderClimbClips[randomSource]);
             }
             monkey.ChangeState(monkey.jumpsquatState);
             monkey.rb2d.velocity = new Vector2(0.0f, 0.0f);
@@ -161,12 +163,12 @@ public class MonkeyClimbing : MonkeyState
 
         if (monkey.y != 0.0f && canPlayClimbingSoundAgain && !onTopOfTheLadder || monkey.y < 0.0f && canPlayClimbingSoundAgain && onTopOfTheLadder)
         {
-            if (ladderClimbSources.Length > 0)
+            if (ladderClimbClips.Length > 0)
             {
-                int randomSource = Random.Range(0, ladderClimbSources.Length);
-                ladderClimbSources[randomSource].volume = Random.Range(minVolume, maxVolume);
-                ladderClimbSources[randomSource].pitch = Random.Range(minPitch, maxPitch);
-                ladderClimbSources[randomSource].Play();
+                int randomSource = Random.Range(0, ladderClimbClips.Length);
+                ladderClimbSource.volume = Random.Range(minVolume, maxVolume);
+                ladderClimbSource.pitch = Random.Range(minPitch, maxPitch);
+                ladderClimbSource.PlayOneShot(ladderClimbClips[randomSource]);
             }
             timePassed3 = 0.0f;
             canPlayClimbingSoundAgain = false;
@@ -211,12 +213,12 @@ public class MonkeyClimbing : MonkeyState
             {
                 if (monkey.y != 0.0f && !onTopOfTheLadder || onTopOfTheLadder && monkey.y < 0.0f)
                 {
-                    if (ladderClimbSources.Length > 0)
+                    if (ladderClimbClips.Length > 0)
                     {
-                        int randomSource = Random.Range(0, ladderClimbSources.Length);
-                        ladderClimbSources[randomSource].volume = Random.Range(minVolume, maxVolume);
-                        ladderClimbSources[randomSource].pitch = Random.Range(minPitch, maxPitch);
-                        ladderClimbSources[randomSource].Play();
+                        int randomSource = Random.Range(0, ladderClimbClips.Length);
+                        ladderClimbSource.volume = Random.Range(minVolume, maxVolume);
+                        ladderClimbSource.pitch = Random.Range(minPitch, maxPitch);
+                        ladderClimbSource.PlayOneShot(ladderClimbClips[randomSource]);
                     }
                     timePassed3 = 0.0f;
                 }

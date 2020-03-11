@@ -7,6 +7,9 @@ public class Key : MonoBehaviour
     [Tooltip("The door the key opens.")]
     public GameObject lockedDoor;
 
+    [Tooltip("Game object with the sound effect that spawns when they key is collected.")]
+    public GameObject keySoundEffect;
+
     public enum KeyColor { Orange, Purple }
     [Tooltip("Determines the color of they key and what kind of key gets added to the UI.")]
     public KeyColor keyColor;
@@ -28,6 +31,8 @@ public class Key : MonoBehaviour
                 FindObjectOfType<KeyUI>().ViewOrangeKey(true);
             else
                 FindObjectOfType<KeyUI>().ViewPurpleKey(true);
+            if (keySoundEffect != null)
+                Instantiate(keySoundEffect, transform.position, transform.rotation);
             Destroy(gameObject);
         }
     }

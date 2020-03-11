@@ -816,9 +816,8 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -12.258331, y: 0.20083809}
-  - {x: 12.56839, y: 0.23018265}
-  - {x: 0.5, y: 0}
+  - {x: -11.853241, y: 0.13336372}
+  - {x: 12.314911, y: 0.13494492}
 --- !u!251 &159210952
 PlatformEffector2D:
   m_ObjectHideFlags: 0
@@ -5936,9 +5935,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31969751a8e0ae848b9fe06814e7b66e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  squishedSFX: {fileID: 0}
-  mysterySFX: {fileID: 0}
-  growSFX: {fileID: 0}
+  squishedSource: {fileID: 0}
+  mysterySource: {fileID: 0}
+  growSource: {fileID: 0}
+  elevatorMoveSource: {fileID: 0}
+  startSource: {fileID: 0}
+  stopSource: {fileID: 0}
   startPosition: {fileID: 1288874471}
   targetPosition: {fileID: 1498978067}
   travelTime: 2
@@ -6574,6 +6576,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8447285252916369295, guid: d7fea603650a4444ba584e1e8ac3db87,
+        type: 3}
+      propertyPath: openedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7a580e434564f134c96ae7d3c0a114d0,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7fea603650a4444ba584e1e8ac3db87, type: 3}
 --- !u!1 &1288874470
@@ -24696,6 +24704,7 @@ Transform:
   m_Children:
   - {fileID: 1590796637}
   - {fileID: 159210950}
+  - {fileID: 2031627823}
   m_Father: {fileID: 1368078128}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -25384,6 +25393,7 @@ MonoBehaviour:
   elevator: {fileID: 1901946311}
   bridge: {fileID: 0}
   activated: 0
+  needsElectricity: 0
 --- !u!1001 &1468062951
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26776,9 +26786,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31969751a8e0ae848b9fe06814e7b66e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  squishedSFX: {fileID: 0}
-  mysterySFX: {fileID: 0}
-  growSFX: {fileID: 0}
+  squishedSource: {fileID: 0}
+  mysterySource: {fileID: 0}
+  growSource: {fileID: 0}
+  elevatorMoveSource: {fileID: 0}
+  startSource: {fileID: 0}
+  stopSource: {fileID: 0}
   startPosition: {fileID: 1030937644}
   targetPosition: {fileID: 1332625212}
   travelTime: 2
@@ -27613,9 +27626,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31969751a8e0ae848b9fe06814e7b66e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  squishedSFX: {fileID: 0}
-  mysterySFX: {fileID: 0}
-  growSFX: {fileID: 0}
+  squishedSource: {fileID: 0}
+  mysterySource: {fileID: 0}
+  growSource: {fileID: 0}
+  elevatorMoveSource: {fileID: 0}
+  startSource: {fileID: 0}
+  stopSource: {fileID: 0}
   startPosition: {fileID: 1778518104}
   targetPosition: {fileID: 1763450158}
   travelTime: 2
@@ -27760,6 +27776,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4708210768440719736, guid: b1f6e19e0adce6f418a1dc16c60d0576,
+        type: 3}
+      propertyPath: openedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7a580e434564f134c96ae7d3c0a114d0,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1f6e19e0adce6f418a1dc16c60d0576, type: 3}
 --- !u!1 &1932019149
@@ -28207,6 +28229,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2031627822
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2031627823}
+  - component: {fileID: 2031627824}
+  m_Layer: 8
+  m_Name: 3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2031627823
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031627822}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1420280520}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!68 &2031627824
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031627822}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: 344.46768, y: -24.915169}
+  - {x: 344.3348, y: -37.90452}
 --- !u!1 &2034532821
 GameObject:
   m_ObjectHideFlags: 0

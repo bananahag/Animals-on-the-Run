@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MovableObject : MonoBehaviour
 {
+    [Tooltip("Audio source that plays when the box object lands on the ground.")]
+    public AudioSource landSource;
+
     [HideInInspector]
     public bool beingMoved;
     [HideInInspector]
@@ -115,6 +118,8 @@ public class MovableObject : MonoBehaviour
 
         if (hitGround.collider != null || hitGroundLeft.collider != null || hitGroundRight.collider != null)
         {
+            if (!grounded && landSource != null)
+                landSource.Play();
             grounded = true;
         }
         else

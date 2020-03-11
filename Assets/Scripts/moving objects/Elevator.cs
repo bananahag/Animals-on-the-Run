@@ -43,6 +43,8 @@ public class Elevator : MonoBehaviour
     GameObject monkey, dog, eel;
     GameObject lever = null;
 
+    public bool highlighted;
+
     Rigidbody2D rb2d;
     BoxCollider2D bc2d;
 

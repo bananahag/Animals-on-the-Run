@@ -11,6 +11,8 @@ public class DogPushingState : DogState
     [HideInInspector]
     public bool boxGrounded;
 
+    bool canPlayPushSource;
+
 
     [Tooltip("The walking speed of the dog while pushing or pulling a movable object.")]
     public float pushingSpeed = 3.0f;
@@ -22,6 +24,8 @@ public class DogPushingState : DogState
 
     public override void Enter()
     {
+        pushSource.loop = true;
+        canPlayPushSource = true;
         dog.affectedObject.GetComponent<FixedJoint2D>().connectedBody = dog.rb2d;
         dog.affectedObject.GetComponent<FixedJoint2D>().enabled = true;
         dog.affectedObject.GetComponent<MovableObject>().beingMoved = true;
@@ -46,6 +50,8 @@ public class DogPushingState : DogState
 
     public override void Exit()
     {
+        pushSource.Stop();
+        canPlayPushSource = true;
         dog.movingObject = false;
         Debug.Log("Exit pushing");
         dog.affectedObject.GetComponent<MovableObject>().beingMoved = false;
@@ -70,7 +76,14 @@ public class DogPushingState : DogState
         {
             if (dog.x != 0)
             {
-                pushSource.Play();
+                if (canPlayPushSource)
+                    pushSource.Play();
+                canPlayPushSource = false;
+            }
+            else
+            {
+                pushSource.Stop();
+                canPlayPushSource = true;
             }
 
             if (dropBox)
