@@ -4,7 +4,18 @@ using UnityEngine;
 
 public class Cage : MonoBehaviour
 {
-    AudioSource audioSource;
+    [Tooltip("Audio source that plays when the cage opens.")]
+    public AudioSource openSource;
+    [Tooltip("Audio source that plays the audio clips.")]
+    public AudioSource tweetSource;
+    [Tooltip("Audio clips that plays when the bird inside the cage makes a tweet sound.")]
+    public AudioClip[] tweetClips;
+    [Tooltip("The minimum and the maximum time (in seconds) between the tweet sounds.")]
+    public float minTime = 1.0f, maxTime = 5.0f;
+    [Tooltip("The minimum and the maximum volume of the tweet sounds.")]
+    public float minVolume = 1.0f, maxVolume = 1.0f;
+    [Tooltip("The minimum and the maximum pitch of the tweet sounds.")]
+    public float minPitch = 1.0f, maxPitch = 1.0f;
 
     MenyUI menyUI;
     public Sprite openedSprite;
@@ -21,8 +32,8 @@ public class Cage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         menyUI = FindObjectOfType<MenyUI>().GetComponent<MenyUI>();
+        StartCoroutine(TweetSound());
     }
 
     // Update is called once per frame
@@ -44,7 +55,7 @@ public class Cage : MonoBehaviour
             {
                 menyUI.AddScoreCount();
             }
-            //audioSource.PlayOneShot(openSFX);
+            openSource.Play();
             GetComponent<SpriteRenderer>().sprite = openedSprite;
             Instantiate(animal, transform.position, transform.rotation);
             StartCoroutine(Shake());
@@ -58,5 +69,21 @@ public class Cage : MonoBehaviour
         yield return new WaitForSeconds(shakeDuration);
         shaking = false;
         transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+    }
+
+    IEnumerator TweetSound()
+    {
+        if (tweetClips.Length > 0)
+        {
+            int randomClip = Random.Range(0, tweetClips.Length);
+            tweetSource.volume = Random.Range(minVolume, maxVolume);
+            tweetSource.pitch = Random.Range(minPitch, maxPitch);
+            tweetSource.clip = tweetClips[randomClip];
+            tweetSource.Play();
+        }
+        float waitTime = Random.Range(minTime, maxTime);
+        yield return new WaitForSeconds(waitTime);
+        if (!opened)
+            StartCoroutine(TweetSound());
     }
 }
