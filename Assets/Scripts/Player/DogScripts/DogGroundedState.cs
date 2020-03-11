@@ -112,8 +112,14 @@ public class DogGroundedState : DogState
 
         if (Input.GetButtonDown("Interact") && dog.closeToHuman) //Om både människa och låda går att interagera med prioriteras lådan
         {
-           
+
             dog.ChangeState(dog.charmingState);
+        }
+        else if (Input.GetButtonDown("Interact") && dog.closeToRope) //Om både människa och rep går att interagera med prioriteras människan (lådan är fortfarande högsta prio)
+        {
+            dog.pullingRope = true;
+            dog.ChangeState(dog.pushingState);
+            dog.rope.GetComponent<StallRope>().dogIsPulling = true;
         }
     }
 

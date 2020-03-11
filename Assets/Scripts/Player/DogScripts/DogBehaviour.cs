@@ -67,7 +67,7 @@ public class DogBehaviour : MonoBehaviour
     [HideInInspector]
     public GameObject affectedObject;
     [HideInInspector]
-    public GameObject human;
+    public GameObject human, rope;
     [HideInInspector]
     public bool levelCompleted = false;
 
@@ -197,7 +197,10 @@ public class DogBehaviour : MonoBehaviour
             swimming = true;
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("Rope"))
+        {
             closeToRope = true;
+            rope = other.gameObject;
+        }
         currentState.OnTriggerEnter2D(other);
     }
 
