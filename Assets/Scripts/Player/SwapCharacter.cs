@@ -218,7 +218,6 @@ public class SwapCharacter : MonoBehaviour
         isHighlighting = true;
         yield return new WaitForSecondsRealtime(5f);
         isHighlighting = false;
-        SelectedChar = (int)ActiveCharacter.Monkey;
         highlightedObject = null;
         isElevator = false;
         isBridge = false;
