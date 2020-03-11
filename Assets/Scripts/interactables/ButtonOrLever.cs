@@ -15,6 +15,8 @@ public class ButtonOrLever : MonoBehaviour
     [HideInInspector]
     public bool activated, needsElectricity;
 
+
+
     SwapCharacter swapCharacter;
 
     AudioSource audioSource;
@@ -26,15 +28,10 @@ public class ButtonOrLever : MonoBehaviour
     Color startColor;
 
 
-    void Awake()
-    {
-        swapCharacter = FindObjectOfType<SwapCharacter>();
-
-    }
-
     // Start is called before the first frame update
     void Awake()
     {
+        swapCharacter = FindObjectOfType<SwapCharacter>();
         audioSource = GetComponent<AudioSource>();
         if (GetComponent<Animator>() != null)
         {
@@ -62,6 +59,7 @@ public class ButtonOrLever : MonoBehaviour
                     if(swapCharacter != null)
                     {
                         swapCharacter.highlightedObject = elevator.gameObject;
+                        swapCharacter.isElevator = true;
                     }
                     elevator.GetComponent<Elevator>().Activate(false, gameObject);
                 }
@@ -71,6 +69,7 @@ public class ButtonOrLever : MonoBehaviour
                     if (swapCharacter != null)
                     {
                         swapCharacter.highlightedObject = bridge.gameObject;
+                        swapCharacter.isBridge = true;
                     }
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
                 }
@@ -89,6 +88,7 @@ public class ButtonOrLever : MonoBehaviour
                     if (swapCharacter != null)
                     {
                         swapCharacter.highlightedObject = elevator.gameObject;
+                        swapCharacter.isElevator = true;
                     }
                     elevator.GetComponent<Elevator>().Activate(true, gameObject);
                 }
@@ -98,6 +98,7 @@ public class ButtonOrLever : MonoBehaviour
                     if (swapCharacter != null)
                     {
                         swapCharacter.highlightedObject = bridge.gameObject;
+                        swapCharacter.isBridge = true;
                     }
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
                 }

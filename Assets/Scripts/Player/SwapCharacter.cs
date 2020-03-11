@@ -12,16 +12,21 @@ public class SwapCharacter : MonoBehaviour
     private MonkeyBehavior mMonkey;
     private DogBehaviour mDog;
     private Eel mEel;
-    [HideInInspector]
+    //[HideInInspector]
     public GameObject highlightedObject;
     [HideInInspector]
     public bool isHighlighting;
-
-    bool hasBeenHighlighted;
+    [HideInInspector]
+    public bool isElevator;
+    [HideInInspector]
+    public bool isBridge;
+    [HideInInspector]
+    public bool hasBeenActivated = false;
 
     public int SelectedChar;
     private Camera cam;
     Vector3 oldCameraPos;
+
 
     public float cameraTravelTime = 1.0f;
     public float objectTravelTimeMultiplier = 0.5f;
@@ -49,21 +54,31 @@ public class SwapCharacter : MonoBehaviour
     }
     void Start()
     {
-        SelectedChar = 0;
-        
+        SelectedChar = 0;   
         cam = Camera.main;
         mMeny = FindObjectOfType<MenyUI>().GetComponent<MenyUI>();
-
-        
         oldCameraPos = cam.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(highlightedObject != null && !hasBeenHighlighted)
+        if(highlightedObject != null)
         {
-            isHighlighting = true;
+            if (isBridge)
+            {
+                if (!highlightedObject.GetComponent<BridgeWheelmovement>().highlighted)
+                {
+                    isHighlighting = true;
+                }
+            }
+            else if (isElevator)
+            {
+                if (!highlightedObject.GetComponent<Elevator>().highlighted)
+                {
+                    isHighlighting = true;
+                }
+            }
         }
 
         if (!isHighlighting)
@@ -81,7 +96,6 @@ public class SwapCharacter : MonoBehaviour
                 {
                     SelectedChar = 0;
                 }
-
                 if (SelectedChar == (int)ActiveCharacter.Dog)
                 {
                     characters[0].GetComponent<Rigidbody2D>().velocity = new Vector3(0, characters[0].GetComponent<Rigidbody2D>().velocity.y, 0);
@@ -172,18 +186,13 @@ public class SwapCharacter : MonoBehaviour
                 {
                     cam.transform.position = new Vector3(highlightedObject.transform.position.x, highlightedObject.transform.position.y, cam.transform.position.z);
                 }
-                hasBeenHighlighted = true;
                 StartCoroutine(HighlightTheObject());
-
             }
             else
-            {
-                
+            { 
                 SelectedChar = (int)ActiveCharacter.Monkey;
                 highlightedObject = null;
-
             }
-
         }
 
         if (mMonkey.monkeyLevelComplete && mDog.levelCompleted)
@@ -198,13 +207,21 @@ public class SwapCharacter : MonoBehaviour
 
     IEnumerator HighlightTheObject()
     {
-
-        hasBeenHighlighted = true;
+        if (isElevator)
+        {
+            highlightedObject.GetComponent<Elevator>().highlighted = true;
+        }
+        if (isBridge)
+        {
+            highlightedObject.GetComponent<BridgeWheelmovement>().highlighted = true;
+        }
         isHighlighting = true;
         yield return new WaitForSecondsRealtime(5f);
         isHighlighting = false;
         SelectedChar = (int)ActiveCharacter.Monkey;
         highlightedObject = null;
+        isElevator = false;
+        isBridge = false;
     }
 
     void MoveCamera()
