@@ -15,6 +15,8 @@ public class ButtonOrLever : MonoBehaviour
     [HideInInspector]
     public bool activated;
 
+    SwapCharacter swapCharacter;
+
     AudioSource audioSource;
     Animator animator;
 
@@ -22,6 +24,13 @@ public class ButtonOrLever : MonoBehaviour
 
     //DELETE THIS WHEN WE HAVE ANIMATIONS
     Color startColor;
+
+
+    void Awake()
+    {
+        swapCharacter = FindObjectOfType<SwapCharacter>();
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +45,8 @@ public class ButtonOrLever : MonoBehaviour
             noAnimator = true;
 
         startColor = GetComponent<SpriteRenderer>().color;
+
+        
     }
 
     // Update is called once per frame
@@ -53,9 +64,23 @@ public class ButtonOrLever : MonoBehaviour
             {
                 activated = false;
                 if (elevator != null)
+                {
+                    if(swapCharacter != null)
+                    {
+                        swapCharacter.highlightedObject = elevator.gameObject;
+                    }
                     elevator.GetComponent<Elevator>().Activate(false, gameObject);
+                }
+
                 if (bridge != null)
+                {
+                    if (swapCharacter != null)
+                    {
+                        swapCharacter.highlightedObject = bridge.gameObject;
+                    }
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
+                }
+
                 if (noAnimator)
                     GetComponent<SpriteRenderer>().color = startColor;
                 else
@@ -66,9 +91,23 @@ public class ButtonOrLever : MonoBehaviour
             {
                 activated = true;
                 if(elevator != null)
+                {
+                    if (swapCharacter != null)
+                    {
+                        swapCharacter.highlightedObject = elevator.gameObject;
+                    }
                     elevator.GetComponent<Elevator>().Activate(true, gameObject);
+                }
+
                 if (bridge != null)
+                {
+                    if (swapCharacter != null)
+                    {
+                        swapCharacter.highlightedObject = bridge.gameObject;
+                    }
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
+                }
+
                 if (noAnimator)
                     GetComponent<SpriteRenderer>().color = Color.yellow;
                 else
