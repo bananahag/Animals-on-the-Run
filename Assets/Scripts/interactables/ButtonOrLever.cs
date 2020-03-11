@@ -15,6 +15,8 @@ public class ButtonOrLever : MonoBehaviour
     [HideInInspector]
     public bool activated, needsElectricity;
 
+
+
     SwapCharacter swapCharacter;
 
     AudioSource audioSource;
@@ -56,6 +58,7 @@ public class ButtonOrLever : MonoBehaviour
                     if(swapCharacter != null)
                     {
                         swapCharacter.highlightedObject = elevator.gameObject;
+                        swapCharacter.isElevator = true;
                     }
                     elevator.GetComponent<Elevator>().Activate(false, gameObject);
                 }
@@ -65,6 +68,7 @@ public class ButtonOrLever : MonoBehaviour
                     if (swapCharacter != null)
                     {
                         swapCharacter.highlightedObject = bridge.gameObject;
+                        swapCharacter.isBridge = true;
                     }
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
                 }
@@ -83,6 +87,7 @@ public class ButtonOrLever : MonoBehaviour
                     if (swapCharacter != null)
                     {
                         swapCharacter.highlightedObject = elevator.gameObject;
+                        swapCharacter.isElevator = true;
                     }
                     elevator.GetComponent<Elevator>().Activate(true, gameObject);
                 }
@@ -92,6 +97,7 @@ public class ButtonOrLever : MonoBehaviour
                     if (swapCharacter != null)
                     {
                         swapCharacter.highlightedObject = bridge.gameObject;
+                        swapCharacter.isBridge = true;
                     }
                     bridge.GetComponent<BridgeWheelmovement>().DraiSpakenKronk();
                 }
