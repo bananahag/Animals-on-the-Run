@@ -5,6 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class DogCharmingState : DogState
 {
+    [Tooltip("Audio source that plays and loops while the dog is charming.")]
+    public AudioSource charmingSource;
+
     public override void OnValidate(DogBehaviour dog)
     {
         this.dog = dog;
@@ -12,6 +15,8 @@ public class DogCharmingState : DogState
 
     public override void Enter()
     {
+        charmingSource.loop = true;
+        charmingSource.Play();
         dog.charmingHuman = true;
         if (dog.wet)
         {
@@ -30,7 +35,7 @@ public class DogCharmingState : DogState
 
     public override void Exit()
     {
-        
+        charmingSource.Stop();
         dog.human.GetComponent<Human>().charmed = false;
     }
 

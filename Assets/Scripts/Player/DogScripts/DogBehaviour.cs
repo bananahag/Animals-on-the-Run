@@ -60,6 +60,8 @@ public class DogBehaviour : MonoBehaviour
     public bool pushSideIsLeft;
     [HideInInspector]
     public bool landing;
+    [HideInInspector]
+    public bool closeToRope, pullingRope;
 
 
     [HideInInspector]
@@ -194,11 +196,15 @@ public class DogBehaviour : MonoBehaviour
         {
             swimming = true;
         }
+        if (other.gameObject.layer == LayerMask.NameToLayer("Rope"))
+            closeToRope = true;
         currentState.OnTriggerEnter2D(other);
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Rope"))
+            closeToRope = false;
         currentState.OnTriggerExit2D(other);
     }
 
