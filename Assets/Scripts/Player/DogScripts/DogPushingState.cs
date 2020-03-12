@@ -29,7 +29,10 @@ public class DogPushingState : DogState
     {
         startPosX = dog.transform.position.x;
         pushSource.loop = true;
-        pullRopeSource.loop = true;
+        if(pullRopeSource != null)
+        {
+            pullRopeSource.loop = true;
+        }
         canPlayPushSource = true;
         if (!dog.pullingRope)
         {
@@ -50,6 +53,10 @@ public class DogPushingState : DogState
     }
     public override void Update()
     {
+        if (dog.pullingRope)
+        {
+            Debug.Log("pulling rope");
+        }
         CheckInput();
         PlayAnimations();
 
@@ -66,7 +73,10 @@ public class DogPushingState : DogState
     public override void Exit()
     {
         pushSource.Stop();
-        pullRopeSource.Stop();
+        if (pullRopeSource != null)
+        {
+            pullRopeSource.Stop();
+        }
         canPlayPushSource = true;
         if (!dog.pullingRope)
             dog.affectedObject.GetComponent<MovableObject>().beingMoved = false;
