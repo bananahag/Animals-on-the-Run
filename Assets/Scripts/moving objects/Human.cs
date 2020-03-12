@@ -13,7 +13,7 @@ public class Human : MonoBehaviour
     public bool charmed;
     public bool scared;
     private Rigidbody2D rb;
-    BoxCollider2D box;
+    public BoxCollider2D box;
     private Animator an;
     private SpriteRenderer sr;
     [Tooltip("Distance human will walk right")]
@@ -31,14 +31,18 @@ public class Human : MonoBehaviour
     bool turn;
 
 
-
+    private void Awake()
+    {
+        box = transform.Find("HumanCollider").GetComponent<BoxCollider2D>();
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        box = GetComponentInChildren<BoxCollider2D>();
+        
         an = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         charmed = false;
+        scared = false;
         distanceLeft = new Vector3(-maxDistanceLeft, 0, 0) + transform.position;
         distanceRight = new Vector3(maxDistanceRight, 0, 0) + transform.position;
         oldpos = transform.position;
@@ -102,25 +106,22 @@ public class Human : MonoBehaviour
 
     void Update()
     {
-        if (charmed)
+        if (charmed || scared)
         {
-            moving = false;
+            rb.isKinematic = true;
             box.enabled = false;
-            an.Play("HumanScared");
-
-        }
-        else if (scared)
-        {
             moving = false;
-            an.Play("HumanIdle");
+            an.Play("HumanScared");
+            
         }
-        else
+        else if (!charmed || !scared)
         {
-            box.enabled = true;
+            rb.isKinematic = false; 
             moving = true;
-
+            
         }
-         if (turn && !charmed && !scared)
+        print(scared);
+         if (turn && (!charmed || !scared))
         {
             an.Play("HumanIdle");
         }
@@ -138,5 +139,22 @@ public class Human : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawLine(new Vector3(-maxDistanceLeft, 0, 0) + gizmopos, new Vector3(maxDistanceRight, 0, 0) + gizmopos);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Monkey")
+        {
+            scared = true;
+            
+            
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Monkey")
+        {
+            scared = false;
+            
+        }
     }
 }
