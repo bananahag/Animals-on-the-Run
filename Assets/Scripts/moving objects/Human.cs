@@ -29,6 +29,7 @@ public class Human : MonoBehaviour
     public Vector2 RandomAmountStoppTime;
     private float timer;
     bool turn;
+   
 
 
     private void Awake()
@@ -55,6 +56,7 @@ public class Human : MonoBehaviour
          {
             if (movingLeft)
             {
+                sr.flipX = false;
                 fraction += Time.deltaTime / travelTime;
                 rb.MovePosition(Vector2.Lerp(oldpos, distanceLeft, fraction));
                 if (transform.position.x == distanceLeft.x)
@@ -64,11 +66,11 @@ public class Human : MonoBehaviour
                     timer += Time.deltaTime;
                     if (timer > stoppTime && !charmed && !scared)
                     {
-                        print("moving right");
+                        
                         fraction = 0;
                         oldpos = transform.position;
                         movingLeft = !movingLeft;
-                        sr.flipX = true;
+                        
                         turn = false;
                         timer = 0;
                     }
@@ -78,6 +80,7 @@ public class Human : MonoBehaviour
             }
             else 
             {
+                sr.flipX = true;
                 fraction += Time.deltaTime / travelTime;
                 rb.MovePosition(Vector2.Lerp(oldpos, distanceRight, fraction));
                 if (transform.position.x == distanceRight.x)
@@ -87,18 +90,18 @@ public class Human : MonoBehaviour
                     timer += Time.deltaTime;
                     if (timer > stoppTime && !charmed && !scared)
                     {
-                        print("moving left");
+                        
                         fraction = 0;
                         oldpos = transform.position;
                         movingLeft = !movingLeft;
-                        sr.flipX = false;
+                        
                         turn = false;
                         timer = 0;
                     }
                    
                 }
             }
-
+          
          }
 
        
@@ -106,13 +109,24 @@ public class Human : MonoBehaviour
 
     void Update()
     {
-        if (charmed || scared)
+
+
+        
+        if (charmed)
         {
             rb.isKinematic = true;
             box.enabled = false;
             moving = false;
             an.Play("HumanScared");
             
+            
+        }
+        else if (scared)
+        {
+            rb.isKinematic = true;
+            box.enabled = false;
+            moving = false;
+            an.Play("HumanScared");
         }
         else if (!charmed || !scared)
         {
@@ -120,10 +134,11 @@ public class Human : MonoBehaviour
             moving = true;
             
         }
-        print(scared);
-         if (turn && (!charmed || !scared))
+        
+         if (turn && (!charmed && !scared))
         {
             an.Play("HumanIdle");
+            
         }
         else if (moving)
         {
@@ -144,9 +159,15 @@ public class Human : MonoBehaviour
     {
         if (collision.gameObject.tag == "Monkey")
         {
+            if (collision.gameObject.transform.position.x > transform.position.x)
+            {
+                sr.flipX = true;
+            }
+            else
+            {
+                sr.flipX = false;
+            }
             scared = true;
-            
-            
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

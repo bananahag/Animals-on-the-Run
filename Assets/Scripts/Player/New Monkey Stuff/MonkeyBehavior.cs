@@ -169,7 +169,6 @@ public class MonkeyBehavior : MonoBehaviour
             if (other.gameObject.layer == LayerMask.NameToLayer("Human") && other.gameObject.GetComponent<Human>().charmed) { }
             else
             {
-                Debug.Log("am here " + other.gameObject.name);
                 scaryObject = other.gameObject;
                 scaredCheck = false;
                 ChangeState(scaredState);
