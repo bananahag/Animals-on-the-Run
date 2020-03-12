@@ -27,7 +27,8 @@ public class BridgeWheelmovement : MonoBehaviour
     float accelerationtimer;
     float fraction;
     public AudioSource bridgeSoundSource;
-   
+
+    public bool highlighted;
    
     
     void Start()

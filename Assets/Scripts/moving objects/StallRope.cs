@@ -13,8 +13,12 @@ public class StallRope : MonoBehaviour
 
     Animator animator;
 
-    Vector2 startPos, targetPos;
-    bool stallIsActivated, dogIsPulling;
+    [HideInInspector]
+    public Vector2 startPos, targetPos;
+    bool stallIsActivated;
+
+    [HideInInspector]
+    public bool dogIsPulling;
 
     float fraction, timePassed;
 

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Stall : MonoBehaviour
 {
-    [Tooltip("The audio source that plays when the stall opens or closes.")]
-    public AudioSource stallSource;
+    [Tooltip("The audio sources that plays when the stall opens or closes.")]
+    public AudioSource stallOpenSource, stallCloseSource;
 
     public enum StallColor {Blue, Green, Purple, Lime, Pink}
     public StallColor stallColor;
@@ -62,6 +62,7 @@ public class Stall : MonoBehaviour
                     animator.Play("Pink Stall Opening");
                     break;
             }
+            stallOpenSource.Play();
         }
         else
         {
@@ -83,8 +84,8 @@ public class Stall : MonoBehaviour
                     animator.Play("Pink Stall Closing");
                     break;
             }
+            stallCloseSource.Play();
         }
-        stallSource.Play();
         boxCol2D.enabled = active;
     }
 }

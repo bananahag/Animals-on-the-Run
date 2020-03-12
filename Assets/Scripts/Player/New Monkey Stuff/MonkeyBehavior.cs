@@ -160,8 +160,12 @@ public class MonkeyBehavior : MonoBehaviour
             lever = other.gameObject;
         }
 
-        if (other.gameObject.layer == LayerMask.NameToLayer("Human") || other.gameObject.layer == LayerMask.NameToLayer("AboveWater"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Human") || other.gameObject.layer == LayerMask.NameToLayer("AboveWater") || other.gameObject.layer == LayerMask.NameToLayer("Thorns"))
         {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Thorns") && currentState != groundedState)
+                runAwayScared = true;
+            else
+                runAwayScared = false;
             if (other.gameObject.layer == LayerMask.NameToLayer("AboveWater"))
                 runAwayScared = true;
             else
@@ -169,7 +173,6 @@ public class MonkeyBehavior : MonoBehaviour
             if (other.gameObject.layer == LayerMask.NameToLayer("Human") && other.gameObject.GetComponent<Human>().charmed) { }
             else
             {
-                Debug.Log("am here " + other.gameObject.name);
                 scaryObject = other.gameObject;
                 scaredCheck = false;
                 ChangeState(scaredState);
