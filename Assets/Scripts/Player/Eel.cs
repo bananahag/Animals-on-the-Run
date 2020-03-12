@@ -39,7 +39,7 @@ public class Eel : MonoBehaviour
     [HideInInspector]
     public bool levelComplete = false;
 
-
+    bool canPlayLightSource;
     float targetLightScaleX, targetLightScaleY;
     float currentScaleX, currentScaleY;
 
@@ -55,6 +55,7 @@ public class Eel : MonoBehaviour
 
         LightObj.transform.localScale = new Vector2(0.0f, 0.0f);
 
+        canPlayLightSource = true;
         lightSource.loop = true;
 
         animator = GetComponent<Animator>();
@@ -115,9 +116,18 @@ public class Eel : MonoBehaviour
         }
 
         if (lightIsActive)
-            lightSource.Play();
+        {
+            if (canPlayLightSource)
+            {
+                lightSource.Play();
+                canPlayLightSource = false;
+            }
+        }
         else
+        {
             lightSource.Stop();
+            canPlayLightSource = true;
+        }
     }
 
     void EelAnimations()
