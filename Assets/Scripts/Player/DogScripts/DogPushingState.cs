@@ -6,6 +6,7 @@ using UnityEngine;
 public class DogPushingState : DogState
 {
     public AudioSource pushSource;
+    public AudioSource pullRopeSource;
     [HideInInspector]
     public bool dropBox;
     [HideInInspector]
@@ -13,7 +14,7 @@ public class DogPushingState : DogState
 
     bool canPlayPushSource;
 
-    float startPosX;
+    float startPosX, dragDistance, pushDistance;//All of these are related to the rope pulling
 
 
     [Tooltip("The walking speed of the dog while pushing or pulling a movable object.")]
@@ -28,6 +29,7 @@ public class DogPushingState : DogState
     {
         startPosX = dog.transform.position.x;
         pushSource.loop = true;
+        pullRopeSource.loop = true;
         canPlayPushSource = true;
         if (!dog.pullingRope)
         {
@@ -36,7 +38,11 @@ public class DogPushingState : DogState
             dog.affectedObject.GetComponent<MovableObject>().beingMoved = true;
         }
         else
+        {
             dog.rope.transform.SetParent(dog.transform);
+            dragDistance = Mathf.Abs(dog.rope.GetComponent<StallRope>().transform.position.x - dog.rope.GetComponent<StallRope>().targetPos.x);
+            pushDistance = dog.rope.GetComponent<StallRope>().dragDistance - dragDistance;
+        }
 
 
         dog.movingObject = true;
@@ -60,6 +66,7 @@ public class DogPushingState : DogState
     public override void Exit()
     {
         pushSource.Stop();
+        pullRopeSource.Stop();
         canPlayPushSource = true;
         if (!dog.pullingRope)
             dog.affectedObject.GetComponent<MovableObject>().beingMoved = false;
@@ -92,9 +99,15 @@ public class DogPushingState : DogState
 
     public override void FixedUpdate()
     {
-        if (dog.pullingRope && dog.transform.position.x <= (startPosX - dog.rope.GetComponent<StallRope>().dragDistance) && dog.x < 0.0f)
+        if (dog.pullingRope && dog.transform.position.x <= (startPosX - dragDistance) && dog.x < 0.0f)
         {
-            dog.transform.position = new Vector3(startPosX - dog.rope.GetComponent<StallRope>().dragDistance, dog.transform.position.y, dog.transform.position.z);
+            dog.transform.position = new Vector3(startPosX - dragDistance, dog.transform.position.y, dog.transform.position.z);
+            dog.movement = new Vector2(0.0f, dog.rb2d.velocity.y);
+        }
+        else if (dog.pullingRope && dog.transform.position.x >= (pushDistance + startPosX) && dog.x > 0.0f)
+        {
+            pullRopeSource.Stop();
+            dog.transform.position = new Vector3(startPosX + pushDistance, dog.transform.position.y, dog.transform.position.z);
             dog.movement = new Vector2(0.0f, dog.rb2d.velocity.y);
         }
         else
@@ -127,6 +140,23 @@ public class DogPushingState : DogState
                 }
             }
         }
+
+        if (dog.pullingRope)
+        {
+            if (!pullRopeSource.isPlaying && dog.x < 0.0f)
+                canPlayPushSource = true;
+            if (dog.x != 0)
+            {
+                if (canPlayPushSource)
+                    pullRopeSource.Play();
+                canPlayPushSource = false;
+            }
+            else
+            {
+                pullRopeSource.Stop();
+                canPlayPushSource = true;
+            }
+        }
     }
 
     public void PlayAnimations()
@@ -135,7 +165,7 @@ public class DogPushingState : DogState
         {
             if (dog.x < 0)
             {
-                //dog.animator.Play("DogPulling");
+                dog.animator.Play("DogPulling");
             }
             else if (dog.x > 0)
             {
