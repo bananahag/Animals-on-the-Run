@@ -349,7 +349,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -952,6 +952,9 @@ MonoBehaviour:
   - {fileID: 1722904785}
   highlightedObject: {fileID: 0}
   isHighlighting: 0
+  isElevator: 0
+  isBridge: 0
+  hasBeenActivated: 0
   SelectedChar: 0
   cameraTravelTime: 0.1
   objectTravelTimeMultiplier: 0.3
@@ -1121,9 +1124,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31969751a8e0ae848b9fe06814e7b66e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  squishedSFX: {fileID: 8300000, guid: b4502ea3bca13ed459feaffa3d68a7d2, type: 3}
-  mysterySFX: {fileID: 8300000, guid: f50a5077293ff1f4e94e69800ebfb807, type: 3}
-  growSFX: {fileID: 8300000, guid: 444df984aed2982438f5ea8f7915d6f4, type: 3}
+  squishedSource: {fileID: 0}
+  mysterySource: {fileID: 0}
+  growSource: {fileID: 0}
+  elevatorMoveSource: {fileID: 0}
+  startSource: {fileID: 0}
+  stopSource: {fileID: 0}
   startPosition: {fileID: 214027086}
   targetPosition: {fileID: 20336885}
   travelTime: 2
@@ -1131,6 +1137,7 @@ MonoBehaviour:
   looping: 0
   stayTime: 1
   active: 0
+  highlighted: 0
 --- !u!61 &1503437422
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1477,6 +1484,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812108162554148371, guid: a936ea6c5c6e5ec43a014e9754e8b92e,
+        type: 3}
+      propertyPath: groundedState.walkingSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812108162554148371, guid: a936ea6c5c6e5ec43a014e9754e8b92e,
+        type: 3}
+      propertyPath: groundedState.walkingSpeedWhenCarryingBucket
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812108162554148371, guid: a936ea6c5c6e5ec43a014e9754e8b92e,
+        type: 3}
+      propertyPath: inAirState.airSpeed
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a936ea6c5c6e5ec43a014e9754e8b92e, type: 3}
