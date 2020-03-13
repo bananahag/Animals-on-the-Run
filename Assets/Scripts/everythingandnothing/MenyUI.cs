@@ -2,14 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class MenyUI : MonoBehaviour
 {
     public GameObject pauseMeny;
-    private int maxScore = 10;
+    public Text scoreText;
+    [Tooltip("The max amount of birds to rescue.")]
+    public int maxScore = 10;
     public static int scoreCount = 0;
     public static int scene;
     bool paused = false;
 
+
+    private void Start()
+    {
+        scoreText.text = scoreCount.ToString() + "/" + maxScore;
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -49,6 +57,12 @@ public class MenyUI : MonoBehaviour
     {
         scoreCount++;
         Debug.Log(scoreCount);
+        PrintScore();
+    }
+
+    void PrintScore()
+    {
+        scoreText.text = scoreCount.ToString() + "/" + maxScore;
     }
 
     public void QuitGame()
