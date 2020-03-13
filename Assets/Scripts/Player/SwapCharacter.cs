@@ -132,9 +132,13 @@ public class SwapCharacter : MonoBehaviour
 
             if (SelectedChar == (int)ActiveCharacter.Monkey)
             {
-                mEel.active = false;
-                mDog.active = false;
-                mMonkey.active = true;
+                if (!DialogueManager.isOpen && DialogueManager.canContinue)
+                {
+                    mEel.active = false;
+                    mDog.active = false;
+                    mMonkey.active = true;
+                }
+                
                 if (monkeyImage != null && dogImage != null && eelImage != null)
                 {
                     monkeyImage.rectTransform.sizeDelta = new Vector2(75.0f, 75.0f);
@@ -147,9 +151,12 @@ public class SwapCharacter : MonoBehaviour
 
             else if (SelectedChar == (int)ActiveCharacter.Dog)
             {
-                mEel.active = false;
-                mMonkey.active = false;
-                mDog.active = true;
+                if (!DialogueManager.isOpen && DialogueManager.canContinue)
+                {
+                    mEel.active = false;
+                    mDog.active = true;
+                    mMonkey.active = false;
+                }
                 if (monkeyImage != null && dogImage != null && eelImage != null)
                 {
                     monkeyImage.rectTransform.sizeDelta = new Vector2(25.5f, 25.5f);
@@ -161,9 +168,12 @@ public class SwapCharacter : MonoBehaviour
             }
             else if (SelectedChar == (int)ActiveCharacter.Eel)
             {
-                mDog.active = false;
-                mMonkey.active = false;
-                mEel.active = true;
+                if (!DialogueManager.isOpen && DialogueManager.canContinue)
+                {
+                    mEel.active = true;
+                    mDog.active = false;
+                    mMonkey.active = false;
+                }
                 if (monkeyImage != null && dogImage != null && eelImage != null)
                 {
                     monkeyImage.rectTransform.sizeDelta = new Vector2(25.5f, 25.5f);
