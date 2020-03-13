@@ -196,7 +196,7 @@ public class SwapCharacter : MonoBehaviour
             }
         }
 
-        if (mMonkey.monkeyLevelComplete && mDog.levelCompleted)
+        if (mMonkey.monkeyLevelComplete && mDog.levelCompleted && mEel.levelComplete)
         {
             mMeny.NextLevel();
         }
