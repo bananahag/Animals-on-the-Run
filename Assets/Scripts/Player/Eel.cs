@@ -44,11 +44,13 @@ public class Eel : MonoBehaviour
     bool canPlayLightSource;
     float targetLightScaleX, targetLightScaleY;
     float currentScaleX, currentScaleY;
+    float startGravity;
 
     Animator animator;
 
     void Start()
     {
+        startGravity = GetComponent<Rigidbody2D>().gravityScale;
         LightObj.SetActive(true);
         lightIsActive = false;
         canAct = true;
@@ -197,6 +199,10 @@ public class Eel : MonoBehaviour
         this.pickedUp = pickedUp;
         GetComponent<SpriteRenderer>().enabled = !pickedUp;
         collider.enabled = !pickedUp;
+        if (pickedUp)
+            GetComponent<Rigidbody2D>().gravityScale = 0.0f;
+        else
+            GetComponent<Rigidbody2D>().gravityScale = startGravity;
         GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
     }
 
