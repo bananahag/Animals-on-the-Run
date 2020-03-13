@@ -205,6 +205,18 @@ public class Eel : MonoBehaviour
             transform.position = monkey.transform.position + monkeyCarryOffset;
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Finish")
+            levelComplete = true;
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Finish")
+            levelComplete = false;
+    }
+
     IEnumerator ElectricityTimer()
     {
         yield return new WaitForSeconds(electricityTime);
