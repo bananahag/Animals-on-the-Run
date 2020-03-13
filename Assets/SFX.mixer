@@ -1,5 +1,24 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!243 &-8940474931451385005
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Birdflap
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 744166400e4e2cf43952519e90083f6e
+  m_Children: []
+  m_Volume: 26e6ee22466956d4d8bdf8a8128b1e0c
+  m_Pitch: b5344f3e6c28a954eb201ec7c46a11a3
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -6674657750621379556}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!244 &-8935891409897265085
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -128,6 +147,20 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &-6674657750621379556
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 052d945de72523e4aa8b24997865fb04
+  m_EffectName: Attenuation
+  m_MixLevel: cf9d009cf66ed424b9e79aebf834b368
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &-6297523454511239351
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -944,6 +977,7 @@ AudioMixerController:
     - e839c74ace52762429237e657bd6b935
     - dc539cdfaba079f458ef9f17b6031398
     - 29733b6a52833924b9534acb652dd6df
+    - 744166400e4e2cf43952519e90083f6e
     name: NPCs
   - guids:
     - 4ac487c30a7fef443884b6b1b0061ca0
@@ -952,7 +986,7 @@ AudioMixerController:
     - 8fc128bde352b5142a9ca86515a9ca77
     - a70ec5895705e01459f45931a4ec2d9d
     name: Dialogue
-  m_CurrentViewIndex: 5
+  m_CurrentViewIndex: 7
   m_TargetSnapshot: {fileID: 24500006}
 --- !u!243 &24300002
 AudioMixerGroupController:
@@ -1008,6 +1042,7 @@ AudioMixerSnapshotController:
     1594bf71253b5df4e8097e5e1ca96a6b: -13.637256
     593fbf917b1792144ab470b35e836c2c: 0.56
     556266e150afef74ea9fbc7c55b124c0: 1
+    26e6ee22466956d4d8bdf8a8128b1e0c: 15.10171
     880a9572b422a934aa2db7c09ab4f28a: -16.660433
     d6e27cc2fa56ba746bb754891d57c94b: -0.025776558
     e50f95531f9a6d14e98ea4352a2557e6: 3.48
@@ -1200,6 +1235,7 @@ AudioMixerGroupController:
   - {fileID: 3783157902286593850}
   - {fileID: 1664981399435125228}
   - {fileID: 7212587318156721169}
+  - {fileID: -8940474931451385005}
   m_Volume: 3aed2187a8c47374aa19747ad76193ba
   m_Pitch: ae7b7a90de45d8544aeee752becad13e
   m_Send: 00000000000000000000000000000000
