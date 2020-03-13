@@ -60,7 +60,10 @@ public class MonkeyScared : MonkeyState
                 secondPhase = true;
             }
             else
+            {
+                monkey.scaredCheck = false;
                 monkey.ChangeState(monkey.inAirState);
+            }
 
         }
 
