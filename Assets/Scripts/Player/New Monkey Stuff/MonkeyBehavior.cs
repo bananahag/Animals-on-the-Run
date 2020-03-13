@@ -23,7 +23,7 @@ public class MonkeyBehavior : MonoBehaviour
     [HideInInspector]
     public float x, y, ladderXPosition;
     [HideInInspector]
-    public bool facingRight, carryingBucket, canClimb, canPickUpEel, canPullLever, canOpenCage, scaredCheck, runAwayScared, monkeyLevelComplete;
+    public bool facingRight, carryingBucket, canClimb, canPickUpEel, canPullLever, canOpenCage, touchingThorns, scaredCheck, runAwayScared, monkeyLevelComplete;
     [HideInInspector]
     public Vector2 movement;
     [HideInInspector]
@@ -77,12 +77,13 @@ public class MonkeyBehavior : MonoBehaviour
     void Update()
     {
         currentState.Update();
-        if (Input.GetKeyDown(KeyCode.B))
+
+        if(touchingThorns && currentState != groundedState && touchingThorns && currentState != jumpsquatState)
         {
-            if (active)
-                active = false;
-            else
-                active = true;
+            runAwayScared = true;
+            scaredCheck = false;
+            ChangeState(scaredState);
+            touchingThorns = false;
         }
     }
 
@@ -160,12 +161,8 @@ public class MonkeyBehavior : MonoBehaviour
             lever = other.gameObject;
         }
 
-        if (other.gameObject.layer == LayerMask.NameToLayer("Human") || other.gameObject.layer == LayerMask.NameToLayer("AboveWater") || other.gameObject.layer == LayerMask.NameToLayer("Thorns"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Human") || other.gameObject.layer == LayerMask.NameToLayer("AboveWater"))
         {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Thorns") && currentState != groundedState)
-                runAwayScared = true;
-            else
-                runAwayScared = false;
             if (other.gameObject.layer == LayerMask.NameToLayer("AboveWater"))
                 runAwayScared = true;
             else
@@ -177,6 +174,12 @@ public class MonkeyBehavior : MonoBehaviour
                 scaredCheck = false;
                 ChangeState(scaredState);
             }
+        }
+
+        else if (other.gameObject.layer == LayerMask.NameToLayer("Thorns"))
+        {
+            touchingThorns = true;
+            scaryObject = other.gameObject;
         }
 
         if (other.gameObject.tag == "Cage" && !other.gameObject.GetComponent<Cage>().opened)
@@ -202,6 +205,9 @@ public class MonkeyBehavior : MonoBehaviour
 
         if (other.gameObject.tag == "Cage")
             canOpenCage = false;
+
+        if (other.gameObject.layer == LayerMask.NameToLayer("Thorns"))
+            touchingThorns = false;
 
         if (other.gameObject.tag == "Finish")
             monkeyLevelComplete = false;
