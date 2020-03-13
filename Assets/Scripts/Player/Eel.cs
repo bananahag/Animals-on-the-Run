@@ -194,6 +194,7 @@ public class Eel : MonoBehaviour
     {
         this.pickedUp = pickedUp;
         GetComponent<SpriteRenderer>().enabled = !pickedUp;
+        GetComponent<BoxCollider2D>().enabled = !pickedUp;
         GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
     }
 
