@@ -195,8 +195,6 @@ public class Eel : MonoBehaviour
         this.pickedUp = pickedUp;
         GetComponent<SpriteRenderer>().enabled = !pickedUp;
         GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
-        if (!pickedUp && monkey != null)
-            GetComponent<Rigidbody2D>().AddForce(transform.right * (monkey.GetComponent<Rigidbody2D>().velocity.x * 50));
     }
 
     void PickedUp()
