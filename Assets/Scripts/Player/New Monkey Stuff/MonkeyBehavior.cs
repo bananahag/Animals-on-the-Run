@@ -78,7 +78,7 @@ public class MonkeyBehavior : MonoBehaviour
     {
         currentState.Update();
 
-        if(touchingThorns && currentState != groundedState && touchingThorns && currentState != jumpsquatState)
+        if(touchingThorns && currentState == climbingState)
         {
             runAwayScared = true;
             scaredCheck = false;

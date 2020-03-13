@@ -60,7 +60,10 @@ public class MonkeyScared : MonkeyState
                 secondPhase = true;
             }
             else
+            {
+                monkey.scaredCheck = false;
                 monkey.ChangeState(monkey.inAirState);
+            }
 
         }
 
@@ -77,31 +80,7 @@ public class MonkeyScared : MonkeyState
 
         if (monkey.runAwayScared)
         {
-            if(monkey.carryingBucket)
-                monkey.animator.Play("Placeholder Monkey Walk Bucket");
-            else
-                monkey.animator.Play("Placeholder Monkey Walk");
-
-            if (monkey.facingRight)
-            {
-                if (monkey.carryingBucket)
-                    monkey.rb2d.velocity = new Vector2(1 * monkey.groundedState.walkingSpeedWhenCarryingBucket, monkey.rb2d.velocity.y);
-                else
-                    monkey.rb2d.velocity = new Vector2(1 * monkey.groundedState.walkingSpeed, monkey.rb2d.velocity.y);
-            }
-            else
-            {
-                if (monkey.carryingBucket)
-                    monkey.rb2d.velocity = new Vector2(-1 * monkey.groundedState.walkingSpeedWhenCarryingBucket, monkey.rb2d.velocity.y);
-                else
-                    monkey.rb2d.velocity = new Vector2(-1 * monkey.groundedState.walkingSpeed, monkey.rb2d.velocity.y);
-            }
-            timePassed2 += Time.deltaTime;
-            if (runAwayTime < timePassed2)
-            {
-                monkey.scaredCheck = false;
-                monkey.ChangeState(monkey.groundedState);
-            }
+            monkey.ChangeState(monkey.groundedState);
         }
         else
         {
