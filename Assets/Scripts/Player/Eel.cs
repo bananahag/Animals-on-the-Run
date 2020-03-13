@@ -11,6 +11,8 @@ public class Eel : MonoBehaviour
     [Tooltip("The audio source that plays when the eel lands on the ground after falling.")]
     public AudioSource landingSource;
 
+    public Collider2D collider;
+
     [Tooltip("If either of these transforms touches an object with the ''Ground'' layer the eel will be grounded.")]
     public Transform groundCheckLeft = null, groundCheckRight = null;
 
@@ -194,7 +196,7 @@ public class Eel : MonoBehaviour
     {
         this.pickedUp = pickedUp;
         GetComponent<SpriteRenderer>().enabled = !pickedUp;
-        GetComponent<BoxCollider2D>().enabled = !pickedUp;
+        collider.enabled = !pickedUp;
         GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
     }
 
