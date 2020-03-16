@@ -215,7 +215,11 @@ public class Eel : MonoBehaviour
             }
             GetComponent<Rigidbody2D>().gravityScale = startGravity;
         }
-        GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
+        if (monkey != null)
+            GetComponent<Rigidbody2D>().velocity = new Vector2(monkey.GetComponent<Rigidbody2D>().velocity.x, 0.0f);
+        else
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
+
     }
 
     void PickedUp()

@@ -20,7 +20,6 @@ public class Cage : MonoBehaviour
     MenyUI menyUI;
     public Sprite openedSprite;
     public GameObject animal;
-    public AudioClip openSFX;
     public float shakeSpeed = 50.0f;
     public float shakeDuration = 0.25f;
 
