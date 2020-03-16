@@ -126,9 +126,6 @@ public class MovableObject : MonoBehaviour
         {
             grounded = false;
         }
-        print(hitGround);
-        print(hitGroundRight);
-        print(hitGroundLeft);
     }
 
     void OnDrawGizmos()
