@@ -9,8 +9,8 @@ public class DogCharmingState : DogState
     [Tooltip("Audio source that plays and loops while the dog is charming.")]
     public AudioSource charmingSource;
     public float charmDistance = 100.0f;
-    List<GameObject> charmedHumans; 
-
+    List<GameObject> charmedHumans;
+    
 
     public override void OnValidate(DogBehaviour dog)
     {
@@ -37,7 +37,7 @@ public class DogCharmingState : DogState
     public override void Update()
     {
 
-        RaycastHit2D[] humanSearch = Physics2D.RaycastAll(dog.transform.position, Vector2.right, charmDistance, dog.humanLayerMask);
+        RaycastHit2D[] humanSearch = Physics2D.RaycastAll(dog.transform.position - dog.charmDistanceVector, Vector2.right, charmDistance, dog.humanLayerMask);
         foreach (RaycastHit2D hit in humanSearch)
         {
             Debug.Log(charmedHumans.Count);

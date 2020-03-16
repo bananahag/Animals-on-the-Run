@@ -110,7 +110,7 @@ public class DogBehaviour : MonoBehaviour
         startGravityScale = rb2d.gravityScale;
         radius = GetComponent<SpriteRenderer>().size.x;
         humanLayerMask = 1 << 9;
-        charmDistanceVector = new Vector3(charmingState.charmDistance, 0, 0);
+        charmDistanceVector = new Vector3(charmingState.charmDistance * 0.5f, 0, 0);
     }
 
     void Start()
@@ -143,7 +143,7 @@ public class DogBehaviour : MonoBehaviour
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + Vector2.right * direction * transform.localScale.x * groundedState.boxInteractDistance);
 
         Gizmos.color = Color.black;
-        Gizmos.DrawLine(transform.position, transform.position + charmDistanceVector);
+        Gizmos.DrawLine(transform.position -charmDistanceVector, transform.position + charmDistanceVector);
 
     }
 
@@ -182,8 +182,8 @@ public class DogBehaviour : MonoBehaviour
 
     void GroundCheck()
     {
-        if (Physics2D.Linecast(transform.position, groundCheckLeft.position, 1 << LayerMask.NameToLayer("Ground"))
-            || Physics2D.Linecast(transform.position, groundCheckRight.position, 1 << LayerMask.NameToLayer("Ground")))
+        if (Physics2D.Linecast(transform.position, groundCheckLeft.position, 1 << 8)
+            || Physics2D.Linecast(transform.position, groundCheckRight.position, 1 << 8))
         {
             grounded = true;
         }

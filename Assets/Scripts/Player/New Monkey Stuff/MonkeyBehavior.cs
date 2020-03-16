@@ -32,7 +32,7 @@ public class MonkeyBehavior : MonoBehaviour
     [HideInInspector]
     public bool active;
     
-    public float reactToHumanDistance;
+    
     [HideInInspector]
     public List<GameObject> humansHit;
     Vector3 distance;
@@ -81,7 +81,7 @@ public class MonkeyBehavior : MonoBehaviour
     private void Start()
     {
         humansHit = new List<GameObject>();
-        distance = new Vector3(reactToHumanDistance * 0.5f, 0, 0);
+        distance = new Vector3(scaredState.reactToHumanDistance * 0.5f, 0, 0);
     }
 
     void Update()
@@ -89,11 +89,7 @@ public class MonkeyBehavior : MonoBehaviour
         currentState.Update();
         
         Debug.Log(humansHit.Count);
-        if (humansHit.Count > 0)
-        {
-            ChangeState(scaredState);
-
-        }
+        
         if(touchingThorns && currentState != groundedState && touchingThorns && currentState != jumpsquatState)
         {
             runAwayScared = true;
@@ -105,6 +101,22 @@ public class MonkeyBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
+        humansHit.Clear();
+        RaycastHit2D[] humans = Physics2D.RaycastAll(transform.position - distance, Vector3.right, scaredState.reactToHumanDistance, 1 << 9);
+        foreach (RaycastHit2D human in humans)
+        {
+            if (!human.collider.gameObject.GetComponentInParent<Human>().charmed && human.collider.gameObject.tag != "Button")
+            {
+                humansHit.Add(human.collider.gameObject);
+                if (currentState != scaredState && grounded)
+                {
+                ChangeState(scaredState);
+                }
+               
+            }
+
+        }
+
         if (active && !scaredCheck)
         {
             x = Input.GetAxisRaw("Horizontal");
@@ -115,6 +127,7 @@ public class MonkeyBehavior : MonoBehaviour
             x = 0.0f;
             y = 0.0f;
         }
+       
 
         if (facingRight)
             spriteRenderer.flipX = false;
@@ -188,21 +201,7 @@ public class MonkeyBehavior : MonoBehaviour
             if (other.gameObject.layer == LayerMask.NameToLayer("AboveWater"))
                 runAwayScared = true;
             else
-                runAwayScared = false;
-            if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
-            {
-                RaycastHit2D[] humans = Physics2D.RaycastAll(transform.position - distance, Vector3.right, reactToHumanDistance, 1 << 9);
-                foreach (RaycastHit2D human in humans)
-                {
-                    if (!human.collider.gameObject.GetComponentInParent<Human>().charmed && human.collider.gameObject.tag == "Button")
-                    {
-                        humansHit.Add(human.collider.gameObject);
-                        
-                    }
-
-                }
-            
-            }
+                runAwayScared = false;      
 
           
         }
@@ -250,5 +249,9 @@ public class MonkeyBehavior : MonoBehaviour
         currentState = targetState;
         currentState.Enter();
     }
-    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position - distance, transform.position + distance);
+    }
 }

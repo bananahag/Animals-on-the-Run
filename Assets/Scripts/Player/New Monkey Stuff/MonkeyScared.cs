@@ -16,6 +16,7 @@ public class MonkeyScared : MonkeyState
 
     float timePassed, timePassed2;
     private int notCharmed = 0;
+    public float reactToHumanDistance = 10f;
     bool secondPhase;
 
     public override void OnValidate(MonkeyBehavior monkey)
@@ -40,17 +41,20 @@ public class MonkeyScared : MonkeyState
             monkey.rb2d.velocity = new Vector2(0.0f, 0.0f);
             secondPhase = true;
         }
-
+       
         monkey.jumpBuffer = false;
     }
 
     public override void Exit()
     {
         monkey.rb2d.gravityScale = monkey.startGravityScale;
+        monkey.scaredCheck = false;
     }
 
     public override void Update()
     {
+        if (secondPhase)
+            SecondPhaseOfBeingScared();
         notCharmed = 0;
         timePassed += Time.deltaTime;
         if (scared < timePassed)
@@ -59,9 +63,11 @@ public class MonkeyScared : MonkeyState
             if (monkey.grounded)
             {
                 secondPhase = true;
+                
             }
             else
             {
+                
                 monkey.scaredCheck = false;
                 monkey.ChangeState(monkey.inAirState);
             }
@@ -73,32 +79,29 @@ public class MonkeyScared : MonkeyState
             {
                 notCharmed++;
             }
-            Debug.Log("veru much so");
         }
         if (notCharmed == 0)
         {
             monkey.ChangeState(monkey.groundedState);
-            monkey.humansHit.Clear();
+          
         }
 
-        if (secondPhase)
-            SecondPhaseOfBeingScared();
+        
+           
     }
 
     void SecondPhaseOfBeingScared()
     {
-        if (monkey.scaryObject.transform.position.x >= monkey.transform.position.x)
-            monkey.facingRight = false;
-        else
-            monkey.facingRight = true;
-
         if (monkey.runAwayScared)
         {
+            Debug.Log("Am here3");
             monkey.ChangeState(monkey.groundedState);
         }
         else
         {
+            Debug.Log("Am here4");
             monkey.animator.Play("Placeholder Monkey Crying");
+            
         }
     }
 

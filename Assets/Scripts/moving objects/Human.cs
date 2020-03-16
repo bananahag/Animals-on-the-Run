@@ -32,6 +32,7 @@ public class Human : MonoBehaviour
     public Vector2 RandomAmountStoppTime;
     private float timer;
     bool turn;
+    
    
     public enum HumanState
     {
@@ -226,7 +227,7 @@ public class Human : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player") && other.gameObject.CompareTag("Dog"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             Physics2D.IgnoreCollision(box, other.gameObject.GetComponent<BoxCollider2D>());
         }
