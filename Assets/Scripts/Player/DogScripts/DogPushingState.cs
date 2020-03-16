@@ -85,7 +85,10 @@ public class DogPushingState : DogState
         dog.pullingRope = false;
         dog.movingObject = false;
         Debug.Log("Exit pushing");
-        
+        if(dog.animator.enabled == false)
+        {
+            dog.animator.enabled = true;
+        }
 
         dog.StartCoroutine(dog.MoveObjectCoolDown());
     }
@@ -173,24 +176,36 @@ public class DogPushingState : DogState
     {
         if (dog.facingRight)
         {
-            if (dog.x < 0)
+            if (dog.movement.x < 0)
             {
+                dog.animator.enabled = true;
                 dog.animator.Play("DogPulling");
             }
-            else if (dog.x > 0)
+            else if (dog.movement.x > 0)
             {
+                dog.animator.enabled = true;
                 dog.animator.Play("DogPushing");
+            }
+            else
+            {
+                dog.animator.enabled = false;
             }
         }
         else if (!dog.facingRight)
         {
-            if (dog.x < 0)
+            if (dog.movement.x < 0)
             {
+                dog.animator.enabled = true;
                 dog.animator.Play("DogPushing");
             }
-            else if (dog.x > 0)
+            else if (dog.movement.x > 0)
             {
+                dog.animator.enabled = true;
                 dog.animator.Play("DogPulling");
+            }
+            else
+            {
+                dog.animator.enabled = false;
             }
         }
     }

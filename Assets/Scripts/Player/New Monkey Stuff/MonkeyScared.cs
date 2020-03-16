@@ -15,7 +15,7 @@ public class MonkeyScared : MonkeyState
     public float runAwayTime = 0.5f;
 
     float timePassed, timePassed2;
-
+    private int notCharmed = 0;
     bool secondPhase;
 
     public override void OnValidate(MonkeyBehavior monkey)
@@ -51,6 +51,7 @@ public class MonkeyScared : MonkeyState
 
     public override void Update()
     {
+        notCharmed = 0;
         timePassed += Time.deltaTime;
         if (scared < timePassed)
         {
@@ -65,6 +66,18 @@ public class MonkeyScared : MonkeyState
                 monkey.ChangeState(monkey.inAirState);
             }
 
+        }
+        foreach (GameObject human in monkey.humansHit)
+        {
+            if (!human.GetComponentInParent<Human>().charmed)
+            {
+                notCharmed++;
+            }
+        }
+        if (notCharmed == 0)
+        {
+            monkey.ChangeState(monkey.groundedState);
+            monkey.humansHit.Clear();
         }
 
         if (secondPhase)

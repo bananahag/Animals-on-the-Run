@@ -151,7 +151,10 @@ public class MovableObject : MonoBehaviour
         {
             if (other.gameObject.layer != LayerMask.NameToLayer("Ground"))
             {
-                Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), other.gameObject.GetComponent<BoxCollider2D>());
+                if (other.gameObject.tag == "Eel")
+                    Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), other.gameObject.GetComponent<Eel>().collider);
+                else
+                    Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), other.gameObject.GetComponent<BoxCollider2D>());
             }
         }
 

@@ -202,7 +202,19 @@ public class Eel : MonoBehaviour
         if (pickedUp)
             GetComponent<Rigidbody2D>().gravityScale = 0.0f;
         else
+        {
+            if (monkey != null && monkey.GetComponent<MonkeyBehavior>().facingRight)
+            {
+                Vector3 offset = new Vector2(1.5f, 0.5f);
+                transform.position = monkey.transform.position + offset;
+            }
+            else if (monkey != null && !monkey.GetComponent<MonkeyBehavior>().facingRight)
+            {
+                Vector3 offset = new Vector2(-1.5f, 0.5f);
+                transform.position = monkey.transform.position + offset;
+            }
             GetComponent<Rigidbody2D>().gravityScale = startGravity;
+        }
         GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
     }
 

@@ -9,12 +9,15 @@ public class Human : MonoBehaviour
     private float fraction;
     public bool moving;
     private bool movingLeft = true;
-   
+    private bool nearMonkey;
+
+
     public bool charmed;
     public bool scared;
     private Rigidbody2D rb;
     public BoxCollider2D box;
-    private Animator an;
+    Animator an;
+    public Animation[] anim;
     private SpriteRenderer sr;
     [Tooltip("Distance human will walk right")]
     public float maxDistanceRight;
@@ -30,7 +33,15 @@ public class Human : MonoBehaviour
     private float timer;
     bool turn;
    
+    public enum HumanState
+    {
+        Moving = 0,
+        Charmed = 1,
+        Scared = 2,
+    }
 
+    HumanState currentState;
+   
 
     private void Awake()
     {
@@ -39,7 +50,7 @@ public class Human : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        
+        SwitchHumanState(HumanState.Moving);
         an = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         charmed = false;
@@ -74,8 +85,6 @@ public class Human : MonoBehaviour
                         turn = false;
                         timer = 0;
                     }
-                    
-
                 }
             }
             else 
@@ -104,50 +113,81 @@ public class Human : MonoBehaviour
           
          }
 
+
+     
        
+    }
+
+    public void SwitchHumanState(HumanState state)
+    {
+        currentState = state;
+        if (nearMonkey || charmed)
+        {
+            if (charmed)
+            {
+                currentState = HumanState.Charmed;
+
+            }
+            else if (nearMonkey)
+            {
+                currentState = HumanState.Scared;
+            }
+        }
+        
+       
+        switch (currentState)
+        {
+            case HumanState.Moving:
+                moving = true;
+                
+                scared = false;
+                rb.isKinematic = false;
+                box.enabled = true;
+                break;
+            case HumanState.Charmed:
+                
+                moving = false;
+                scared = false;
+                rb.isKinematic = true;
+                
+                break;
+            case HumanState.Scared:
+               
+                moving = false;
+                rb.isKinematic = true;
+                
+                break;
+            default:
+                break;
+        }
+        Debug.Log(currentState);
     }
 
     void Update()
     {
 
 
-        
-        if (charmed)
+        if (currentState == HumanState.Moving)
         {
-            rb.isKinematic = true;
-            box.enabled = false;
-            moving = false;
-            an.Play("HumanScared");
-            
-            
+            if (turn)
+            {
+                an.Play("HumanIdle");
+            }
+            else
+            an.Play("HumanWalk");
+
         }
-        else if (scared)
+        else if (currentState == HumanState.Scared)
         {
-            rb.isKinematic = true;
-            box.enabled = false;
-            moving = false;
             an.Play("HumanScared");
         }
-        else if (!charmed || !scared)
-        {
-            rb.isKinematic = false; 
-            moving = true;
-            
-        }
-        
-         if (turn && (!charmed && !scared))
+        else if (currentState == HumanState.Charmed)
         {
             an.Play("HumanIdle");
-            
         }
-        else if (moving)
-        {
-            an.Play("HumanWalk");
-        }
-      
+        
 
-
-
+    
     }
     private void OnDrawGizmos()
     {
@@ -167,15 +207,28 @@ public class Human : MonoBehaviour
             {
                 sr.flipX = false;
             }
-            scared = true;
+
+            nearMonkey = true;
+            SwitchHumanState(HumanState.Scared);
+            //scared = true;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Monkey")
         {
-            scared = false;
+            nearMonkey = false;
+            SwitchHumanState(HumanState.Moving);
+            //scared = false;
             
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player") && other.gameObject.CompareTag("Dog"))
+        {
+            Physics2D.IgnoreCollision(box, other.gameObject.GetComponent<BoxCollider2D>());
         }
     }
 }

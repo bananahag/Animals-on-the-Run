@@ -63,6 +63,8 @@ public class DogBehaviour : MonoBehaviour
     [HideInInspector]
     public bool closeToRope, pullingRope;
 
+    public LayerMask humanLayerMask;
+    public Vector3 charmDistanceVector;
 
     [HideInInspector]
     public GameObject affectedObject;
@@ -107,6 +109,12 @@ public class DogBehaviour : MonoBehaviour
         currentState.Enter();
         startGravityScale = rb2d.gravityScale;
         radius = GetComponent<SpriteRenderer>().size.x;
+        humanLayerMask = 1 << 9;
+        charmDistanceVector = new Vector3(charmingState.charmDistance, 0, 0);
+    }
+
+    void Start()
+    {
     }
 
     public IEnumerator MoveObjectCoolDown()
@@ -133,6 +141,10 @@ public class DogBehaviour : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + Vector2.right * direction * transform.localScale.x * groundedState.boxInteractDistance);
+
+        Gizmos.color = Color.black;
+        Gizmos.DrawLine(transform.position, transform.position + charmDistanceVector);
+
     }
 
     void FixedUpdate()

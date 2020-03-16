@@ -31,6 +31,11 @@ public class MonkeyBehavior : MonoBehaviour
 
     [HideInInspector]
     public bool active;
+    
+    public float reactToHumanDistance;
+    [HideInInspector]
+    public List<GameObject> humansHit;
+    Vector3 distance;
 
     public MonkeyGrounded groundedState = new MonkeyGrounded();
     public MonkeyJumpsquat jumpsquatState = new MonkeyJumpsquat();
@@ -73,12 +78,29 @@ public class MonkeyBehavior : MonoBehaviour
         currentState = groundedState;
         currentState.Enter();
     }
+    private void Start()
+    {
+        humansHit = new List<GameObject>();
+        distance = new Vector3(reactToHumanDistance * 0.5f, 0, 0);
+    }
 
     void Update()
     {
         currentState.Update();
+        RaycastHit2D[] humans = Physics2D.RaycastAll(transform.position - distance, Vector3.right, reactToHumanDistance, 1 << 9);
+        foreach (RaycastHit2D human in humans)
+        {
+            if (!human.collider.gameObject.GetComponentInParent<Human>().charmed && human.collider.gameObject.tag == "Button")
+            {
+                humansHit.Add(human.collider.gameObject);
+            }
+        }
+        if (humansHit.Count > 0)
+        {
+            ChangeState(scaredState);
 
-        if(touchingThorns && currentState == climbingState)
+        }
+        if(touchingThorns && currentState != groundedState && touchingThorns && currentState != jumpsquatState)
         {
             runAwayScared = true;
             scaredCheck = false;
@@ -128,8 +150,14 @@ public class MonkeyBehavior : MonoBehaviour
 
     public void DropEel()
     {
-        if (eel != null && eel.GetComponent<Eel>() != null)
-            eel.GetComponent<Eel>().MonkeyInteraction(false);
+        if (eel != null && eel.GetComponent<Eel>() != null && carryingBucket)
+        {
+            if (facingRight)
+                facingRight = false;
+            else
+                facingRight = true;
+            ChangeState(puttingDownState);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -167,13 +195,7 @@ public class MonkeyBehavior : MonoBehaviour
                 runAwayScared = true;
             else
                 runAwayScared = false;
-            if (other.gameObject.layer == LayerMask.NameToLayer("Human") && other.gameObject.GetComponent<Human>().charmed) { }
-            else
-            {
-                scaryObject = other.gameObject;
-                scaredCheck = false;
-                ChangeState(scaredState);
-            }
+          
         }
 
         else if (other.gameObject.layer == LayerMask.NameToLayer("Thorns"))
