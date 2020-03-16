@@ -128,8 +128,14 @@ public class MonkeyBehavior : MonoBehaviour
 
     public void DropEel()
     {
-        if (eel != null && eel.GetComponent<Eel>() != null)
-            eel.GetComponent<Eel>().MonkeyInteraction(false);
+        if (eel != null && eel.GetComponent<Eel>() != null && carryingBucket)
+        {
+            if (facingRight)
+                facingRight = false;
+            else
+                facingRight = true;
+            ChangeState(puttingDownState);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
