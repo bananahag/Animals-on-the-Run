@@ -73,6 +73,7 @@ public class MonkeyScared : MonkeyState
             {
                 notCharmed++;
             }
+            Debug.Log("veru much so");
         }
         if (notCharmed == 0)
         {

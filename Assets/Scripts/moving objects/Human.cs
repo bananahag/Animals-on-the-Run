@@ -11,7 +11,7 @@ public class Human : MonoBehaviour
     private bool movingLeft = true;
     private bool nearMonkey;
 
-
+    MonkeyBehavior monkey;
     public bool charmed;
     public bool scared;
     private Rigidbody2D rb;
@@ -152,7 +152,7 @@ public class Human : MonoBehaviour
                 
                 break;
             case HumanState.Scared:
-               
+                
                 moving = false;
                 rb.isKinematic = true;
                 
@@ -207,7 +207,7 @@ public class Human : MonoBehaviour
             {
                 sr.flipX = false;
             }
-
+            monkey = collision.gameObject.GetComponent<MonkeyBehavior>();
             nearMonkey = true;
             SwitchHumanState(HumanState.Scared);
             //scared = true;

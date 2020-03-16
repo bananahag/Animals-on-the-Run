@@ -87,14 +87,8 @@ public class MonkeyBehavior : MonoBehaviour
     void Update()
     {
         currentState.Update();
-        RaycastHit2D[] humans = Physics2D.RaycastAll(transform.position - distance, Vector3.right, reactToHumanDistance, 1 << 9);
-        foreach (RaycastHit2D human in humans)
-        {
-            if (!human.collider.gameObject.GetComponentInParent<Human>().charmed && human.collider.gameObject.tag == "Button")
-            {
-                humansHit.Add(human.collider.gameObject);
-            }
-        }
+        
+        Debug.Log(humansHit.Count);
         if (humansHit.Count > 0)
         {
             ChangeState(scaredState);
@@ -142,7 +136,7 @@ public class MonkeyBehavior : MonoBehaviour
         else
             grounded = false;
     }
-
+   
     public void PlayStepSound()
     {
         groundedState.PlayStepSound();
@@ -150,13 +144,13 @@ public class MonkeyBehavior : MonoBehaviour
 
     public void DropEel()
     {
-        if (eel != null && eel.GetComponent<Eel>() != null && carryingBucket)
-        {
-            if (facingRight)
-                facingRight = false;
-            else
-                facingRight = true;
-            ChangeState(puttingDownState);
+        if (eel != null && eel.GetComponent<Eel>() != null && carryingBucket)
+        {
+            if (facingRight)
+                facingRight = false;
+            else
+                facingRight = true;
+            ChangeState(puttingDownState);
         }
     }
 
@@ -195,6 +189,21 @@ public class MonkeyBehavior : MonoBehaviour
                 runAwayScared = true;
             else
                 runAwayScared = false;
+            if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
+            {
+                RaycastHit2D[] humans = Physics2D.RaycastAll(transform.position - distance, Vector3.right, reactToHumanDistance, 1 << 9);
+                foreach (RaycastHit2D human in humans)
+                {
+                    if (!human.collider.gameObject.GetComponentInParent<Human>().charmed && human.collider.gameObject.tag == "Button")
+                    {
+                        humansHit.Add(human.collider.gameObject);
+                        
+                    }
+
+                }
+            
+            }
+
           
         }
 
@@ -241,4 +250,5 @@ public class MonkeyBehavior : MonoBehaviour
         currentState = targetState;
         currentState.Enter();
     }
+    
 }
