@@ -23,6 +23,8 @@ public class SwapCharacter : MonoBehaviour
     [HideInInspector]
     public bool hasBeenActivated = false;
 
+    public float cameraYOffset = 3.0f;
+
     public int SelectedChar;
     private Camera cam;
     Vector3 oldCameraPos;
@@ -146,7 +148,7 @@ public class SwapCharacter : MonoBehaviour
                     eelImage.rectTransform.sizeDelta = new Vector2(25.5f, 25.5f);
                 }
                 if (fraction >= 1.0f)
-                    cam.transform.position = new Vector3(characters[SelectedChar].transform.position.x, characters[SelectedChar].transform.position.y, cam.transform.position.z);
+                    cam.transform.position = new Vector3(characters[SelectedChar].transform.position.x, characters[SelectedChar].transform.position.y + cameraYOffset, cam.transform.position.z);
             }
 
             else if (SelectedChar == (int)ActiveCharacter.Dog)
@@ -164,7 +166,7 @@ public class SwapCharacter : MonoBehaviour
                     eelImage.rectTransform.sizeDelta = new Vector2(25.5f, 25.5f);
                 }
                 if (fraction >= 1.0f)
-                    cam.transform.position = new Vector3(characters[SelectedChar].transform.position.x, characters[SelectedChar].transform.position.y, cam.transform.position.z);
+                    cam.transform.position = new Vector3(characters[SelectedChar].transform.position.x, characters[SelectedChar].transform.position.y + cameraYOffset, cam.transform.position.z);
             }
             else if (SelectedChar == (int)ActiveCharacter.Eel)
             {
@@ -181,7 +183,7 @@ public class SwapCharacter : MonoBehaviour
                     eelImage.rectTransform.sizeDelta = new Vector2(75.0f, 75.0f);
                 }
                 if (fraction >= 1.0f)
-                    cam.transform.position = new Vector3(characters[SelectedChar].transform.position.x, characters[SelectedChar].transform.position.y, cam.transform.position.z);
+                    cam.transform.position = new Vector3(characters[SelectedChar].transform.position.x, characters[SelectedChar].transform.position.y + cameraYOffset, cam.transform.position.z);
             }
         } else if (isHighlighting)
         {
@@ -208,7 +210,7 @@ public class SwapCharacter : MonoBehaviour
 
         if (mMonkey.monkeyLevelComplete && mDog.levelCompleted && mEel.levelComplete)
         {
-            mMeny.NextLevel();
+            StartCoroutine(FadeBeforenextLevel());
         }
         if (fraction < 1.0f)
             MoveCamera();
@@ -240,12 +242,20 @@ public class SwapCharacter : MonoBehaviour
         fraction = timePassed / cameraTravelTime;
         if (!isHighlighting)
         {
-            cam.transform.position = Vector3.Lerp(oldCameraPos, new Vector3(characters[SelectedChar].transform.position.x, characters[SelectedChar].transform.position.y, cam.transform.position.z), fraction);
+            cam.transform.position = Vector3.Lerp(oldCameraPos, new Vector3(characters[SelectedChar].transform.position.x, characters[SelectedChar].transform.position.y + cameraYOffset, cam.transform.position.z), fraction);
         }
         else
         {
             fraction = timePassed / cameraTravelTime * objectTravelTimeMultiplier;
-            cam.transform.position = Vector3.Lerp(oldCameraPos, new Vector3(highlightedObject.transform.position.x, highlightedObject.transform.position.y, cam.transform.position.z), fraction);
+            cam.transform.position = Vector3.Lerp(oldCameraPos, new Vector3(highlightedObject.transform.position.x, highlightedObject.transform.position.y + cameraYOffset, cam.transform.position.z), fraction);
         }
+    }
+
+    IEnumerator FadeBeforenextLevel()
+    {
+        FadeToBlack.fadeIn = true;
+        yield return new WaitForSeconds(1.5f);
+        mMeny.NextLevel();
+        StopAllCoroutines();
     }
 }
