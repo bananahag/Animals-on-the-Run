@@ -6,33 +6,65 @@ public class LanternScript : MonoBehaviour
 {
     public GameObject lanternLight;
     public int randomFlashTime;
-    public float flashTime = 0.5f; 
-   
+    public float flashTime = 1f;
+    private bool lightIsActive = true;
+    bool check;
+    int waitTime;
+
+
     void Start()
     {
-        StartCoroutine(Waiter());
+        //StartCoroutine(WaitForFlash());
+        waitTime = Random.Range(4, randomFlashTime);
     }
 
 
-    IEnumerator Waiter()
+    IEnumerator WaitForFlash(int waitTime)
     {
-        int waitTime = Random.Range(0, randomFlashTime);
+        check = true;
+        
 
         yield return new WaitForSeconds(waitTime);
+       
+        check = false;
         LanternFlash();
     }
 
     void LanternFlash()
     {
-        lanternLight.gameObject.SetActive(false);
+        if (lanternLight.gameObject.activeInHierarchy)
+        {
+            lanternLight.gameObject.SetActive(false);
+        }
+        else
+        {
+            lanternLight.gameObject.SetActive(true);
+        }
     }
 
-    IEnumerator FlashTimer()
+   IEnumerator FlashTime()
     {
         yield return new WaitForSeconds(flashTime);
+        lanternLight.gameObject.SetActive(true);
+        lightIsActive = true;
     }
+
+    
     void Update()
     {
-       
+        /*if (lightIsActive == true)
+         {
+             StartCoroutine(WaitForFlash());
+         }
+        else
+         {
+             lanternLight.gameObject.SetActive(true);
+             lightIsActive = true;
+         }*/
+        if (!check)
+        {
+            waitTime = Random.Range(4, randomFlashTime);
+            StartCoroutine(WaitForFlash(waitTime));
+        }
     }
 }

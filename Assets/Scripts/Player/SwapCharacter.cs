@@ -210,7 +210,7 @@ public class SwapCharacter : MonoBehaviour
 
         if (mMonkey.monkeyLevelComplete && mDog.levelCompleted && mEel.levelComplete)
         {
-            mMeny.NextLevel();
+            StartCoroutine(FadeBeforenextLevel());
         }
         if (fraction < 1.0f)
             MoveCamera();
@@ -249,5 +249,13 @@ public class SwapCharacter : MonoBehaviour
             fraction = timePassed / cameraTravelTime * objectTravelTimeMultiplier;
             cam.transform.position = Vector3.Lerp(oldCameraPos, new Vector3(highlightedObject.transform.position.x, highlightedObject.transform.position.y + cameraYOffset, cam.transform.position.z), fraction);
         }
+    }
+
+    IEnumerator FadeBeforenextLevel()
+    {
+        FadeToBlack.fadeIn = true;
+        yield return new WaitForSeconds(1.5f);
+        mMeny.NextLevel();
+        StopAllCoroutines();
     }
 }

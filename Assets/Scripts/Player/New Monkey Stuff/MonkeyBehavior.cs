@@ -31,6 +31,11 @@ public class MonkeyBehavior : MonoBehaviour
 
     [HideInInspector]
     public bool active;
+    
+    
+    [HideInInspector]
+    public List<GameObject> humansHit;
+    Vector3 distance;
 
     public MonkeyGrounded groundedState = new MonkeyGrounded();
     public MonkeyJumpsquat jumpsquatState = new MonkeyJumpsquat();
@@ -73,12 +78,19 @@ public class MonkeyBehavior : MonoBehaviour
         currentState = groundedState;
         currentState.Enter();
     }
+    private void Start()
+    {
+        humansHit = new List<GameObject>();
+        distance = new Vector3(scaredState.reactToHumanDistance * 0.5f, 0, 0);
+    }
 
     void Update()
     {
         currentState.Update();
-
-        if(touchingThorns && currentState == climbingState)
+        
+        Debug.Log(humansHit.Count);
+        
+        if(touchingThorns && currentState != groundedState && touchingThorns && currentState != jumpsquatState)
         {
             runAwayScared = true;
             scaredCheck = false;
@@ -89,6 +101,22 @@ public class MonkeyBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
+        humansHit.Clear();
+        RaycastHit2D[] humans = Physics2D.RaycastAll(transform.position - distance, Vector3.right, scaredState.reactToHumanDistance, 1 << 9);
+        foreach (RaycastHit2D human in humans)
+        {
+            if (!human.collider.gameObject.GetComponentInParent<Human>().charmed && human.collider.gameObject.tag != "Button")
+            {
+                humansHit.Add(human.collider.gameObject);
+                if (currentState != scaredState && grounded)
+                {
+                ChangeState(scaredState);
+                }
+               
+            }
+
+        }
+
         if (active && !scaredCheck)
         {
             x = Input.GetAxisRaw("Horizontal");
@@ -99,6 +127,7 @@ public class MonkeyBehavior : MonoBehaviour
             x = 0.0f;
             y = 0.0f;
         }
+       
 
         if (facingRight)
             spriteRenderer.flipX = false;
@@ -120,7 +149,7 @@ public class MonkeyBehavior : MonoBehaviour
         else
             grounded = false;
     }
-
+   
     public void PlayStepSound()
     {
         groundedState.PlayStepSound();
@@ -128,13 +157,13 @@ public class MonkeyBehavior : MonoBehaviour
 
     public void DropEel()
     {
-        if (eel != null && eel.GetComponent<Eel>() != null && carryingBucket)
-        {
-            if (facingRight)
-                facingRight = false;
-            else
-                facingRight = true;
-            ChangeState(puttingDownState);
+        if (eel != null && eel.GetComponent<Eel>() != null && carryingBucket)
+        {
+            if (facingRight)
+                facingRight = false;
+            else
+                facingRight = true;
+            ChangeState(puttingDownState);
         }
     }
 
@@ -172,14 +201,9 @@ public class MonkeyBehavior : MonoBehaviour
             if (other.gameObject.layer == LayerMask.NameToLayer("AboveWater"))
                 runAwayScared = true;
             else
-                runAwayScared = false;
-            if (other.gameObject.layer == LayerMask.NameToLayer("Human") && other.gameObject.GetComponent<Human>().charmed) { }
-            else
-            {
-                scaryObject = other.gameObject;
-                scaredCheck = false;
-                ChangeState(scaredState);
-            }
+                runAwayScared = false;      
+
+          
         }
 
         else if (other.gameObject.layer == LayerMask.NameToLayer("Thorns"))
@@ -224,5 +248,10 @@ public class MonkeyBehavior : MonoBehaviour
         currentState.Exit();
         currentState = targetState;
         currentState.Enter();
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position - distance, transform.position + distance);
     }
 }

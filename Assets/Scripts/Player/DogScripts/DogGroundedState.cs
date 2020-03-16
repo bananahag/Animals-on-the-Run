@@ -110,9 +110,8 @@ public class DogGroundedState : DogState
             dog.ChangeState(dog.jumpsquatState);
         }
 
-        if (Input.GetButtonDown("Interact") && dog.closeToHuman) //Om både människa och låda går att interagera med prioriteras lådan
+        if (Input.GetButtonDown("Light")) //Om både människa och låda går att interagera med prioriteras lådan
         {
-
             dog.ChangeState(dog.charmingState);
         }
         else if (Input.GetButtonDown("Interact") && dog.closeToRope) //Om både människa och rep går att interagera med prioriteras människan (lådan är fortfarande högsta prio)
@@ -134,12 +133,12 @@ public class DogGroundedState : DogState
             dog.levelCompleted = true;
         }
 
-        if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
+     /*   if (other.gameObject.layer == LayerMask.NameToLayer("Human"))
         {
             
             dog.human = other.gameObject;
             dog.closeToHuman = true;
-        }
+        }*/
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Water"))
         {
