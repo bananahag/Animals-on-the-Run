@@ -192,7 +192,7 @@ public class Human : MonoBehaviour
         }
         else if (currentState == HumanState.Charmed)
         {
-            an.Play("HumanIdle");
+            an.Play("HumanCharmed");
         }
     }
 
