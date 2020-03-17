@@ -5,66 +5,52 @@ using UnityEngine;
 public class LanternScript : MonoBehaviour
 {
     public GameObject lanternLight;
+    [Tooltip("Slumpmässig tid det tar innan lampan slocknar")]
     public int randomFlashTime;
+    [Tooltip("Tiden som lampan är släckt")]
     public float flashTime = 1f;
-    private bool lightIsActive = true;
-    bool check;
+    [Tooltip("Minsta möjliga tiden mellan på/av")]
+    public int minTime = 1;
     int waitTime;
 
 
     void Start()
     {
-        //StartCoroutine(WaitForFlash());
-        waitTime = Random.Range(4, randomFlashTime);
+        StartCoroutine(WaitForFlash());
     }
 
 
-    IEnumerator WaitForFlash(int waitTime)
+    IEnumerator WaitForFlash()
     {
-        check = true;
-        
+        waitTime = Random.Range(minTime, randomFlashTime);
 
         yield return new WaitForSeconds(waitTime);
        
-        check = false;
-        LanternFlash();
+        LanternOff();
     }
 
-    void LanternFlash()
+    void LanternOff()
     {
-        if (lanternLight.gameObject.activeInHierarchy)
-        {
-            lanternLight.gameObject.SetActive(false);
-        }
-        else
-        {
-            lanternLight.gameObject.SetActive(true);
-        }
+        lanternLight.gameObject.SetActive(false);
+        StartCoroutine(FlashTime());
     }
 
    IEnumerator FlashTime()
     {
         yield return new WaitForSeconds(flashTime);
+
+        LanternOn();
+    }
+
+    void LanternOn()
+    {
         lanternLight.gameObject.SetActive(true);
-        lightIsActive = true;
+        StartCoroutine(WaitForFlash());
     }
 
     
     void Update()
     {
-        /*if (lightIsActive == true)
-         {
-             StartCoroutine(WaitForFlash());
-         }
-        else
-         {
-             lanternLight.gameObject.SetActive(true);
-             lightIsActive = true;
-         }*/
-        if (!check)
-        {
-            waitTime = Random.Range(4, randomFlashTime);
-            StartCoroutine(WaitForFlash(waitTime));
-        }
+
     }
 }

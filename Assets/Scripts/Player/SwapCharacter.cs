@@ -32,6 +32,8 @@ public class SwapCharacter : MonoBehaviour
     private Camera cam;
     Vector3 oldCameraPos;
 
+    public float runToTheRightTime = 5.0f;
+
 
     public float cameraTravelTime = 1.0f;
     public float objectTravelTimeMultiplier = 0.5f;
@@ -90,7 +92,7 @@ public class SwapCharacter : MonoBehaviour
 
         if (!isHighlighting)
         {
-            if (Input.GetButtonDown("Swap1"))
+            if (Input.GetButtonDown("Swap1") && !DialogueManager.isOpen && DialogueManager.canContinue)
             {
                 timePassed = 0.0f;
                 fraction = 0.0f;
@@ -112,7 +114,7 @@ public class SwapCharacter : MonoBehaviour
                     characters[1].GetComponent<Rigidbody2D>().velocity = new Vector3(0, characters[1].GetComponent<Rigidbody2D>().velocity.y, 0);
                 }
             }
-            else if (Input.GetButtonDown("Swap2"))
+            else if (Input.GetButtonDown("Swap2") && !DialogueManager.isOpen && DialogueManager.canContinue)
             {
                 timePassed = 0.0f;
                 fraction = 0.0f;
@@ -262,5 +264,18 @@ public class SwapCharacter : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         mMeny.NextLevel();
         StopAllCoroutines();
+    }
+
+    IEnumerator RunToTheRight()
+    {
+        if (!mMonkey.carryingBucket)
+        {
+            //Stop every animal
+            mMonkey.ChangeState(mMonkey.pickingUpState);
+            yield return new WaitForSeconds(1.5f);
+        }
+        //Make every animal run
+        yield return new WaitForSeconds(runToTheRightTime);
+        //Stop every animal
     }
 }

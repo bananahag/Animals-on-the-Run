@@ -45,9 +45,9 @@ public class DogCharmingState : DogState
             {
                 if (!hit.collider.gameObject.GetComponentInParent<Human>().charmed)
                 {
-                charmedHumans.Add(hit.collider.gameObject);
-                hit.collider.gameObject.GetComponentInParent<Human>().charmed = true;
-                hit.collider.gameObject.GetComponentInParent<Human>().SwitchHumanState(Human.HumanState.Charmed);
+                    charmedHumans.Add(hit.collider.gameObject);
+                    hit.collider.gameObject.GetComponentInParent<Human>().charmed = true;
+                    hit.collider.gameObject.GetComponentInParent<Human>().SwitchHumanState(Human.HumanState.Charmed);
                     if(hit.collider.gameObject.transform.position.x > dog.transform.position.x)
                     {
                         if(hit.collider.gameObject.GetComponentInParent<Human>().sr.flipX == true)
@@ -64,7 +64,6 @@ public class DogCharmingState : DogState
                     }
                 }
             }
-           
         }
 
         if (Input.GetButtonDown("Light"))
