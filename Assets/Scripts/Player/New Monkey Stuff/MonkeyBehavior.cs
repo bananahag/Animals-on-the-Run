@@ -102,7 +102,7 @@ public class MonkeyBehavior : MonoBehaviour
     void FixedUpdate()
     {
         humansHit.Clear();
-        RaycastHit2D[] humans = Physics2D.RaycastAll(transform.position - distance, Vector3.right, scaredState.reactToHumanDistance, 1 << 9);
+        RaycastHit2D[] humans = Physics2D.RaycastAll(transform.position - distance + Vector3.up, Vector3.right, scaredState.reactToHumanDistance, 1 << 9);
         foreach (RaycastHit2D human in humans)
         {
             if (!human.collider.gameObject.GetComponentInParent<Human>().charmed && human.collider.gameObject.tag != "Button")
@@ -252,6 +252,6 @@ public class MonkeyBehavior : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(transform.position - distance, transform.position + distance);
+        Gizmos.DrawLine(transform.position - distance + Vector3.up, transform.position + distance + Vector3.up);
     }
 }
