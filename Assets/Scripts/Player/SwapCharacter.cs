@@ -60,7 +60,7 @@ public class SwapCharacter : MonoBehaviour
         cam = Camera.main;
         mMeny = FindObjectOfType<MenyUI>().GetComponent<MenyUI>();
         oldCameraPos = cam.transform.position;
-        mMeny = GameObject.Find("Meny").GetComponent<MenyUI>();
+        
     }
 
     // Update is called once per frame
