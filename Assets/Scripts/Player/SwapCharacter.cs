@@ -7,6 +7,9 @@ public class SwapCharacter : MonoBehaviour
 {
     public Image monkeyImage, dogImage, eelImage;
 
+    public bool keepMusicWhenChangingScene = false;
+    static public bool keepMusic = true;
+
     MenyUI mMeny;
     public List<GameObject> characters;
     private MonkeyBehavior mMonkey;
@@ -47,6 +50,7 @@ public class SwapCharacter : MonoBehaviour
 
     private void Awake()
     {
+        keepMusic = true;
         isHighlighting = false;
         mMonkey = characters[0].GetComponent<MonkeyBehavior>();
         mDog = characters[1].GetComponent<DogBehaviour>();
@@ -253,6 +257,7 @@ public class SwapCharacter : MonoBehaviour
 
     IEnumerator FadeBeforenextLevel()
     {
+        keepMusic = keepMusicWhenChangingScene;
         FadeToBlack.fadeIn = true;
         yield return new WaitForSeconds(1.5f);
         mMeny.NextLevel();
