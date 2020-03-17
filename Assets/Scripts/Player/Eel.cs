@@ -45,7 +45,7 @@ public class Eel : MonoBehaviour
     float targetLightScaleX, targetLightScaleY;
     float currentScaleX, currentScaleY;
     float startGravity;
-
+    bool loopLightOnce;
     Animator animator;
 
     void Start()
@@ -75,6 +75,9 @@ public class Eel : MonoBehaviour
             PickedUp();
         else
             GroundCheck();
+
+
+        Debug.Log("Eel grounded " + grounded);
     }
 
     private void FixedUpdate()
@@ -109,14 +112,20 @@ public class Eel : MonoBehaviour
         {
             if (lightIsActive)
             {
+                animator.SetBool("LoopLightOnce", false);
                 lightIsActive = false;
-                animator.Play("Placeholder Eel Idle");
-            }
-            else
-            {
-                lightIsActive = true;
                 animator.Play("Placeholder Eel Light");
             }
+            else 
+            {
+                animator.SetBool("LoopLightOnce", true);
+                lightIsActive = true;
+                animator.Play("Placeholder Eel Light");
+
+            }
+           
+           
+          
         }
 
         if (lightIsActive)
@@ -138,15 +147,24 @@ public class Eel : MonoBehaviour
     {
         if (grounded)
         {
+           
             if (lightIsActive)
-                animator.Play("Placeholder Eel Light");
+            {
+
+            }
+            
             else
+            {
                 animator.Play("Placeholder Eel Idle");
+                Debug.Log("Eel fall ani");
+
+            }
         }
-        else
+        else if (!grounded)
         {
             animator.Play("Placeholder Eel Fall");
         }
+        
     }
 
     void EelElectricity()
