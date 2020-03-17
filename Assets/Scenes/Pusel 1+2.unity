@@ -120,6 +120,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!82 &4941167 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 8255423682265384737, guid: 9a1a036917dcf4b4783342784eb7870e,
+    type: 3}
+  m_PrefabInstance: {fileID: 5639173549336691017}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &25496781 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4708210768440719743, guid: b1f6e19e0adce6f418a1dc16c60d0576,
@@ -8173,13 +8179,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5372217239826993889, guid: 5396933007d03b340a1769f37d5398d9,
         type: 3}
-      propertyPath: m_SortingLayerID
-      value: 281703697
+      propertyPath: m_SortingLayer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5372217239826993889, guid: 5396933007d03b340a1769f37d5398d9,
         type: 3}
-      propertyPath: m_SortingLayer
-      value: 11
+      propertyPath: m_SortingLayerID
+      value: 281703697
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372217239826993907, guid: 5396933007d03b340a1769f37d5398d9,
+        type: 3}
+      propertyPath: noCollision
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5372217239826993907, guid: 5396933007d03b340a1769f37d5398d9,
         type: 3}
