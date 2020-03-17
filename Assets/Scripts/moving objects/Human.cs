@@ -11,6 +11,19 @@ public class Human : MonoBehaviour
     private bool movingLeft = true;
     private bool nearMonkey;
 
+    [Tooltip("Audio source that plays the human gets charmed.")]
+    public AudioSource charmedSource;
+    [Tooltip("Audio source that plays the human gets scared.")]
+    public AudioSource scaredSource;
+    [Tooltip("Audio source that plays the audio clips.")]
+    public AudioSource stepSource;
+    [Tooltip("Audio clips that plays when the dog takes a step on the ground.")]
+    public AudioClip[] stepClips;
+    [Tooltip("The minimum and the maximum volume of the footstep sounds.")]
+    public float minVolume = 0.9f, maxVolume = 1.1f;
+    [Tooltip("The minimum and the maximum pitch of the footstep sounds.")]
+    public float minPitch = 0.9f, maxPitch = 1.1f;
+
     MonkeyBehavior monkey;
     public bool charmed;
     public bool scared;
@@ -18,7 +31,8 @@ public class Human : MonoBehaviour
     public BoxCollider2D box;
     Animator an;
     public Animation[] anim;
-    private SpriteRenderer sr;
+    [HideInInspector]
+    public SpriteRenderer sr;
     [Tooltip("Distance human will walk right")]
     public float maxDistanceRight;
     [Tooltip("Distance human will walk left")]
@@ -32,22 +46,19 @@ public class Human : MonoBehaviour
     public Vector2 RandomAmountStoppTime;
     private float timer;
     bool turn;
-    
-   
     public enum HumanState
     {
         Moving = 0,
         Charmed = 1,
         Scared = 2,
     }
-
     HumanState currentState;
    
-
     private void Awake()
     {
         box = transform.Find("HumanCollider").GetComponent<BoxCollider2D>();
     }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -108,15 +119,9 @@ public class Human : MonoBehaviour
                         turn = false;
                         timer = 0;
                     }
-                   
                 }
             }
-          
          }
-
-
-     
-       
     }
 
     public void SwitchHumanState(HumanState state)
@@ -134,26 +139,31 @@ public class Human : MonoBehaviour
                 currentState = HumanState.Scared;
             }
         }
-        
-       
         switch (currentState)
         {
             case HumanState.Moving:
                 moving = true;
-                
                 scared = false;
                 rb.isKinematic = false;
                 box.enabled = true;
                 break;
             case HumanState.Charmed:
-                
+                if(charmedSource != null)
+                {
+                    charmedSource.Play();
+                }
+                Debug.Log("Charm noise");
                 moving = false;
                 scared = false;
                 rb.isKinematic = true;
                 
                 break;
             case HumanState.Scared:
-                
+                if(scaredSource != null)
+                {
+                    scaredSource.Play();
+                }
+                Debug.Log("Scared noise");
                 moving = false;
                 rb.isKinematic = true;
                 
@@ -161,13 +171,11 @@ public class Human : MonoBehaviour
             default:
                 break;
         }
-        Debug.Log(currentState);
+        //Debug.Log(currentState);
     }
 
     void Update()
     {
-
-
         if (currentState == HumanState.Moving)
         {
             if (turn)
@@ -176,7 +184,7 @@ public class Human : MonoBehaviour
             }
             else
             an.Play("HumanWalk");
-
+            //PlayStepSound();
         }
         else if (currentState == HumanState.Scared)
         {
@@ -186,16 +194,14 @@ public class Human : MonoBehaviour
         {
             an.Play("HumanIdle");
         }
-        
-
-    
     }
+
     private void OnDrawGizmos()
     {
-
         Gizmos.color = Color.red;
         Gizmos.DrawLine(new Vector3(-maxDistanceLeft, 0, 0) + gizmopos, new Vector3(maxDistanceRight, 0, 0) + gizmopos);
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Monkey")
@@ -214,6 +220,7 @@ public class Human : MonoBehaviour
             //scared = true;
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Monkey")
@@ -221,7 +228,6 @@ public class Human : MonoBehaviour
             nearMonkey = false;
             SwitchHumanState(HumanState.Moving);
             //scared = false;
-            
         }
     }
 
@@ -230,6 +236,17 @@ public class Human : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             Physics2D.IgnoreCollision(box, other.gameObject.GetComponent<BoxCollider2D>());
+        }
+    }
+
+    public void PlayStepSound()
+    {
+        if (stepClips.Length > 0)
+        {
+            int randomSource = Random.Range(0, stepClips.Length);
+            stepSource.volume = Random.Range(minVolume, maxVolume);
+            stepSource.pitch = Random.Range(minPitch, maxPitch);
+            stepSource.PlayOneShot(stepClips[randomSource]);
         }
     }
 }
