@@ -41,15 +41,30 @@ public class DogCharmingState : DogState
         foreach (RaycastHit2D hit in humanSearch)
         {
             Debug.Log(charmedHumans.Count);
-            if (hit.collider.gameObject.tag != "Button")
+            if (hit.collider.gameObject.tag != "MainBody")
             {
                 if (!hit.collider.gameObject.GetComponentInParent<Human>().charmed)
                 {
                 charmedHumans.Add(hit.collider.gameObject);
                 hit.collider.gameObject.GetComponentInParent<Human>().charmed = true;
-                    hit.collider.gameObject.GetComponentInParent<Human>().SwitchHumanState(Human.HumanState.Charmed);
+                hit.collider.gameObject.GetComponentInParent<Human>().SwitchHumanState(Human.HumanState.Charmed);
+                    if(hit.collider.gameObject.transform.position.x > dog.transform.position.x)
+                    {
+                        if(hit.collider.gameObject.GetComponentInParent<Human>().sr.flipX == true)
+                        {
+                            hit.collider.gameObject.GetComponentInParent<Human>().sr.flipX = false;
+                        }
+                    }
+                    else if(hit.collider.gameObject.transform.position.x < dog.transform.position.x)
+                    {
+                        if (hit.collider.gameObject.GetComponentInParent<Human>().sr.flipX == false)
+                        {
+                            hit.collider.gameObject.GetComponentInParent<Human>().sr.flipX = true;
+                        }
+                    }
                 }
             }
+           
         }
 
         if (Input.GetButtonDown("Light"))
