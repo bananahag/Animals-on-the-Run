@@ -40,9 +40,10 @@ AudioSource:
   m_GameObject: {fileID: 551644729}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  OutputAudioMixerGroup: {fileID: 2345523699437928809, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 61c158e456d091f40989019800d739ba, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -87,7 +88,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -248,7 +249,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -328,9 +329,10 @@ AudioSource:
   m_GameObject: {fileID: 1702939717}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 3783157902286593850, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
+    type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -375,7 +377,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -624,8 +626,10 @@ MonoBehaviour:
   scaredSource: {fileID: 1702939719}
   stepSource: {fileID: 1043698198}
   stepClips:
-  - {fileID: 8300000, guid: 1d213f904be621b4c8832fe3562abd60, type: 3}
-  - {fileID: 8300000, guid: 943e711f1b4ead6469302211ae35649a, type: 3}
+  - {fileID: 8300000, guid: 40267dd44fe63a24b8ff72f0237c83f7, type: 3}
+  - {fileID: 8300000, guid: 055de0a168655224bb9dc52770559bc4, type: 3}
+  - {fileID: 8300000, guid: c5296f75a4b6c0c458a29e654976ed66, type: 3}
+  - {fileID: 8300000, guid: 50b15e501d84a1a4eb3c84ef49d4a0c1, type: 3}
   minVolume: 0.9
   maxVolume: 1.1
   minPitch: 0.9

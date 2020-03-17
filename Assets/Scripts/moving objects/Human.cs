@@ -89,7 +89,6 @@ public class Human : MonoBehaviour
                     timer += Time.deltaTime;
                     if (timer > stoppTime && !charmed && !scared)
                     {
-                        
                         fraction = 0;
                         oldpos = transform.position;
                         movingLeft = !movingLeft;
@@ -111,7 +110,6 @@ public class Human : MonoBehaviour
                     timer += Time.deltaTime;
                     if (timer > stoppTime && !charmed && !scared)
                     {
-                        
                         fraction = 0;
                         oldpos = transform.position;
                         movingLeft = !movingLeft;
@@ -171,7 +169,6 @@ public class Human : MonoBehaviour
             default:
                 break;
         }
-        //Debug.Log(currentState);
     }
 
     void Update()
@@ -192,7 +189,7 @@ public class Human : MonoBehaviour
         }
         else if (currentState == HumanState.Charmed)
         {
-            an.Play("HumanIdle");
+            an.Play("HumanCharmed");
         }
     }
 
@@ -208,16 +205,24 @@ public class Human : MonoBehaviour
         {
             if (collision.gameObject.transform.position.x > transform.position.x)
             {
-                sr.flipX = true;
+                if(currentState != HumanState.Charmed)
+                {
+                    sr.flipX = true;
+                }
             }
             else
             {
-                sr.flipX = false;
+                if (currentState != HumanState.Charmed)
+                {
+                    sr.flipX = false;
+                }
             }
             monkey = collision.gameObject.GetComponent<MonkeyBehavior>();
             nearMonkey = true;
-            SwitchHumanState(HumanState.Scared);
-            //scared = true;
+            if(currentState != HumanState.Charmed)
+            {
+                SwitchHumanState(HumanState.Scared);
+            }
         }
     }
 
@@ -226,8 +231,10 @@ public class Human : MonoBehaviour
         if (collision.gameObject.tag == "Monkey")
         {
             nearMonkey = false;
-            SwitchHumanState(HumanState.Moving);
-            //scared = false;
+            if(currentState != HumanState.Charmed)
+            {
+                SwitchHumanState(HumanState.Moving);
+            }
         }
     }
 
