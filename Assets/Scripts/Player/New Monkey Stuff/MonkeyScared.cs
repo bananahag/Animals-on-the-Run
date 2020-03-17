@@ -94,12 +94,10 @@ public class MonkeyScared : MonkeyState
     {
         if (monkey.runAwayScared)
         {
-            Debug.Log("Am here3");
             monkey.ChangeState(monkey.groundedState);
         }
         else
         {
-            Debug.Log("Am here4");
             monkey.animator.Play("Placeholder Monkey Crying");
             
         }
