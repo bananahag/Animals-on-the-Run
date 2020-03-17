@@ -255,16 +255,17 @@ MonoBehaviour:
   cage: {fileID: 0}
   scaryObject: {fileID: 0}
   active: 0
+  humansHit: []
   groundedState:
     monkey: {fileID: 4421345913882775120}
     stepSource: {fileID: 8255423683559090705}
     stepClips:
-    - {fileID: 8300000, guid: efda9cdfd0a4cfe43ad41b71d79db1ca, type: 3}
-    - {fileID: 8300000, guid: 2dddad1c55ddca84fb25cc10b0029f0d, type: 3}
-    - {fileID: 8300000, guid: e08a5e27c3e4f6a4f864c97d8c4f64f7, type: 3}
-    - {fileID: 8300000, guid: c5a5a2af9678c834da916c0e66145be7, type: 3}
-    - {fileID: 8300000, guid: 18159aacc004a214c8b238152b3f581e, type: 3}
-    - {fileID: 8300000, guid: 01bc77f47c07bc14aa10219fa3c853a2, type: 3}
+    - {fileID: 8300000, guid: c5a7db14b0cd9e640b4251075a9531bc, type: 3}
+    - {fileID: 8300000, guid: b8ed6c22f5b33aa4795026ec5837fb33, type: 3}
+    - {fileID: 8300000, guid: bd4d3359978780843b52b8548154666e, type: 3}
+    - {fileID: 8300000, guid: d57d81f409646364d8157bd49a9245b9, type: 3}
+    - {fileID: 8300000, guid: ea413ed5689c54e44b2607bc79c1ead0, type: 3}
+    - {fileID: 8300000, guid: 268678fe175f4ae41b954fbb25b4fa01, type: 3}
     minVolume: 1
     maxVolume: 1
     minPitch: 0.9
@@ -290,10 +291,10 @@ MonoBehaviour:
     monkey: {fileID: 4421345913882775120}
     ladderClimbSource: {fileID: 8255423683727892403}
     ladderClimbClips:
-    - {fileID: 8300000, guid: fc8c7be8ef14ee747820ace76ae8c511, type: 3}
-    - {fileID: 8300000, guid: 1b3891867742cca4ca60e07526fd1c14, type: 3}
-    - {fileID: 8300000, guid: 9e6c31de46ce1954b9adca9d12adab63, type: 3}
-    - {fileID: 8300000, guid: 58ed0fe273d15c74382c8d034ae871f7, type: 3}
+    - {fileID: 8300000, guid: a1189ea8f03fd5a48a5a5ea810bd7fd6, type: 3}
+    - {fileID: 8300000, guid: 53b7d5cd79dece54eaa337e7354f97b0, type: 3}
+    - {fileID: 8300000, guid: 87f46d9f55b6e9f489e66c5807069772, type: 3}
+    - {fileID: 8300000, guid: ff8331f583338b74cae287239ebe4bd0, type: 3}
     minVolume: 0.9
     maxVolume: 1.1
     minPitch: 0.9
@@ -320,6 +321,7 @@ MonoBehaviour:
     scaredSource: {fileID: 8255423682953636890}
     scared: 0.5
     runAwayTime: 0.5
+    reactToHumanDistance: 10
 --- !u!1 &8255423682190285717
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,7 +364,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 8876426234556219452, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 84ded920bcc2a3147b45f0f822813239, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 38dd0313bb7dff841a312e120745d735, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -708,7 +710,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -710569530081675400, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: db71a1a726804ad41b4da949c02757e2, type: 3}
+  m_audioClip: {fileID: 8300000, guid: bd42bfc975b03bd4d8a4be3e353c8c23, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -879,9 +881,9 @@ AudioSource:
   m_GameObject: {fileID: 8255423682953636889}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 8876426234556219452, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
+  OutputAudioMixerGroup: {fileID: -4935330453632352356, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 62e4087fff4037946bd20399a1a70aa0, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 96c9b0aadc367bb4fbb5c9415bada083, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1092,7 +1094,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1386406988238519985, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 8526617952616084ba796e72faf7d365, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 3f629f3f015625e44a9b25b0bfe397b2, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1611,7 +1613,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 545565701995344312, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: a4faa37629b154e4189cacbcd4a2b19e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e9d9ad06a1a810c40b08c8dead8c3a0b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
