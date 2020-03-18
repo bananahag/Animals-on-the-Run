@@ -23,7 +23,7 @@ public class MonkeyBehavior : MonoBehaviour
     [HideInInspector]
     public float x, y, ladderXPosition;
     [HideInInspector]
-    public bool facingRight, carryingBucket, canClimb, canPickUpEel, canPullLever, canOpenCage, touchingThorns, scaredCheck, runAwayScared, monkeyLevelComplete;
+    public bool facingRight, carryingBucket, canClimb, canPickUpEel, canPullLever, canOpenCage, touchingThorns, scaredCheck, runAwayScared, monkeyLevelComplete, runToRight, runRightCheck;
     [HideInInspector]
     public Vector2 movement;
     [HideInInspector]
@@ -122,6 +122,11 @@ public class MonkeyBehavior : MonoBehaviour
             x = Input.GetAxisRaw("Horizontal");
             y = Input.GetAxisRaw("Vertical");
         }
+        else if (runToRight)
+        {
+            x = 1.0f;
+            y = 0.0f;
+        }
         else
         {
             x = 0.0f;
@@ -186,7 +191,8 @@ public class MonkeyBehavior : MonoBehaviour
 
         if (other.gameObject.tag == "Eel")
         {
-            eel = other.gameObject;
+            if (other.gameObject.GetComponent<Eel>() != null)
+                eel = other.gameObject;
             canPickUpEel = true;
         }
 
@@ -220,6 +226,9 @@ public class MonkeyBehavior : MonoBehaviour
 
         if (other.gameObject.tag == "Finish")
             monkeyLevelComplete = true;
+
+        if (other.gameObject.tag == "WalkRight")
+            runRightCheck = true;
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -241,6 +250,9 @@ public class MonkeyBehavior : MonoBehaviour
 
         if (other.gameObject.tag == "Finish")
             monkeyLevelComplete = false;
+
+        if (other.gameObject.tag == "WalkRight")
+            runRightCheck = false;
     }
 
     public void ChangeState(MonkeyState targetState)
