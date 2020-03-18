@@ -39,7 +39,7 @@ public class Eel : MonoBehaviour
     public bool active = false;
 
     [HideInInspector]
-    public bool levelComplete = false;
+    public bool levelComplete = false, runRightCheck;
 
     bool canPlayLightSource;
     float targetLightScaleX, targetLightScaleY;
@@ -67,17 +67,20 @@ public class Eel : MonoBehaviour
 
     void Update()
     {
+        
+        
         EelLight();
         EelElectricity();
         if (canAct)
             EelAnimations();
+        
         if (pickedUp)
             PickedUp();
         else
             GroundCheck();
 
 
-        Debug.Log("Eel grounded " + grounded);
+        
     }
 
     private void FixedUpdate()
@@ -97,10 +100,12 @@ public class Eel : MonoBehaviour
                 animator.Play("Placeholder Eel Land");
                 StartCoroutine(LandingTimer());
             }
+            
             grounded = true;
         }
         else
         {
+            animator.Play("Placeholder Eel Fall");
             canAct = false;
             grounded = false;
         }
@@ -156,7 +161,6 @@ public class Eel : MonoBehaviour
             else
             {
                 animator.Play("Placeholder Eel Idle");
-                Debug.Log("Eel fall ani");
 
             }
         }
@@ -223,12 +227,12 @@ public class Eel : MonoBehaviour
         {
             if (monkey != null && monkey.GetComponent<MonkeyBehavior>().facingRight)
             {
-                Vector3 offset = new Vector2(1.5f, 0.5f);
+                Vector3 offset = new Vector2(1.5f, -0.5f);
                 transform.position = monkey.transform.position + offset;
             }
             else if (monkey != null && !monkey.GetComponent<MonkeyBehavior>().facingRight)
             {
-                Vector3 offset = new Vector2(-1.5f, 0.5f);
+                Vector3 offset = new Vector2(-1.5f, -0.5f);
                 transform.position = monkey.transform.position + offset;
             }
             GetComponent<Rigidbody2D>().gravityScale = startGravity;
@@ -250,12 +254,16 @@ public class Eel : MonoBehaviour
     {
         if (other.gameObject.tag == "Finish")
             levelComplete = true;
+        if (other.gameObject.tag == "WalkRight")
+            runRightCheck = true;
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag == "Finish")
             levelComplete = false;
+        if (other.gameObject.tag == "WalkRight")
+            runRightCheck = false;
     }
 
     IEnumerator ElectricityTimer()

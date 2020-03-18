@@ -71,7 +71,7 @@ public class DogBehaviour : MonoBehaviour
     [HideInInspector]
     public GameObject human, rope;
     [HideInInspector]
-    public bool levelCompleted = false;
+    public bool levelCompleted = false, runToRight, runRightCheck;
 
     public DogGroundedState groundedState = new DogGroundedState();
     public DogInAirState inAirState = new DogInAirState();
@@ -153,6 +153,8 @@ public class DogBehaviour : MonoBehaviour
         {
             x = Input.GetAxisRaw("Horizontal");
         }
+        else if (runToRight)
+            x = 1.0f;
         else
         {
             x = 0.0f;
@@ -213,6 +215,8 @@ public class DogBehaviour : MonoBehaviour
             closeToRope = true;
             rope = other.gameObject;
         }
+        if (other.gameObject.tag == "WalkRight")
+            runRightCheck = true;
         currentState.OnTriggerEnter2D(other);
     }
 
@@ -220,6 +224,8 @@ public class DogBehaviour : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Rope"))
             closeToRope = false;
+        if (other.gameObject.tag == "WalkRight")
+            runRightCheck = false;
         currentState.OnTriggerExit2D(other);
     }
 

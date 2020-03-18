@@ -41,6 +41,8 @@ public class SwapCharacter : MonoBehaviour
     float fraction;
     int targetPosition;
 
+    bool animalsRunning;
+
     public Vector2 minCameraPos = new Vector2(-100, -100), maxCameraPos = new Vector2(100, 100);
 
     public enum ActiveCharacter
@@ -62,6 +64,7 @@ public class SwapCharacter : MonoBehaviour
     }
     void Start()
     {
+        animalsRunning = false;
         SelectedChar = 0;   
         cam = Camera.main;
         mMeny = FindObjectOfType<MenyUI>().GetComponent<MenyUI>();
@@ -92,7 +95,7 @@ public class SwapCharacter : MonoBehaviour
 
         if (!isHighlighting)
         {
-            if (Input.GetButtonDown("Swap1") && !DialogueManager.isOpen && DialogueManager.canContinue)
+            if (Input.GetButtonDown("Swap1") && !DialogueManager.isOpen && DialogueManager.canContinue && !animalsRunning)
             {
                 timePassed = 0.0f;
                 fraction = 0.0f;
@@ -114,7 +117,7 @@ public class SwapCharacter : MonoBehaviour
                     characters[1].GetComponent<Rigidbody2D>().velocity = new Vector3(0, characters[1].GetComponent<Rigidbody2D>().velocity.y, 0);
                 }
             }
-            else if (Input.GetButtonDown("Swap2") && !DialogueManager.isOpen && DialogueManager.canContinue)
+            else if (Input.GetButtonDown("Swap2") && !DialogueManager.isOpen && DialogueManager.canContinue && !animalsRunning)
             {
                 timePassed = 0.0f;
                 fraction = 0.0f;
@@ -140,7 +143,7 @@ public class SwapCharacter : MonoBehaviour
 
             if (SelectedChar == (int)ActiveCharacter.Monkey)
             {
-                if (!DialogueManager.isOpen && DialogueManager.canContinue)
+                if (!DialogueManager.isOpen && DialogueManager.canContinue && !animalsRunning)
                 {
                     mEel.active = false;
                     mDog.active = false;
@@ -159,7 +162,7 @@ public class SwapCharacter : MonoBehaviour
 
             else if (SelectedChar == (int)ActiveCharacter.Dog)
             {
-                if (!DialogueManager.isOpen && DialogueManager.canContinue)
+                if (!DialogueManager.isOpen && DialogueManager.canContinue && !animalsRunning)
                 {
                     mEel.active = false;
                     mDog.active = true;
@@ -176,7 +179,7 @@ public class SwapCharacter : MonoBehaviour
             }
             else if (SelectedChar == (int)ActiveCharacter.Eel)
             {
-                if (!DialogueManager.isOpen && DialogueManager.canContinue)
+                if (!DialogueManager.isOpen && DialogueManager.canContinue && !animalsRunning)
                 {
                     mEel.active = true;
                     mDog.active = false;
@@ -218,6 +221,9 @@ public class SwapCharacter : MonoBehaviour
         {
             StartCoroutine(FadeBeforenextLevel());
         }
+
+        if (!animalsRunning && mMonkey.runRightCheck && mDog.runRightCheck && mEel.runRightCheck)
+            StartCoroutine(RunToTheRight());
         if (fraction < 1.0f)
             MoveCamera();
 
@@ -268,14 +274,21 @@ public class SwapCharacter : MonoBehaviour
 
     IEnumerator RunToTheRight()
     {
+        animalsRunning = true;
+        mEel.active = false;
+        mMonkey.active = false;
+        mDog.active = false;
+
         if (!mMonkey.carryingBucket)
         {
-            //Stop every animal
             mMonkey.ChangeState(mMonkey.pickingUpState);
             yield return new WaitForSeconds(1.5f);
         }
-        //Make every animal run
+
+        mMonkey.runToRight = true;
+        mDog.runToRight = true;
         yield return new WaitForSeconds(runToTheRightTime);
-        //Stop every animal
+        mMonkey.runToRight = false;
+        mDog.runToRight = true;
     }
 }
