@@ -38,7 +38,7 @@ public class DogGroundedState : DogState
         }
         else
         {
-            dog.animator.Play("DogIdle");
+            dog.animator.Play("idle");
         }
         dog.canMoveObject = true;
     }

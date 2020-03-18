@@ -10,7 +10,7 @@ public class DogCharmingState : DogState
     public AudioSource charmingSource;
     public float charmDistance = 100.0f;
     List<GameObject> charmedHumans;
-    
+    bool startcharmonce;
 
     public override void OnValidate(DogBehaviour dog)
     {
@@ -23,8 +23,8 @@ public class DogCharmingState : DogState
         charmingSource.loop = true;
         charmingSource.Play();
         //dog.charmingHuman = true;
-           
-        dog.animator.Play("Charming");
+        startcharmonce = true;
+        
         dog.movement = new Vector2(0, 0);
     }
 
@@ -32,11 +32,16 @@ public class DogCharmingState : DogState
     {
         charmingSource.Stop();
         charmedHumans.Clear();
+        Debug.Log("Leaving charming");
     }
 
     public override void Update()
     {
-
+        if (startcharmonce)
+        {
+            dog.animator.Play("Charming");
+            startcharmonce = false;
+        }
         RaycastHit2D[] humanSearch = Physics2D.RaycastAll(dog.transform.position - dog.charmDistanceVector, Vector2.right, charmDistance, dog.humanLayerMask);
         foreach (RaycastHit2D hit in humanSearch)
         {

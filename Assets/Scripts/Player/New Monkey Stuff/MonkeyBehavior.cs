@@ -88,7 +88,7 @@ public class MonkeyBehavior : MonoBehaviour
     {
         currentState.Update();
         
-        Debug.Log(humansHit.Count);
+
         
         if(touchingThorns && currentState != groundedState && touchingThorns && currentState != jumpsquatState)
         {

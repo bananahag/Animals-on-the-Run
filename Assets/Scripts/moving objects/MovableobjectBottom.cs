@@ -15,7 +15,7 @@ public class MovableobjectBottom : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        print("hit");
+
         bool lefthit = false;
         bool righthit = false;
         
