@@ -39,7 +39,7 @@ public class Eel : MonoBehaviour
     public bool active = false;
 
     [HideInInspector]
-    public bool levelComplete = false;
+    public bool levelComplete = false, runRightCheck;
 
     bool canPlayLightSource;
     float targetLightScaleX, targetLightScaleY;
@@ -254,12 +254,16 @@ public class Eel : MonoBehaviour
     {
         if (other.gameObject.tag == "Finish")
             levelComplete = true;
+        if (other.gameObject.tag == "WalkRight")
+            runRightCheck = true;
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.tag == "Finish")
             levelComplete = false;
+        if (other.gameObject.tag == "WalkRight")
+            runRightCheck = false;
     }
 
     IEnumerator ElectricityTimer()

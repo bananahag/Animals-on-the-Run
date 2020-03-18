@@ -222,7 +222,7 @@ public class SwapCharacter : MonoBehaviour
             StartCoroutine(FadeBeforenextLevel());
         }
 
-        if (!animalsRunning && mMonkey.runRightCheck)// && mDog.runRightCheck)
+        if (!animalsRunning && mMonkey.runRightCheck && mDog.runRightCheck && mEel.runRightCheck)
             StartCoroutine(RunToTheRight());
         if (fraction < 1.0f)
             MoveCamera();
@@ -286,9 +286,9 @@ public class SwapCharacter : MonoBehaviour
         }
 
         mMonkey.runToRight = true;
-        //mDog.runToRight = true;
+        mDog.runToRight = true;
         yield return new WaitForSeconds(runToTheRightTime);
         mMonkey.runToRight = false;
-        //mDog.runToRight = true;
+        mDog.runToRight = true;
     }
 }
