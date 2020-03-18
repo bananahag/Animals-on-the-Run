@@ -42,7 +42,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 8808308430383871926, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: d3f305185e6121947a026c9c195a1b8c, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6027fdb56ee78544bb1e40ffba32cc32, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -215,7 +215,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -4389410140675382664, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: a2537af0855f43f4f86928460b162481, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 68e19c47b01596d4bad5a083dfe376fb, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -380,7 +380,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -4858433861934423544, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 8e8016352c93da742bc021434c864b45, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 2e55e47ea44508047a856fab20f02578, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -726,7 +726,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 6107627254412045288, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 5b0e7da5a96491c4e92722f5b4c50893, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 68e19c47b01596d4bad5a083dfe376fb, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -899,7 +899,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -7352144704961639128, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 8b96ad47c2f1252468653ad245e05c9f, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c4de5fb6c71b37c4c8d1dc1ac476c288, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1072,7 +1072,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 8243929617207916356, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: d09a3d906a714994b8135d665730d3aa, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 80e260c1ca3dd0e469b278f3c243f39c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1307,8 +1307,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1522134635
+  m_SortingLayer: 15
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 7bdbcb8c78241b64e9844283eb5a1cea, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1402,6 +1402,10 @@ MonoBehaviour:
   landing: 0
   closeToRope: 0
   pullingRope: 0
+  humanLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  charmDistanceVector: {x: 0, y: 0, z: 0}
   affectedObject: {fileID: 0}
   human: {fileID: 0}
   rope: {fileID: 0}
@@ -1414,14 +1418,14 @@ MonoBehaviour:
       m_Bits: 256
     stepSource: {fileID: 128939683417366840}
     stepClips:
-    - {fileID: 8300000, guid: 9ff7a04ea14ad2b42b39f73ebf791c91, type: 3}
-    - {fileID: 8300000, guid: 95559b384dfca344d8a2289499813071, type: 3}
-    - {fileID: 8300000, guid: 536c4767446dc304e8ab6ddce42b20e8, type: 3}
-    - {fileID: 8300000, guid: 2c662b2e1d76e5947ba0fda591e8cfb7, type: 3}
-    - {fileID: 8300000, guid: 0bbb950dfe8f73f4f8239da7f8873c35, type: 3}
-    - {fileID: 8300000, guid: 82ef7fcc0e8ca37419f4bc9d70ed71e0, type: 3}
-    - {fileID: 8300000, guid: 352b4c7d674fc484cb66fce72b659eba, type: 3}
-    - {fileID: 8300000, guid: 9c47755b108e71942be574f44e350bce, type: 3}
+    - {fileID: 8300000, guid: 5b30fffa63e659141921651e2ee02011, type: 3}
+    - {fileID: 8300000, guid: 04ea981f08ea3604682793e83813b358, type: 3}
+    - {fileID: 8300000, guid: 4250a3ef006275c44b2c92bd94ab9164, type: 3}
+    - {fileID: 8300000, guid: 5285b439154c5f14a81867845261ac40, type: 3}
+    - {fileID: 8300000, guid: 71deb8936c8eb1b4f8545e2958520aca, type: 3}
+    - {fileID: 8300000, guid: 1ce0a12b63a572a40875a272096468da, type: 3}
+    - {fileID: 8300000, guid: 97863592fc5af064386d922e441741b8, type: 3}
+    - {fileID: 8300000, guid: 7685d5da70d2d054881852f7e14a1d19, type: 3}
     minVolume: 0.95
     maxVolume: 1.05
     minPitch: 0.95
@@ -1446,6 +1450,7 @@ MonoBehaviour:
   charmingState:
     dog: {fileID: 128939683171526822}
     charmingSource: {fileID: 4385888924146959665}
+    charmDistance: 100
   jumpsquatState:
     dog: {fileID: 128939683171526822}
     jumpSource: {fileID: 128939681855200353}

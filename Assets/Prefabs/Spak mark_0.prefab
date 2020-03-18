@@ -145,10 +145,11 @@ MonoBehaviour:
   incactiveAnimationName: spak tillbak
   activeAnimationName: spak animation
   cannotBeTurnedOffAgain: 0
-  activateSFX: {fileID: 8300000, guid: ed4fc2784cd7c45469d121118e084d37, type: 3}
+  activateSFX: {fileID: 8300000, guid: c045187aae0cc0849b0923c5af19aa4c, type: 3}
   elevator: {fileID: 0}
   bridge: {fileID: 0}
   activated: 0
+  needsElectricity: 0
 --- !u!82 &749184303785460541
 AudioSource:
   m_ObjectHideFlags: 0
@@ -158,7 +159,8 @@ AudioSource:
   m_GameObject: {fileID: 749184303785460530}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 4475908368527873172, guid: 2692ab4f1cedd7b44b379ce5df0cfd19,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
