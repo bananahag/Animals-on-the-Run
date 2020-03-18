@@ -952,6 +952,7 @@ AudioMixerController:
     - 053b435aa11d6f4418da5b02354b3afa
     - c5fad28c46b592e45ba31ab166b95cc6
     - b97cc0a47498944458938c447f58dd29
+    - 847654463abda034ca0e17fbda5ec96d
     name: Eel
   - guids:
     - 4ac487c30a7fef443884b6b1b0061ca0
@@ -1366,6 +1367,25 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &3290460374345082572
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MenuButtons
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 847654463abda034ca0e17fbda5ec96d
+  m_Children: []
+  m_Volume: 194afce6733f2e949ace6a88b5005f5d
+  m_Pitch: 4d261ada95e8fb94298435c741b6a152
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 6602397065854103326}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!244 &3369047388200693346
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -1418,6 +1438,7 @@ AudioMixerGroupController:
   - {fileID: 7304024303170996183}
   - {fileID: -8253605020129662427}
   - {fileID: 8243929617207916356}
+  - {fileID: 3290460374345082572}
   m_Volume: 9b080f3cc91dba7499cc6bc3d5b95a8e
   m_Pitch: fd7a1f686c1cf3345a6adca51d70a181
   m_Send: 00000000000000000000000000000000
@@ -1601,6 +1622,20 @@ AudioMixerEffectController:
   m_EffectID: 29345c92a02dc6948aba40b1a29517c9
   m_EffectName: Attenuation
   m_MixLevel: 97b2157e16e48cb4c9f3cbc6284531b1
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &6602397065854103326
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: fc061f5f015065844a57cd29acd3a4b7
+  m_EffectName: Attenuation
+  m_MixLevel: 101facb6898ab6c41bcbf22b395ee810
   m_Parameters: []
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
