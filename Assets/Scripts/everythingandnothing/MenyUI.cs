@@ -13,7 +13,7 @@ public class MenyUI : MonoBehaviour
     public static int scene;
     bool paused = false;
     public AudioSource buttonAudioSource;
-   
+    public AudioSource hoveroverSound;
 
     private void Start()
     {
@@ -71,5 +71,9 @@ public class MenyUI : MonoBehaviour
     {
         buttonAudioSource.Play();
         Application.Quit();
+    }
+    public void HoveroverSound()
+    {
+        hoveroverSound.Play();
     }
 }

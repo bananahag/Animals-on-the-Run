@@ -198,6 +198,7 @@ GameObject:
   - component: {fileID: 750198806}
   - component: {fileID: 750198805}
   - component: {fileID: 750198804}
+  - component: {fileID: 750198807}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -319,6 +320,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 750198802}
   m_CullTransparentMesh: 0
+--- !u!114 &750198807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750198802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1422063337}
+          m_MethodName: HoveroverSound
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!1 &1366331975
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,6 +515,11 @@ PrefabInstance:
       propertyPath: buttonAudioSource
       value: 
       objectReference: {fileID: 1422063339}
+    - target: {fileID: 867639363094330449, guid: aa6c26097966c7a4e9ba29811f87fe74,
+        type: 3}
+      propertyPath: hoverOversound
+      value: 
+      objectReference: {fileID: 1422063340}
     - target: {fileID: 867639362221688523, guid: aa6c26097966c7a4e9ba29811f87fe74,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -1152,6 +1188,7 @@ GameObject:
   - component: {fileID: 1866854416}
   - component: {fileID: 1866854415}
   - component: {fileID: 1866854414}
+  - component: {fileID: 1866854417}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -1273,3 +1310,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1866854412}
   m_CullTransparentMesh: 0
+--- !u!114 &1866854417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866854412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1422063337}
+          m_MethodName: HoveroverSound
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
