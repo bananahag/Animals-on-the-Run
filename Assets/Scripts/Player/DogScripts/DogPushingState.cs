@@ -10,6 +10,8 @@ public class DogPushingState : DogState
     [HideInInspector]
     public bool dropBox;
     [HideInInspector]
+    public bool dropRope;
+    [HideInInspector]
     public bool boxGrounded;
 
     bool canPlayPushSource;
@@ -50,6 +52,7 @@ public class DogPushingState : DogState
 
         dog.movingObject = true;
         dropBox = false;
+        dropRope = false;
     }
     public override void Update()
     {
@@ -103,9 +106,7 @@ public class DogPushingState : DogState
         }
         else if (Input.GetButtonDown("Interact") && dog.pullingRope)
         {
-            dog.rope.GetComponent<StallRope>().dogIsPulling = false;
-            dog.closeToRope = false;
-            dog.ChangeState(dog.groundedState);
+            dropRope = true;
         }
 
     }
@@ -131,7 +132,10 @@ public class DogPushingState : DogState
             if (dog.x != 0)
             {
                 if (canPlayPushSource)
+                {
                     pushSource.Play();
+                }
+
                 canPlayPushSource = false;
             }
             else
@@ -168,6 +172,20 @@ public class DogPushingState : DogState
             {
                 pullRopeSource.Stop();
                 canPlayPushSource = true;
+            }
+
+            if (dropRope)
+            {
+                dog.rope.GetComponent<StallRope>().dogIsPulling = false;
+                dog.closeToRope = false;
+                if (dog.swimming)
+                {
+                    dog.ChangeState(dog.swimmingState);
+                }
+                if (dog.grounded)
+                {
+                    dog.ChangeState(dog.groundedState);
+                }
             }
         }
     }
