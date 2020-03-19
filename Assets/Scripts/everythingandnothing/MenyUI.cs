@@ -12,7 +12,8 @@ public class MenyUI : MonoBehaviour
     public static int scoreCount = 0;
     public static int scene;
     bool paused = false;
-
+    public AudioSource buttonAudioSource;
+    public AudioSource hoveroverSound;
 
     private void Start()
     {
@@ -22,6 +23,7 @@ public class MenyUI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            buttonAudioSource.Play();
             paused = !paused;
         }
         if (paused)
@@ -43,12 +45,12 @@ public class MenyUI : MonoBehaviour
     
     public void NextLevel()
     {
+        buttonAudioSource.Play();
         if (scene == 3)
         {
             scene = 0;
         }
         scene++;
-        Debug.Log(scene + "int");
         SceneManager.LoadScene(scene);
 
     }
@@ -67,6 +69,11 @@ public class MenyUI : MonoBehaviour
 
     public void QuitGame()
     {
+        buttonAudioSource.Play();
         Application.Quit();
+    }
+    public void HoveroverSound()
+    {
+        hoveroverSound.Play();
     }
 }

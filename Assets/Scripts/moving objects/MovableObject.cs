@@ -119,7 +119,10 @@ public class MovableObject : MonoBehaviour
         if (hitGround.collider != null || hitGroundLeft.collider != null || hitGroundRight.collider != null)
         {
             if (!grounded && landSource != null)
+            {
                 landSource.Play();
+            }
+
             grounded = true;
         }
         else
