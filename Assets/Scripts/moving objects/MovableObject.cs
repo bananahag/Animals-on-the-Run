@@ -73,8 +73,8 @@ public class MovableObject : MonoBehaviour
         }
         else
         {
-            topCollider.SetActive(true);
-            //topCollider.SetActive(false);
+            //topCollider.SetActive(true);
+            topCollider.SetActive(false);
             gameObject.layer = 8;
         }
 
@@ -85,7 +85,7 @@ public class MovableObject : MonoBehaviour
     void Update()
     {
         Physics2D.queriesStartInColliders = false;
-        RaycastHit2D hitBox = Physics2D.Raycast(transform.position, Vector2.up * transform.localScale.y, boxDistance, boxMask);
+        RaycastHit2D hitBox = Physics2D.Raycast(transform.position, Vector2.up * transform.localScale.y, boxDistance);
 
         if (hitBox.collider != null)
         {
