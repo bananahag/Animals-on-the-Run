@@ -18,6 +18,8 @@ public class Cage : MonoBehaviour
     public float minPitch = 1.0f, maxPitch = 1.0f;
 
     MenyUI menyUI;
+
+    public GameObject Dialog;
     public Sprite openedSprite;
     public GameObject animal;
     public float shakeSpeed = 50.0f;
@@ -33,6 +35,7 @@ public class Cage : MonoBehaviour
     {
         menyUI = FindObjectOfType<MenyUI>().GetComponent<MenyUI>();
         StartCoroutine(TweetSound());
+        Dialog.SetActive(false);
     }
 
     // Update is called once per frame
@@ -59,6 +62,7 @@ public class Cage : MonoBehaviour
             Instantiate(animal, transform.position, transform.rotation);
             StartCoroutine(Shake());
             opened = true;
+            Dialog.SetActive(true);
         }
     }
 
