@@ -115,6 +115,6 @@ public class MonkeyInAir : MonkeyState
                 monkey.animator.Play("Placeholder Monkey Fall");
         }
         else
-            monkey.animator.Play("Placeholder Monkey Fall Bucket");
+            monkey.animator.Play("Placeholder Monkey Fall");
     }
 }

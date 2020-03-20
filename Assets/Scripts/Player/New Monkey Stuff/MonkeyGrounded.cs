@@ -85,17 +85,31 @@ public class MonkeyGrounded : MonkeyState
     {
         if (monkey.x != 0)
         {
-            if (monkey.carryingBucket)
+            if (monkey.carryingBucket && monkey.playLightAnim)
+            {
+                monkey.animator.Play("Monkey Bucket Light Walk");
+            }
+            else if (monkey.carryingBucket)
+            {
                 monkey.animator.Play("Placeholder Monkey Walk Bucket");
+            }
             else
                 monkey.animator.Play("Placeholder Monkey Walk");
         }
         else
         {
-            if (monkey.carryingBucket)
+            if (monkey.carryingBucket && monkey.playLightAnim)
+            {
+                monkey.animator.Play("Monkey Bucket Light Idle");
+            }
+            else if (monkey.carryingBucket)
+            {
                 monkey.animator.Play("Placeholder Monkey Idle Bucket");
+            }
             else
+            {
                 monkey.animator.Play("Placeholder Monkey Idle");
+            }
         }
     }
 
