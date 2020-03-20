@@ -24,11 +24,13 @@ public class MonkeyPuttingDown : MonkeyState
         timePassed = 0.0f;
         putDownSource.Play();
         monkey.animator.Play("Placeholder Monkey Pickdown");
+       
     }
 
     public override void Exit()
     {
         monkey.carryingBucket = false;
+        monkey.playLightAnim = false;
         if (monkey.eel.GetComponent<Eel>() != null)
             monkey.eel.GetComponent<Eel>().MonkeyInteraction(false);
     }

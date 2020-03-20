@@ -28,6 +28,7 @@ public class MonkeyPickingUp : MonkeyState
         {
             monkey.eel.GetComponent<Eel>().monkey = monkey.gameObject;
             monkey.eel.GetComponent<Eel>().MonkeyInteraction(true);
+           
         }
         
     }
