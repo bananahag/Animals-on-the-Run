@@ -87,16 +87,14 @@ public class MovableObject : MonoBehaviour
         Physics2D.queriesStartInColliders = false;
         RaycastHit2D hitBox = Physics2D.Raycast(transform.position, Vector2.up * transform.localScale.y, boxDistance);
 
-        if (hitBox.collider != null)
+        if (hitBox.collider != null && !hitBox.collider.CompareTag("TopCollider"))
         {
-            if (hitBox.collider.CompareTag("MovableObject"))
-            {
-                GetComponent<Rigidbody2D>().mass = 100;
-            }
+            Debug.Log(hitBox.collider.gameObject);
+            GetComponent<Rigidbody2D>().mass = 100;
         }
         else
         {
-                GetComponent<Rigidbody2D>().mass = startMass;
+            GetComponent<Rigidbody2D>().mass = startMass;
         }
 
         if (!beingMoved)
