@@ -74,6 +74,7 @@ public class MonkeyBehavior : MonoBehaviour
         startGravityScale = rb2d.gravityScale;
 
         active = true;
+        eel = GameObject.FindGameObjectWithTag("Eel");
 
         currentState = groundedState;
         currentState.Enter();

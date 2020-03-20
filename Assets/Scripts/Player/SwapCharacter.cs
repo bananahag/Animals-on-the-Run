@@ -281,14 +281,16 @@ public class SwapCharacter : MonoBehaviour
 
         if (!mMonkey.carryingBucket)
         {
-            mMonkey.ChangeState(mMonkey.pickingUpState);
-            yield return new WaitForSeconds(1.5f);
+            mMonkey.carryingBucket = true;
+            mMonkey.eel.GetComponent<Eel>().monkey = mMonkey.gameObject;
+            mMonkey.eel.GetComponent<Eel>().MonkeyInteraction(true);
         }
+        mDog.groundedState.walkingSpeed = mMonkey.groundedState.walkingSpeedWhenCarryingBucket;
 
         mMonkey.runToRight = true;
         mDog.runToRight = true;
         yield return new WaitForSeconds(runToTheRightTime);
         mMonkey.runToRight = false;
-        mDog.runToRight = true;
+        mDog.runToRight = false;
     }
 }
