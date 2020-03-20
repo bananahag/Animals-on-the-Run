@@ -31,13 +31,14 @@ public class Eel : MonoBehaviour
 
     [HideInInspector]
     public bool grounded;
-    bool lightIsActive;
+    [HideInInspector]
+    public bool lightIsActive;
     bool canAct;
     float flashTime = 0.05f;
     bool pickedUp;
     [HideInInspector]
     public bool active = false;
-
+    
     [HideInInspector]
     public bool levelComplete = false, runRightCheck;
 
@@ -128,7 +129,7 @@ public class Eel : MonoBehaviour
                 animator.Play("Placeholder Eel Light");
 
             }
-           
+            
            
           
         }
@@ -247,7 +248,10 @@ public class Eel : MonoBehaviour
     void PickedUp()
     {
         if (monkey != null)
+        {
             transform.position = monkey.transform.position + monkeyCarryOffset;
+            monkey.GetComponent<MonkeyBehavior>().playLightAnim = lightIsActive;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
