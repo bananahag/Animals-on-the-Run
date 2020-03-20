@@ -14,28 +14,34 @@ public class MenyUI : MonoBehaviour
     bool paused = false;
     public AudioSource buttonAudioSource;
     public AudioSource hoveroverSound;
-
+   
     private void Start()
     {
         scoreText.text = scoreCount.ToString() + "/" + maxScore;
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+
+        if (scene != 0)
         {
-            buttonAudioSource.Play();
-            paused = !paused;
-        }
-        if (paused)
-        {
-            Time.timeScale = 0;
-            pauseMeny.SetActive(true);
-        }
-        else
-        {
-            Time.timeScale = 1;
-            pauseMeny.SetActive(false);
-        }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                
+                paused = !paused;
+            }
+            if (paused)
+            {
+               Time.timeScale = 0;
+               pauseMeny.SetActive(true);
+            }
+            else
+            {
+                Time.timeScale = 1;
+                pauseMeny.SetActive(false);
+            }
+        
+        }    
     }
 
     public void Resume()
@@ -45,20 +51,15 @@ public class MenyUI : MonoBehaviour
     
     public void NextLevel()
     {
-        buttonAudioSource.Play();
-        if (scene == 3)
-        {
-            scene = 0;
-        }
+        
         scene++;
         SceneManager.LoadScene(scene);
-
+        
     }
 
     public void AddScoreCount()
     {
         scoreCount++;
-        Debug.Log(scoreCount);
         PrintScore();
     }
 
@@ -69,11 +70,15 @@ public class MenyUI : MonoBehaviour
 
     public void QuitGame()
     {
-        buttonAudioSource.Play();
         Application.Quit();
     }
     public void HoveroverSound()
     {
         hoveroverSound.Play();
+    }
+
+    public void OnClickSound()
+    {
+        buttonAudioSource.Play();
     }
 }
