@@ -23,7 +23,7 @@ public class MonkeyBehavior : MonoBehaviour
     [HideInInspector]
     public float x, y, ladderXPosition;
     [HideInInspector]
-    public bool facingRight, carryingBucket, canClimb, canPickUpEel, canPullLever, canOpenCage, touchingThorns, scaredCheck, runAwayScared, monkeyLevelComplete, runToRight, runRightCheck;
+    public bool facingRight, carryingBucket, canClimb, canPickUpEel, canPullLever, canOpenCage, touchingThorns, scaredCheck, runAwayScared, monkeyLevelComplete, runToRight, runRightCheck, playLightAnim;
     [HideInInspector]
     public Vector2 movement;
     [HideInInspector]
@@ -74,6 +74,7 @@ public class MonkeyBehavior : MonoBehaviour
         startGravityScale = rb2d.gravityScale;
 
         active = true;
+        eel = GameObject.FindGameObjectWithTag("Eel");
 
         currentState = groundedState;
         currentState.Enter();
@@ -162,13 +163,20 @@ public class MonkeyBehavior : MonoBehaviour
 
     public void DropEel()
     {
-        if (eel != null && eel.GetComponent<Eel>() != null && carryingBucket)
-        {
-            if (facingRight)
-                facingRight = false;
-            else
-                facingRight = true;
-            ChangeState(puttingDownState);
+        if (eel != null && eel.GetComponent<Eel>() != null && carryingBucket)
+
+        {
+
+            if (facingRight)
+
+                facingRight = false;
+
+            else
+
+                facingRight = true;
+
+            ChangeState(puttingDownState);
+
         }
     }
 
