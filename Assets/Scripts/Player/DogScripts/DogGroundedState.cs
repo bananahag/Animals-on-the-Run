@@ -51,7 +51,7 @@ public class DogGroundedState : DogState
     public override void Update()
     {
         Physics2D.queriesStartInColliders = false;
-        RaycastHit2D hitBox = Physics2D.Raycast(dog.transform.position, Vector2.right * dog.direction * dog.transform.localScale.x, boxInteractDistance, boxMask);
+        RaycastHit2D hitBox = Physics2D.Raycast(dog.transform.position, Vector2.right * dog.direction * dog.transform.localScale.x, boxInteractDistance);
         if(hitBox.collider != null)
         {
             if (hitBox.collider.CompareTag("MovableObject") && Input.GetButtonDown("Interact") && dog.canMoveObject)

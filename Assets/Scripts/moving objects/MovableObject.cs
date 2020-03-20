@@ -66,15 +66,16 @@ public class MovableObject : MonoBehaviour
 
     void Start()
     {
-        //GameObject topCollider = gameObject.transform.Find("TopCollider").gameObject;
-
         if (noCollision)
         {
             topCollider.SetActive(true);
+            gameObject.layer = 0;
         }
         else
         {
+            //topCollider.SetActive(true);
             topCollider.SetActive(false);
+            gameObject.layer = 8;
         }
 
         xPos = transform.position.x;
@@ -84,18 +85,16 @@ public class MovableObject : MonoBehaviour
     void Update()
     {
         Physics2D.queriesStartInColliders = false;
-        RaycastHit2D hitBox = Physics2D.Raycast(transform.position, Vector2.up * transform.localScale.y, boxDistance, boxMask);
+        RaycastHit2D hitBox = Physics2D.Raycast(transform.position, Vector2.up * transform.localScale.y, boxDistance);
 
-        if (hitBox.collider != null)
+        if (hitBox.collider != null && !hitBox.collider.CompareTag("TopCollider"))
         {
-            if (hitBox.collider.CompareTag("MovableObject"))
-            {
-                GetComponent<Rigidbody2D>().mass = 100;
-            }
+            Debug.Log(hitBox.collider.gameObject);
+            GetComponent<Rigidbody2D>().mass = 100;
         }
         else
         {
-                GetComponent<Rigidbody2D>().mass = startMass;
+            GetComponent<Rigidbody2D>().mass = startMass;
         }
 
         if (!beingMoved)
@@ -152,7 +151,7 @@ public class MovableObject : MonoBehaviour
     {
         if (noCollision)
         {
-            if (other.gameObject.layer != LayerMask.NameToLayer("Ground"))
+            if (other.gameObject.layer != LayerMask.NameToLayer("Ground") && !other.gameObject.CompareTag("MovableObject"))
             {
                 if (other.gameObject.tag == "Eel")
                     Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), other.gameObject.GetComponent<Eel>().collider);
