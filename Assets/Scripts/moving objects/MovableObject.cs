@@ -11,6 +11,8 @@ public class MovableObject : MonoBehaviour
     public bool beingMoved;
     [HideInInspector]
     public bool grounded;
+    public Transform groundCheckLeft = null, groundCheckRight = null;
+    public int raysNotGrounded = 0;
     float xPos;
     [Tooltip("From what distance the dog can interact with the box.")]
     public float boxDistance;
@@ -24,6 +26,7 @@ public class MovableObject : MonoBehaviour
     [Tooltip("Disables collision to player and enables the top collider. Makes it possible to stand on top of the box and still pass through it from the sides.")]
     public bool noCollision = false;
     GameObject topCollider;
+    public GameObject botCollider;
 
     [Tooltip("Checks if there is ground is below the box on it's left side of it.")]
     public float leftGroundCheckoffset = -1.9f;
@@ -31,16 +34,16 @@ public class MovableObject : MonoBehaviour
     public float rightGroundCheckoffset = 1.9f;
 
     void OnValidate()
-    { 
-        if(boxDistance == 0)
+    {
+        if (boxDistance == 0)
         {
             boxDistance = 0.4f;
         }
-        if(groundCheckDistance == 0)
+        if (groundCheckDistance == 0)
         {
             groundCheckDistance = 0.4f;
         }
-        if(groundMask == 0 && boxMask != 0)
+        if (groundMask == 0 && boxMask != 0)
         {
             groundMask = boxMask;
         }
@@ -49,7 +52,7 @@ public class MovableObject : MonoBehaviour
 
     public bool BoxGrounded()
     {
-        if (grounded)
+        if (grounded || raysNotGrounded > 1)
         {
             return true;
         }
@@ -62,6 +65,9 @@ public class MovableObject : MonoBehaviour
     void Awake()
     {
         topCollider = gameObject.transform.Find("TopCollider").gameObject;
+        botCollider = gameObject.transform.Find("GameObject").gameObject;
+        groundCheckLeft = gameObject.transform.Find("Ground Check Left").transform;
+        groundCheckRight = gameObject.transform.Find("Ground Check Right").transform;
     }
 
     void Start()
@@ -80,6 +86,23 @@ public class MovableObject : MonoBehaviour
 
         xPos = transform.position.x;
         startMass = GetComponent<Rigidbody2D>().mass;
+    }
+
+    void GroundCheck()
+    {
+        if (Physics2D.Linecast(transform.position, groundCheckLeft.position, 1 << 8)
+            || Physics2D.Linecast(transform.position, groundCheckRight.position, 1 << 8))
+        {
+            grounded = true;
+        }
+        else
+        {
+            if (!grounded && landSource != null)
+            {
+                landSource.Play();
+            }
+            grounded = false;
+        }
     }
 
     void Update()
@@ -105,29 +128,7 @@ public class MovableObject : MonoBehaviour
         {
             xPos = transform.position.x;
         }
-
-        Physics2D.queriesStartInColliders = false;
-        RaycastHit2D hitGround = Physics2D.Raycast(transform.position, -Vector2.up * transform.localScale.y, groundCheckDistance, groundMask);
-
-        Physics2D.queriesStartInColliders = false;
-        RaycastHit2D hitGroundRight = Physics2D.Raycast(new Vector2(transform.position.x + rightGroundCheckoffset, transform.position.y), new Vector2(transform.position.x + rightGroundCheckoffset, transform.position.y) * -Vector2.up, groundCheckDistance, groundMask);
-
-        Physics2D.queriesStartInColliders = false;
-        RaycastHit2D hitGroundLeft = Physics2D.Raycast(new Vector2(transform.position.x + leftGroundCheckoffset, transform.position.y), new Vector2(transform.position.x + leftGroundCheckoffset, transform.position.y) * -Vector2.up, groundCheckDistance, groundMask);
-
-        if (hitGround.collider != null || hitGroundLeft.collider != null || hitGroundRight.collider != null)
-        {
-            if (!grounded && landSource != null)
-            {
-                landSource.Play();
-            }
-
-            grounded = true;
-        }
-        else
-        {
-            grounded = false;
-        }
+        GroundCheck();
     }
 
     void OnDrawGizmos()
@@ -138,12 +139,6 @@ public class MovableObject : MonoBehaviour
 
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + -Vector2.up * transform.localScale.y * groundCheckDistance);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(new Vector2(transform.position.x + rightGroundCheckoffset, transform.position.y), new Vector2(transform.position.x + rightGroundCheckoffset, transform.position.y) + -Vector2.up * groundCheckDistance);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(new Vector2(transform.position.x + leftGroundCheckoffset, transform.position.y), new Vector2(transform.position.x + leftGroundCheckoffset, transform.position.y) + -Vector2.up * groundCheckDistance);
 
     }
 
@@ -161,5 +156,4 @@ public class MovableObject : MonoBehaviour
         }
 
     }
-
 }

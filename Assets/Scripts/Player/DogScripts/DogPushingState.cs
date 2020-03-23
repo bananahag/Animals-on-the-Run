@@ -13,7 +13,7 @@ public class DogPushingState : DogState
     public bool dropRope;
     [HideInInspector]
     public bool boxGrounded;
-
+    float dropTimer = 0.0f;
     bool canPlayPushSource;
 
     float startPosX, dragDistance, pushDistance;//All of these are related to the rope pulling
@@ -67,8 +67,13 @@ public class DogPushingState : DogState
         {
             if (!dog.grounded || !dog.affectedObject.GetComponent<MovableObject>().BoxGrounded())
             {
-                dropBox = true;
-                dog.affectedObject.GetComponent<FixedJoint2D>().enabled = false;
+                dropTimer += Time.deltaTime;
+                if(dropTimer > 0.09f)
+                {
+                    dropBox = true;
+                    dog.affectedObject.GetComponent<FixedJoint2D>().enabled = false;
+                    dropTimer = 0.0f;
+                }
             }
         }
     }
