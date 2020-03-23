@@ -9,7 +9,7 @@ public class MovableobjectBottom : MonoBehaviour
 
    public Vector3 leftoffset = new Vector3(-.7f, -.7f, 0);
    public Vector3 rightoffest = new Vector3(.7f, -.7f, 0);
-    
+    public bool leavingGround;
 
 
 
@@ -21,7 +21,7 @@ public class MovableobjectBottom : MonoBehaviour
         
         if (collision.gameObject.tag == "MovableObject" || collision.gameObject.tag == "Scale")
         {
-            
+            leavingGround = false;
             RaycastHit2D[] lefthits = Physics2D.RaycastAll(transform.position + leftoffset, Vector2.down, raycastlength);
             foreach (RaycastHit2D hit in lefthits)
             {
@@ -66,6 +66,7 @@ public class MovableobjectBottom : MonoBehaviour
             RaycastHit2D[] lefthits = Physics2D.RaycastAll(transform.position + leftoffset, Vector2.down, raycastlength);
             foreach (RaycastHit2D hit in lefthits)
             {
+                leavingGround = true;
                 print("Leaving");
                 if (hit.collider.tag == "Scale")
                 {
