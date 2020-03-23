@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SwapCharacter : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class SwapCharacter : MonoBehaviour
     private Camera cam;
     Vector3 oldCameraPos;
 
-    public float runToTheRightTime = 5.0f;
+    public float runToTheRightTime = 5.0f, waitBeforeCreditsTime = 2.0f;
 
 
     public float cameraTravelTime = 1.0f;
@@ -67,7 +68,8 @@ public class SwapCharacter : MonoBehaviour
         animalsRunning = false;
         SelectedChar = 0;   
         cam = Camera.main;
-        mMeny = FindObjectOfType<MenyUI>().GetComponent<MenyUI>();
+        if (FindObjectOfType<MenyUI>() != null)
+            mMeny = FindObjectOfType<MenyUI>().GetComponent<MenyUI>();
         oldCameraPos = cam.transform.position;
         
     }
@@ -290,7 +292,20 @@ public class SwapCharacter : MonoBehaviour
         mMonkey.runToRight = true;
         mDog.runToRight = true;
         yield return new WaitForSeconds(runToTheRightTime);
+        StartCoroutine(WaitBeforeLoadingCredits());
         mMonkey.runToRight = false;
         mDog.runToRight = false;
+    }
+
+    IEnumerator WaitBeforeLoadingCredits()
+    {
+        float waitTime = waitBeforeCreditsTime - 1.5f;
+        if (waitTime < 0.0f)
+            waitTime = 0.0f;
+        float blackFadeTime = waitBeforeCreditsTime - waitTime;
+        yield return new WaitForSeconds(waitTime);
+        FadeToBlack.fadeIn = true;
+        yield return new WaitForSeconds(blackFadeTime);
+        SceneManager.LoadScene("Credits");
     }
 }

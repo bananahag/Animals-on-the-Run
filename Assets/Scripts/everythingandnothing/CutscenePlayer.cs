@@ -6,18 +6,28 @@ using UnityEngine.SceneManagement;
 
 public class CutscenePlayer : MonoBehaviour
 {
+    public AudioSource cutsceneSource;
+
     VideoPlayer videoPlayer;
     public string sceneAfterVideoName;
     public float waitTimeBeforeLoadingNewScene = 0.0f;
 
-    bool checkVideoPlayingState;
+    public bool intro;
+
+    bool checkVideoPlayingState, hasStartedAudio;
 
     // Start is called before the first frame update
     void Start()
     {
         checkVideoPlayingState = false;
+        hasStartedAudio = false;
         videoPlayer = GetComponent<VideoPlayer>();
         StartCoroutine(WaitBeforeCheckingVideoPlayingState());
+        videoPlayer.Play();
+        if (intro)
+            MenyUI.scene++;
+        else
+            MenyUI.scene = 0;
     }
 
     // Update is called once per frame
@@ -27,6 +37,13 @@ public class CutscenePlayer : MonoBehaviour
         {
             StartCoroutine(LoadNewScene());
             checkVideoPlayingState = false;
+        }
+
+        if (videoPlayer.isPlaying && !hasStartedAudio)
+        {
+            if (cutsceneSource != null)
+                cutsceneSource.Play();
+            hasStartedAudio = true;
         }
     }
 
