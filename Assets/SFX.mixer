@@ -62,7 +62,7 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 7391690471824147614}
-  m_UserColorIndex: 0
+  m_UserColorIndex: 5
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
@@ -101,6 +101,20 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &-8146059520171357255
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: a2590ae6dc82f8d43bc9b62df28a4e5f
+  m_EffectName: Attenuation
+  m_MixLevel: ec8b5b36018bc8340b534b3ae6f5339b
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!243 &-8054623213660415870
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -701,7 +715,7 @@ AudioMixerGroupController:
   - {fileID: 90625545617349381}
   - {fileID: 8709530164958936715}
   - {fileID: 7768052287076619191}
-  m_UserColorIndex: 0
+  m_UserColorIndex: 5
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
@@ -1083,6 +1097,7 @@ AudioMixerController:
     - 9fcb0fcf80ded0148800da20c87b7a2d
     - 0979de840e86dda40bcb909eb0a24a62
     - ddbaa62dbf4968f4fafafab6022a3b12
+    - 7e900c2a2dd15b747b3784393e7a28c5
     name: Ambance
   - guids:
     - 4ac487c30a7fef443884b6b1b0061ca0
@@ -1190,6 +1205,7 @@ AudioMixerSnapshotController:
     5fea6609e87f8914cb4fc59a774040ee: -28.924246
     103d0229ac156b846bb853ad440af775: 819
     0289e46990ea4ba45a7e813c1de0da83: -31.129898
+    3af0acb97f6bc9a46947502f87d2a4b7: -40.607674
     3fe6fe3a23a3c564bbde29edcbdc396f: -0.08374856
     787bbd5ace47ba84f83fea6d62fbeec8: -4.9356413
     22bee47ab9d6acc47bb7142989fd931b: -30.521755
@@ -1763,6 +1779,25 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &5686816280860761332
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Birds
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 7e900c2a2dd15b747b3784393e7a28c5
+  m_Children: []
+  m_Volume: 3af0acb97f6bc9a46947502f87d2a4b7
+  m_Pitch: aae4c845d2d54324e97df7accd341503
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -8146059520171357255}
+  m_UserColorIndex: 5
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!243 &6107627254412045288
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -1956,7 +1991,7 @@ AudioMixerGroupController:
   - {fileID: -269905409715890335}
   - {fileID: 4183296867547387764}
   - {fileID: 5068028555248948614}
-  m_UserColorIndex: 0
+  m_UserColorIndex: 5
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
@@ -2106,6 +2141,7 @@ AudioMixerGroupController:
   - {fileID: 134853080204483515}
   - {fileID: -2147423262520688590}
   - {fileID: 7208647734770138338}
+  - {fileID: 5686816280860761332}
   m_Volume: 42d91cf201d8cc1409939f2629a8ca78
   m_Pitch: 89eba4001ceaa514c8ec0948b1cd64c9
   m_Send: 00000000000000000000000000000000
