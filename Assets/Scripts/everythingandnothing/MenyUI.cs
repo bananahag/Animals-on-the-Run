@@ -17,7 +17,8 @@ public class MenyUI : MonoBehaviour
    
     private void Start()
     {
-        scoreText.text = scoreCount.ToString() + "/" + maxScore;
+        if (scoreText != null)
+            scoreText.text = scoreCount.ToString() + "/" + maxScore;
     }
     void Update()
     {
