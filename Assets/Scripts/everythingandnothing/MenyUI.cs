@@ -45,6 +45,12 @@ public class MenyUI : MonoBehaviour
         }    
     }
 
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(scene);
+        Resume();
+    }
+
     public void Resume()
     {
         paused = !paused;
