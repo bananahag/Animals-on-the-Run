@@ -176,11 +176,14 @@ public class Eel : MonoBehaviour
     {
         if (Input.GetButtonDown("Interact") && canAct && grounded && active)
         {
-            electricitySource.Play();
-            canAct = false;
-            StartCoroutine(ElectricityTimer());
-            animator.Play("Placeholder Eel Idle");
-            animator.Play("Placeholder Eel Electricity");
+            if (monkey == null || monkey != null && !monkey.GetComponent<MonkeyBehavior>().carryingBucket)
+            {
+                electricitySource.Play();
+                canAct = false;
+                StartCoroutine(ElectricityTimer());
+                animator.Play("Placeholder Eel Idle");
+                animator.Play("Placeholder Eel Electricity");
+            }
         }
     }
 
