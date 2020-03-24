@@ -68,7 +68,7 @@ public class DogPushingState : DogState
             if (!dog.grounded || !dog.affectedObject.GetComponent<MovableObject>().BoxGrounded())
             {
                 dropTimer += Time.deltaTime;
-                if(dropTimer > 0.09f)
+                if(dropTimer > 0.10f)
                 {
                     dropBox = true;
                     dog.affectedObject.GetComponent<FixedJoint2D>().enabled = false;

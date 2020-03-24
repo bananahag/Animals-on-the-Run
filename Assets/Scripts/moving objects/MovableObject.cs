@@ -11,13 +11,13 @@ public class MovableObject : MonoBehaviour
     public bool beingMoved;
     [HideInInspector]
     public bool grounded;
+    [HideInInspector]
     public Transform groundCheckLeft = null, groundCheckRight = null;
-    public int raysNotGrounded = 0;
     float xPos;
     [Tooltip("From what distance the dog can interact with the box.")]
     public float boxDistance;
-    [Tooltip("How close the box must be to the ground to be considered grounded.")]
-    public float groundCheckDistance;
+    //[Tooltip("How close the box must be to the ground to be considered grounded.")]
+    //public float groundCheckDistance;
     [Tooltip("Checks if the box has this layer. It's used by RayCast and should be Ground")]
     public LayerMask boxMask;
     [Tooltip("Checks if ground is below it. It's used by RayCast and should be Ground")]
@@ -28,21 +28,16 @@ public class MovableObject : MonoBehaviour
     GameObject topCollider;
     public GameObject botCollider;
 
-    [Tooltip("Checks if there is ground is below the box on it's left side of it.")]
-    public float leftGroundCheckoffset = -1.9f;
-    [Tooltip("Checks if there is ground is below the box on it's right side of it.")]
-    public float rightGroundCheckoffset = 1.9f;
-
     void OnValidate()
     {
         if (boxDistance == 0)
         {
             boxDistance = 0.4f;
         }
-        if (groundCheckDistance == 0)
+        /*if (groundCheckDistance == 0)
         {
             groundCheckDistance = 0.4f;
-        }
+        }*/
         if (groundMask == 0 && boxMask != 0)
         {
             groundMask = boxMask;
@@ -52,7 +47,7 @@ public class MovableObject : MonoBehaviour
 
     public bool BoxGrounded()
     {
-        if (grounded || raysNotGrounded > 1)
+        if (grounded)
         {
             return true;
         }
@@ -93,6 +88,7 @@ public class MovableObject : MonoBehaviour
         if (Physics2D.Linecast(transform.position, groundCheckLeft.position, 1 << 8)
             || Physics2D.Linecast(transform.position, groundCheckRight.position, 1 << 8))
         {
+            
             grounded = true;
         }
         else
@@ -110,7 +106,7 @@ public class MovableObject : MonoBehaviour
         Physics2D.queriesStartInColliders = false;
         RaycastHit2D hitBox = Physics2D.Raycast(transform.position, Vector2.up * transform.localScale.y, boxDistance);
 
-        if (hitBox.collider != null && !hitBox.collider.CompareTag("TopCollider"))
+        if (hitBox.collider != null && !hitBox.collider.CompareTag("TopCollider") && !hitBox.collider.CompareTag("ByeEel"))
         {
             Debug.Log(hitBox.collider.gameObject);
             GetComponent<Rigidbody2D>().mass = 100;
@@ -137,8 +133,8 @@ public class MovableObject : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + Vector2.up * transform.localScale.y * boxDistance);
 
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, (Vector2)transform.position + -Vector2.up * transform.localScale.y * groundCheckDistance);
+        /*Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + -Vector2.up * transform.localScale.y * groundCheckDistance);*/
 
     }
 
