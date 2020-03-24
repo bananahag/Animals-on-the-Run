@@ -43630,7 +43630,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1117907037}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 467.3013, y: 3.3435469, z: -949.88153}
+  m_LocalPosition: {x: 467.3013, y: 3.3435469, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -49203,6 +49203,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8422899475185505313, guid: 681b3767503ca7a49b441b045b69a812,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1522134635
+      objectReference: {fileID: 0}
+    - target: {fileID: 8422899475185505313, guid: 681b3767503ca7a49b441b045b69a812,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 128939683171526822, guid: 681b3767503ca7a49b441b045b69a812,
         type: 3}
       propertyPath: inAirState.airSpeed
@@ -49222,16 +49232,6 @@ PrefabInstance:
         type: 3}
       propertyPath: groundedState.walkingSpeed
       value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8422899475185505313, guid: 681b3767503ca7a49b441b045b69a812,
-        type: 3}
-      propertyPath: m_SortingLayerID
-      value: 1522134635
-      objectReference: {fileID: 0}
-    - target: {fileID: 8422899475185505313, guid: 681b3767503ca7a49b441b045b69a812,
-        type: 3}
-      propertyPath: m_SortingLayer
-      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 681b3767503ca7a49b441b045b69a812, type: 3}
