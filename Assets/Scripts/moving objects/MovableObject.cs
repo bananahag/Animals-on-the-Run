@@ -85,7 +85,6 @@ public class MovableObject : MonoBehaviour
 
     void GroundCheck()
     {
-        
         if (Physics2D.Linecast(transform.position, groundCheckLeft.position, 1 << 8)
             || Physics2D.Linecast(transform.position, groundCheckRight.position, 1 << 8))
         {
@@ -107,7 +106,7 @@ public class MovableObject : MonoBehaviour
         Physics2D.queriesStartInColliders = false;
         RaycastHit2D hitBox = Physics2D.Raycast(transform.position, Vector2.up * transform.localScale.y, boxDistance);
 
-        if (hitBox.collider != null && !hitBox.collider.CompareTag("TopCollider"))
+        if (hitBox.collider != null && !hitBox.collider.CompareTag("TopCollider") && !hitBox.collider.CompareTag("ByeEel"))
         {
             Debug.Log(hitBox.collider.gameObject);
             GetComponent<Rigidbody2D>().mass = 100;
