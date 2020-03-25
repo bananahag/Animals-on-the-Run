@@ -24,9 +24,11 @@ public class FlickeringLight : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         spriteMask.enabled = true;
 
+        yield return new WaitForSeconds(0.1f);
+        spriteMask.enabled = false;
+
         waitTime = Random.Range(smallFlickerTimeMin, smallFlickerTimeMax);
         yield return new WaitForSeconds(waitTime);
-        spriteMask.enabled = false;
         StartCoroutine(Flicker());
     }
 }
