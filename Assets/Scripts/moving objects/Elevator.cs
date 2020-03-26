@@ -48,6 +48,8 @@ public class Elevator : MonoBehaviour
     Rigidbody2D rb2d;
     BoxCollider2D bc2d;
 
+    List<GameObject> playerList = new List<GameObject>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -161,11 +163,17 @@ public class Elevator : MonoBehaviour
                 elevatorMoveSource.Stop();
         }
 
-        if (touchingPlayer && !goingUp && monkey.transform.position.y > transform.position.y)
-            monkey.transform.SetParent(transform);
-        else if (monkey != null)
-            monkey.transform.SetParent(null);
-
+        foreach(GameObject player in playerList)
+        {
+            if (touchingPlayer && !goingUp && player.transform.position.y > transform.position.y)
+            {
+                player.transform.SetParent(transform);
+            }
+            else if (player != null)
+            {
+                player.transform.SetParent(null);
+            }
+        }
         if (monkey != null && transform.position.x <= monkey.transform.position.x && transform.position.x + (bc2d.bounds.size.x / 2.0f) >= monkey.transform.position.x
             || monkey != null && transform.position.x > monkey.transform.position.x && transform.position.x - (bc2d.bounds.size.x / 2.0f) < monkey.transform.position.x)
         {
@@ -262,11 +270,41 @@ public class Elevator : MonoBehaviour
             touchingPlayer = true;
             monkey = other.gameObject;
         }
+
+        if(other.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            if (!playerList.Contains(other.gameObject))
+            {
+                if(other.gameObject.CompareTag("Eel") || other.gameObject.CompareTag("Dog") || other.gameObject.CompareTag("Monkey"))
+                {
+                    playerList.Add(other.gameObject);
+                    touchingPlayer = true;
+
+                    if (other.gameObject.CompareTag("Eel"))
+                    {
+                        other.gameObject.GetComponent<Eel>().onElevator = true;
+                    }
+                }
+            }
+        }
     }
 
     void OnCollisionExit2D(Collision2D other)
     {
         if (other.gameObject.tag == "Monkey")
             touchingPlayer = false;
+
+        if (other.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            if (other.gameObject.CompareTag("Eel"))
+            {
+                other.gameObject.GetComponent<Eel>().onElevator = true;
+            }
+            playerList.Remove(other.gameObject);
+            if(playerList.Count == 0)
+            {
+                touchingPlayer = false;
+            }
+        }
     }
 }
