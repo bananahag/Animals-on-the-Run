@@ -48,7 +48,8 @@ public class Eel : MonoBehaviour
     float startGravity;
     bool loopLightOnce;
     Animator animator;
-
+    [HideInInspector]
+    public bool onElevator = false;
     void Start()
     {
         startGravity = GetComponent<Rigidbody2D>().gravityScale;
@@ -92,7 +93,7 @@ public class Eel : MonoBehaviour
     void GroundCheck()
     {
         if (Physics2D.Linecast(transform.position, groundCheckLeft.position, 1 << LayerMask.NameToLayer("Ground"))
-            || Physics2D.Linecast(transform.position, groundCheckRight.position, 1 << LayerMask.NameToLayer("Ground")))
+            || Physics2D.Linecast(transform.position, groundCheckRight.position, 1 << LayerMask.NameToLayer("Ground")) || onElevator)
         {
             if (!grounded)
             {
