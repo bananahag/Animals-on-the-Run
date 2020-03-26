@@ -48,11 +48,12 @@ public class Elevator : MonoBehaviour
     Rigidbody2D rb2d;
     BoxCollider2D bc2d;
 
-    List<GameObject> playerList = new List<GameObject>();
+    List<GameObject> playerList;
 
     // Start is called before the first frame update
     void Start()
     {
+        playerList = new List<GameObject>();
         canPlayLoopSound = true;
         rb2d = GetComponent<Rigidbody2D>();
         bc2d = GetComponent<BoxCollider2D>();
@@ -65,6 +66,7 @@ public class Elevator : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        Debug.Log(playerList.Count);
         if (fraction < 1.0f && !goingBack && active)
         {
             if (elevatorMoveSource != null && canPlayLoopSound)
@@ -300,11 +302,15 @@ public class Elevator : MonoBehaviour
             {
                 other.gameObject.GetComponent<Eel>().onElevator = true;
             }
+            other.transform.SetParent(null);
             playerList.Remove(other.gameObject);
             if(playerList.Count == 0)
             {
+                playerList.Clear();
                 touchingPlayer = false;
             }
         }
+        Debug.Log(playerList.Count);
+        Debug.Log(other.gameObject);
     }
 }
