@@ -111,9 +111,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
     animals: 02000000
-    customSources: []
+    customSources:
+    - {fileID: 0}
     sentences:
-    - many more boxes
+    - "we\u2019re so close now!"
 --- !u!61 &7216910850323854146
 BoxCollider2D:
   m_ObjectHideFlags: 0
