@@ -2624,7 +2624,7 @@ PrefabInstance:
     - target: {fileID: 5850513234652998763, guid: 07abe09a644f871498d60449678777de,
         type: 3}
       propertyPath: active
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5850513234652998763, guid: 07abe09a644f871498d60449678777de,
         type: 3}
@@ -2640,6 +2640,11 @@ PrefabInstance:
         type: 3}
       propertyPath: travelTime
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5850513234652998763, guid: 07abe09a644f871498d60449678777de,
+        type: 3}
+      propertyPath: stayTime
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4250162511827441871, guid: 07abe09a644f871498d60449678777de,
         type: 3}
@@ -2659,7 +2664,7 @@ PrefabInstance:
     - target: {fileID: 5850513234652998676, guid: 07abe09a644f871498d60449678777de,
         type: 3}
       propertyPath: m_MaskInteraction
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4250162510930066192, guid: 07abe09a644f871498d60449678777de,
         type: 3}
@@ -27752,11 +27757,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5372217239826993889, guid: 5396933007d03b340a1769f37d5398d9,
-        type: 3}
-      propertyPath: m_MaskInteraction
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5372217239826993907, guid: 5396933007d03b340a1769f37d5398d9,
         type: 3}
       propertyPath: groundCheckDistance
@@ -27766,6 +27766,11 @@ PrefabInstance:
         type: 3}
       propertyPath: boxDistance
       value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5372217239826993889, guid: 5396933007d03b340a1769f37d5398d9,
+        type: 3}
+      propertyPath: m_MaskInteraction
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5372217239826993905, guid: 5396933007d03b340a1769f37d5398d9,
         type: 3}
