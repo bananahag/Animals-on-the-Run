@@ -24,4 +24,9 @@ public class SceneMusic : MonoBehaviour
         if (musicSource.volume <= 0.0f)
             Destroy(gameObject);
     }
+
+    public void DestroyMusicObject()
+    {
+        Destroy(gameObject);
+    }
 }

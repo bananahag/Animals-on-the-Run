@@ -47,6 +47,9 @@ public class MenyUI : MonoBehaviour
 
     public void RestartLevel()
     {
+        if (SwapCharacter.keepMusic)
+            FindObjectOfType<SceneMusic>().DestroyMusicObject();
+
         SceneManager.LoadScene(scene);
         Resume();
     }
