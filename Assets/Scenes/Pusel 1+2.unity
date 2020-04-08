@@ -32469,25 +32469,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1917829618 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1914007041043417810, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
-    type: 3}
-  m_PrefabInstance: {fileID: 1907704197}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1917829620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1917829618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c1cbeef2b0fd044e964f6050e297639, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxScorePerLevel: 2
 --- !u!1 &1932019149
 GameObject:
   m_ObjectHideFlags: 0
@@ -41727,6 +41708,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Epic Monkey With Sound
       objectReference: {fileID: 0}
+    - target: {fileID: 8255423682265384737, guid: 9a1a036917dcf4b4783342784eb7870e,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 9c643c5b8ee5d624289112e0b9b416f7, type: 3}
     - target: {fileID: 4421345913882775141, guid: 9a1a036917dcf4b4783342784eb7870e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -41798,11 +41784,6 @@ PrefabInstance:
       propertyPath: interactState.interactSources.Array.data[0]
       value: 
       objectReference: {fileID: 1677509785}
-    - target: {fileID: 8255423682265384737, guid: 9a1a036917dcf4b4783342784eb7870e,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 9c643c5b8ee5d624289112e0b9b416f7, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a1a036917dcf4b4783342784eb7870e, type: 3}
 --- !u!1001 &5790032701738816260
