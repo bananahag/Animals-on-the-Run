@@ -1067,6 +1067,16 @@ PrefabInstance:
       propertyPath: Dialog
       value: 
       objectReference: {fileID: 2017145654}
+    - target: {fileID: 3848593267437736948, guid: b1f6e19e0adce6f418a1dc16c60d0576,
+        type: 3}
+      propertyPath: m_Name
+      value: Tweet Source_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8056164916197869663, guid: b1f6e19e0adce6f418a1dc16c60d0576,
+        type: 3}
+      propertyPath: m_Name
+      value: Cage Source_1
+      objectReference: {fileID: 0}
     - target: {fileID: 4286382905818439434, guid: b1f6e19e0adce6f418a1dc16c60d0576,
         type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.size
@@ -1296,16 +1306,6 @@ PrefabInstance:
         type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[0].value
       value: 0.99710083
-      objectReference: {fileID: 0}
-    - target: {fileID: 3848593267437736948, guid: b1f6e19e0adce6f418a1dc16c60d0576,
-        type: 3}
-      propertyPath: m_Name
-      value: Tweet Source_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8056164916197869663, guid: b1f6e19e0adce6f418a1dc16c60d0576,
-        type: 3}
-      propertyPath: m_Name
-      value: Cage Source_1
       objectReference: {fileID: 0}
     - target: {fileID: -3862196557380012863, guid: b1f6e19e0adce6f418a1dc16c60d0576,
         type: 3}
@@ -11094,14 +11094,14 @@ PrefabInstance:
       propertyPath: rightGroundCheckoffset
       value: 2.1
       objectReference: {fileID: 0}
-    - target: {fileID: 1033777999, guid: 5396933007d03b340a1769f37d5398d9, type: 3}
-      propertyPath: MinDistance
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5790032701627633961, guid: 5396933007d03b340a1769f37d5398d9,
         type: 3}
       propertyPath: m_Offset.y
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1033777999, guid: 5396933007d03b340a1769f37d5398d9, type: 3}
+      propertyPath: MinDistance
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5396933007d03b340a1769f37d5398d9, type: 3}
@@ -36121,47 +36121,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 843625618523678988, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 843625618619805970, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: dab3fb5ddd0a43041a124d06ace294b6,
-        type: 3}
-    - target: {fileID: 843625618619805970, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: dab3fb5ddd0a43041a124d06ace294b6,
-        type: 3}
-    - target: {fileID: 843625617398651930, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: b9331c512657e924b973abcd2a7ae3c2,
-        type: 3}
-    - target: {fileID: 843625617398651930, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: b9331c512657e924b973abcd2a7ae3c2,
-        type: 3}
-    - target: {fileID: 843625618311354251, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 42fd7a7a9c3a6854db8025a6f3eef34a,
-        type: 3}
-    - target: {fileID: 843625618311354251, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 42fd7a7a9c3a6854db8025a6f3eef34a,
-        type: 3}
     - target: {fileID: 843625618523678984, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -36266,26 +36225,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5623383635385530251, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5623383635470294528, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 237
-      objectReference: {fileID: 0}
-    - target: {fileID: 5623383635470294528, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 495
-      objectReference: {fileID: 0}
-    - target: {fileID: 5623383635470294533, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329,
-        type: 3}
-      propertyPath: maxScore
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8c2ae08eb5f2b540a7f19a6a4c2b329, type: 3}
@@ -39318,6 +39257,16 @@ PrefabInstance:
       propertyPath: Dialog
       value: 
       objectReference: {fileID: 1700248433}
+    - target: {fileID: 3848593267437736948, guid: b1f6e19e0adce6f418a1dc16c60d0576,
+        type: 3}
+      propertyPath: m_Name
+      value: Tweet Source_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8056164916197869663, guid: b1f6e19e0adce6f418a1dc16c60d0576,
+        type: 3}
+      propertyPath: m_Name
+      value: Cage Source_1
+      objectReference: {fileID: 0}
     - target: {fileID: 4286382905818439434, guid: b1f6e19e0adce6f418a1dc16c60d0576,
         type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.size
@@ -39547,16 +39496,6 @@ PrefabInstance:
         type: 3}
       propertyPath: rolloffCustomCurve.m_Curve.Array.data[0].value
       value: 0.99710083
-      objectReference: {fileID: 0}
-    - target: {fileID: 3848593267437736948, guid: b1f6e19e0adce6f418a1dc16c60d0576,
-        type: 3}
-      propertyPath: m_Name
-      value: Tweet Source_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8056164916197869663, guid: b1f6e19e0adce6f418a1dc16c60d0576,
-        type: 3}
-      propertyPath: m_Name
-      value: Cage Source_1
       objectReference: {fileID: 0}
     - target: {fileID: -3862196557380012863, guid: b1f6e19e0adce6f418a1dc16c60d0576,
         type: 3}

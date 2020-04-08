@@ -17,7 +17,7 @@ public class Cage : MonoBehaviour
     [Tooltip("The minimum and the maximum pitch of the tweet sounds.")]
     public float minPitch = 1.0f, maxPitch = 1.0f;
 
-    MenyUI menyUI;
+    ScoreCounter scoreCounter;
 
     public GameObject Dialog;
     public Sprite openedSprite;
@@ -33,7 +33,7 @@ public class Cage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        menyUI = FindObjectOfType<MenyUI>().GetComponent<MenyUI>();
+        scoreCounter = FindObjectOfType<ScoreCounter>().GetComponent<ScoreCounter>();
         StartCoroutine(TweetSound());
         Dialog.SetActive(false);
     }
@@ -53,9 +53,9 @@ public class Cage : MonoBehaviour
     {
         if (!opened)
         {
-            if(menyUI != null)
+            if(scoreCounter != null)
             {
-                menyUI.AddScoreCount();
+                scoreCounter.AddScoreCount();
             }
             openSource.Play();
             GetComponent<SpriteRenderer>().sprite = openedSprite;
